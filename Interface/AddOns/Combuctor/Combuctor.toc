@@ -1,0 +1,23 @@
+﻿## Interface: 50001
+## Title: Combuctor
+## Author: Tuller and Jaliborc (João Cardoso)
+## Notes-zhCN: |cffbc8f8f暴雪风格背包|r|cffb70000不喜欢这个背包请禁用。|r
+## Notes-zhTW: |cffbc8f8f暴雪風格背包|r|cffb70000不喜歡這個背包請禁用。|r
+## Version: 5.0.2
+## OptionalDeps: BagBrother, BagSync, Armory, Ace3, LibItemCache-1.0, LibItemSearch-1.0, Unfit-1.0
+## SavedVariables: CombuctorVersion, CombuctorDB2
+## RequiredDeps: MysteryUI
+## X-WoWBox-Ver: 1
+## X-WoWBox-ID: 3340
+libs\libs.xml
+localization\localization.xml
+
+main.lua
+
+core\core.xml
+sets\sets.xml
+events\events.xml
+info\info.xml
+
+templates\templates.xml
+components\components.xml

@@ -1,0 +1,7 @@
+## Interface: 50001
+## Title: LibItemSearch
+## Notes: An item search library
+## OptionalDeps: LibStub, ItemRack, Wardrobe
+## Author: Jaliborc (João Cardoso), Tuller, Yewbacca (Equipment Set Searching)
+## LoadOnDemand: 1
+LibItemSearch-1.0.lua

@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file ="Frame\Frame.xml"/>
+	<Include file ="Function\Function.xml"/>
+	<Include file='rBuffFrameStyler\elements.xml' />
+	<Include file='rActionButtonStyler\elements.xml' />
+	<Include file='JPack\JPack.xml' />
+	<Include file ="oGlow\load.xml"/>
+	<Include file ="ChatEmote\ChatEmote.xml"/>
+	<Include file ="DamageThreat\DamageThreat.xml"/>
+	
+	<Script file='MysteryUI.lua' />
+</Ui>

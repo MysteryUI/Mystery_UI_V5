@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='Bar.lua' />
+	<Script file='Unitframes.lua' />
+	<Script file='Minimap.lua' />
+	<Script file='Chat.lua' />
+	<Script file='NamePlates.lua' />
+	<Script file='Tooltip.lua' />
+	<Script file='combattext.lua' />
+	<Script file='Mapcoords.lua' />
+</Ui>

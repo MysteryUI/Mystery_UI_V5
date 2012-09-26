@@ -1,0 +1,7 @@
+使用说明：
+
+
+1. 备份你魔兽客户端的Interface和WTF文件.
+2. 删除的Interface文件以及WTF文件.
+3. 把Interface解压到你的魔兽客户端里
+4. 进入游戏！

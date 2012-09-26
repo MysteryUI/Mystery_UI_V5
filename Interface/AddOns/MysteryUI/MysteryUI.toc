@@ -1,0 +1,15 @@
+﻿## Interface: 50001
+## Author: Mystery
+## Title: |cffbc8f8fMystery|r|cffb70000UI|r
+## Notes-zhCN: |cffbc8f8fMysteryUI_V2+|r|cffb70000暴雪原始增强界面。|r
+## Notes-zhTW: |cffbc8f8fMysteryUI_V2+|r|cffb70000暴雪原始增強界面。|r
+## Version: V5
+## RequiredDeps: Blizzard_CombatText
+## OptionalDeps: DBM-Core
+## SavedVariables: dmconf
+## SavedVariablesPerCharacter: UISetup, UISavedPositions, setupUI
+## X-WoWBox-Ver: 1
+## X-WoWBox-ID: 3340
+
+ui.xml
+

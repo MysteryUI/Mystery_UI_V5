@@ -1,0 +1,15 @@
+LibItemSearch
+	A search engine for World of Warcraft items
+
+Grammar:
+	<search> 			:=	<intersect search>
+	<intersect search> 	:=	<union search> & <union search> ; <union search>
+	<union search>		:=	<negatable search>  | <negatable search> ; <negatable search>
+	<negatable search> 	:=	!<primitive search> ; <primitive search>
+	<primitive search>	:=	<quality search> ; <type search> ; <text search>
+	<tooltip search>	:=  bop ; boa ; bou ; boe ; quest
+	<quality search>	:=	<op><text>
+	<ilvl search>		:=	<op><number>
+	<type search>		:=	<text>
+	<text search>		:=	<text>
+	<op>				:=  : | ! | ~ | < | > | <= | >=

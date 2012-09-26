@@ -1,0 +1,65 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+
+	<Frame name="EmoteTable_Frame" toplevel="false" parent="UIParent" enableMouse="true" hidden="false" frameStrata="LOW">
+		<Size>
+			<AbsDimension x="32" y="32"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<Button name="EmoteTable_Button" toplevel="true" text="MyStat" movable="true" frameStrata="DIALOG">
+				<Size>
+					<AbsDimension x="24" y="24"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="ChatFrame1EditBox" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="7.6" y="21"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\WHITE8x8">
+					<Color r="0.05" g="0.05" b="0.05"/>
+				</NormalTexture>
+				<PushedTexture file="Interface\Buttons\ButtonHilight-Square"/>
+				<HighlightTexture alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight"/>
+				<NormalText inherits="GameFontNormal"/>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForClicks("LeftButtonUp","RightButtonUp");
+						buttontext = self:CreateFontString(nil,"OVERLAY",nil);
+						buttontext:SetFont("fonts\\ARIALN.TTF",12,"OUTLINE");
+						buttontext:SetText("M");
+						buttontext:SetPoint("CENTER");
+						buttontext:SetJustifyH("CENTER");
+						buttontext:SetJustifyV("CENTER");
+					</OnLoad>
+					<OnDragStart>
+						self:StartMoving();
+					</OnDragStart>
+					<OnDragStop>
+						self:StopMovingOrSizing();
+					</OnDragStop>
+					<OnClick>
+						ToggleEmoteTable();
+					</OnClick>
+					<OnEnter>
+					</OnEnter>
+					<OnLeave>
+					</OnLeave>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnUpdate>
+				EmoteTable_Button_OnUpdate(self);
+			</OnUpdate>
+		</Scripts>
+	</Frame>
+</Ui>
