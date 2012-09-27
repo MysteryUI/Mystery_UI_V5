@@ -115,10 +115,13 @@
 		select(6, GameTimeFrame:GetRegions()),
 		
 		-- 动作条
+--[[	
+       --声望条显示在经验条的材质	
 		ReputationXPBarTexture0,
 		ReputationXPBarTexture1,
 		ReputationXPBarTexture2,
 		ReputationXPBarTexture3,
+]]		
 		MainMenuBarTexture0,
 		MainMenuBarTexture1,
 		MainMenuBarTexture2,
@@ -128,13 +131,13 @@
 		MainMenuXPBarTextureLeftCap,
 		ActionBarUpButton:GetRegions(),
 		ActionBarDownButton:GetRegions(),
-        
+ --[[      
         --声望条
         ReputationWatchBarTexture0,
         ReputationWatchBarTexture1,
         ReputationWatchBarTexture2,
         ReputationWatchBarTexture3,
-        		
+  ]]      		
 		-- 经验条
 		MainMenuXPBarDiv1,
 		MainMenuXPBarDiv2,

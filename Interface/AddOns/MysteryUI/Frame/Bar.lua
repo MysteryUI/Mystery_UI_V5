@@ -378,10 +378,27 @@ do
 	CornerMouseoverFrame:SetScript("OnLeave", function() CornerMenuFrame:SetAlpha(0)   end)
 end
 
---开始菜单
+-- Start  Bar
 Bar:SetScript("OnEvent", EventHandler);
 Bar:SetFrameStrata("TOOLTIP")
 Bar:Show()
+
+SLASH_BAR1 = '/bar'
+SlashCmdList['BAR'] = RefreshPositions;
+
+local function GetMouseoverFrame() 
+	local frame = EnumerateFrames(); -- Get the first frame
+	while frame do
+	  if ( frame:IsVisible() and MouseIsOver(frame) ) then
+		print(frame:GetName() or string.format("[Unnamed Frame: %s]", tostring(frame)), frame.this);
+	  end
+	  if frame and frame.GetObjectType then frame = EnumerateFrames(frame); -- Get the next frame
+	  else frame = nil end
+	end
+end;
+
+SLASH_GETMOUSEOVERFRAME1 = '/getmouseoverframe'
+SlashCmdList['GETMOUSEOVERFRAME'] = GetMouseoverFrame
 
 --------------------------------
 ---超出施法距离技能显示为红色---
