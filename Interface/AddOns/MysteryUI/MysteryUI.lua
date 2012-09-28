@@ -5,9 +5,8 @@ local _G = _G  --解决头像在换类似天赋，符文的时候出现暴雪禁
 --[[ 选项 ]]
 local SellGreyCrap = true           -- 是否自动出售灰色物品.
 local HideHotKeys = true            -- 是否隐藏快捷键和宏在技能栏里的文本
-local HideShapeShift = true         -- 是否隐藏姿态栏
 local HideClock = false             -- 是否隐藏暴雪时钟
-local checkthrown = false           -- 是否检毒药
+local checkthrown = true            -- 是否检毒药
 local MoveWatchFrame = true         -- 是否移动任务追踪框体
 
 --[[ 添加命令 ]]
@@ -141,11 +140,6 @@ CreateBG = function(parent, noparent)
 	})
 	bg.border2:SetBackdropBorderColor(0, 0, 0, 0.9)
 	return bg
-end
-
---[[ 隐藏姿态栏 ]]
-if (HideShapeShift == true) then
-StanceBarFrame:Hide()
 end
 
 --[[ 隐藏快捷键和宏在技能栏里的文本 ]]

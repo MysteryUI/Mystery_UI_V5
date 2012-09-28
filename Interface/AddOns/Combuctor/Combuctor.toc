@@ -1,6 +1,7 @@
 ﻿## Interface: 50001
 ## Title: Combuctor
 ## Author: Tuller and Jaliborc (João Cardoso)
+## Notes: |cffbc8f8fBlizzard|r|cffb70000Bag.|r
 ## Notes-zhCN: |cffbc8f8f暴雪风格背包|r|cffb70000不喜欢这个背包请禁用。|r
 ## Notes-zhTW: |cffbc8f8f暴雪風格背包|r|cffb70000不喜歡這個背包請禁用。|r
 ## Version: 5.0.2

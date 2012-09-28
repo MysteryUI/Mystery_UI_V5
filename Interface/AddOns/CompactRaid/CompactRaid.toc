@@ -2,6 +2,7 @@
 ## Title: CompactRaid
 ## Version: 3.27
 ## Author: Abin Mystery
+## Notes: |cffbc8f8fMysteryUI|r|cffb70000CompactRaid。|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000团队框架CompactRaid。|r
 ## Notes-zhTW: |cffbc8f8fMysteryUI|r|cffb70000團隊框架CompactRaid。|r
 ## SavedVariables: CompactRaidDB

@@ -46,7 +46,7 @@
   }
   
   cfg.color = {
-    normal            = { r = 0.4, g = 0.35, b = 0.35, },
+    normal            = { r = 0.3, g = 0.3, b = 0.3, },
     classcolored      = false,
   }
   

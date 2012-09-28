@@ -39,7 +39,7 @@
   }
 
   cfg.color = {
-    normal            = { r = 0.37, g = 0.3, b = 0.3, },
+    normal            = { r = 0.3, g = 0.3, b = 0.3, },
     equipped          = { r = 0.1, g = 0.5, b = 0.1, },
     classcolored      = false,
   }

@@ -7,14 +7,14 @@
 	local class = false  	-- 适用于头像的配色方案（忽略上面的颜色）
 	local gradient = false	-- false 适用于一个纯色(如果= true时，顶部颜色，如果不是纯色)
 	local topcolor = {  	-- 顶部的渐变颜色 (rgb)
-    	r = 0.5,
-		g = 0.5,
-		b = 0.5,
+    	r = 0.3,
+		g = 0.3,
+		b = 0.3,
 	}
 	local bottomcolor = {	-- 底部的渐变色 (rgb)
-    	r = 0.5,
-		g = 0.5,
-		b = 0.5,
+    	r = 0.3,
+		g = 0.3,
+		b = 0.3,
 	}
 	local topalpha = 1.0	-- 顶部透明度
 	local bottomalpha = 1.0	-- 底部透明度
@@ -214,7 +214,7 @@
 	
 	-- 精英目标纹理的饱和修复
 	hooksecurefunc("TargetFrame_CheckClassification", function(self)
-		self.borderTexture:SetDesaturated(1);
+		self.borderTexture:SetDesaturated(0);
 	end);
 
 	

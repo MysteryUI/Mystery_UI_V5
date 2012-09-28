@@ -107,9 +107,11 @@ local UploadDBM = function()
    DBT_SavedOptions["DBM"].BarYOffset = -10
    DBT_SavedOptions["DBM"].FontSize = 10 
    DBT_SavedOptions["DBM"].Width = 170 
+--[[
    DBT_SavedOptions["DBM"].TimerX = 125 
    DBT_SavedOptions["DBM"].TimerY = 250 
    DBT_SavedOptions["DBM"].TimerPoint = "BOTTOMLEFT" 
+   ]]
    DBT_SavedOptions["DBM"].FillUpBars = true 
    DBT_SavedOptions["DBM"].IconLeft = true 
    DBT_SavedOptions["DBM"].ExpandUpwards = true 

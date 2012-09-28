@@ -7,7 +7,10 @@ local _, class = UnitClass("player")
 ---------------------------------------------------
 UnitFrames = {}
 UnitFrames.config = {
-    SetPoint = true,                -- true or false 是否使用脚本重新定义的各个框体位置
+---2个布局选1.或者都不选择（注意：下面PVP布局和PVE布局不能同时开启[= true]，但是可以同时关闭[= false]，当同时关闭[= false]时将恢复原系统定义布局)
+    PVE_Style = true,               -- true or false 是否使用PVE布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
+	PVP_Style = false,              -- true or false 是否使用PVP布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
+---2个布局选1.或者都不选择（注意：上面PVP布局和PVE布局不能同时开启[= true]，但是可以同时关闭[= false]，当同时关闭[= false]时将恢复原系统定义布局)
     classTarget = false,            -- true or false 是否其他单位显示职业图标
 	SetRune = false,                -- true or false 是否改变符文的样式和位置，（改变的话它将在屏幕中下位置以弧形排列）
     classColorPlayer = true,        -- true or false 是否渲染玩家职业框体颜色
@@ -26,18 +29,20 @@ UnitFrames.config = {
 
 UnitFrames.config.phrases = {
     ["1000 separator"] = " ",
-    ["Dead"] = "|cFFFFFFFFDead|r",
-    ["Ghost"] = "|cFFFFFFFFGhost|r",
-    ["Offline"] = "|cFFFFFFFFOffline|r",
+    ["Dead"] = "|cFFFFFFFF死亡|r",
+    ["Ghost"] = "|cFFFFFFFF鬼魂|r",
+    ["Offline"] = "|cFFFFFFFF離綫|r",
     ["kilo"] = " k",  -- simpleHealth 1.000
     ["mega"] = " m",  -- simpleHealth 1.000.000
     ["giga"] = " g",  -- simpleHealth 1.000.000.000
 }
 
-if UnitFrames.config.SetPoint then
 --[[ 设置位置 ]]
+
+if UnitFrames.config.PVE_Style then
+--PVE布局
 TargetFrame:ClearAllPoints() 
-TargetFrame:SetPoint("center", 200, -165) --目标框体位置
+TargetFrame:SetPoint("CENTER", 200, -165) --目标框体位置
 
 TargetFrameToT:ClearAllPoints()
 TargetFrameToT:SetPoint("LEFT",TargetFrame,"Top", -15, -1)  --目标的目标的框体位置
@@ -45,11 +50,11 @@ TargetFrameToT:SetPoint("LEFT",TargetFrame,"Top", -15, -1)  --目标的目标的框体位
 TargetFrameToTTextureFrameName:ClearAllPoints() 
 TargetFrameToTTextureFrameName:SetPoint("LEFT",TargetFrameToT,"Top", -1, -8)  --目标的目标的名字位置
 
-FocusFrame:SetPoint("topleft", 250, -140) --焦点的框体位置
-FocusFrameToT:SetPoint("bottomright", -35, -13)  --焦点目标的框体位置
+FocusFrame:SetPoint("TOPLEFT", 250, -140) --焦点的框体位置
+FocusFrameToT:SetPoint("BOTTOMRIGHT", -35, -13)  --焦点目标的框体位置
 
 PartyMemberFrame1:ClearAllPoints() 
-PartyMemberFrame1:SetPoint("topleft", 150, -240)  --队伍的框体位置
+PartyMemberFrame1:SetPoint("TOPLEFT", 150, -240)  --队伍的框体位置
 
 Boss1TargetFrame:ClearAllPoints() 
 Boss1TargetFrame:SetPoint("TOPRIGHT",UIParent,"TOPRIGHT",-140,-430) --BOSS框体的位置
@@ -59,18 +64,48 @@ TargetFrameSpellBar:ClearAllPoints()
 TargetFrameSpellBar:SetPoint("CENTER", UIParent, "CENTER", 0, -80) ---目标施法条的位置
 TargetFrameSpellBar.SetPoint=function()end
 
---[[ 框体固定 ]]
+--[[ 玩家框体固定 ]]
 local function ScrewYouPlayerFrame()
 	PlayerFrame:ClearAllPoints()
-	PlayerFrame:SetPoint("center", -200, -165) --玩家框体的位置
+	PlayerFrame:SetPoint("CENTER", -200, -165) --玩家框体的位置
  end
 
 hooksecurefunc("PlayerFrame_AnimateOut", function() PlayerFrame:SetAlpha(0); ScrewYouPlayerFrame() end)
 hooksecurefunc("PlayerFrame_SequenceFinished", function() PlayerFrame:SetAlpha(1); ScrewYouPlayerFrame() end)
 hooksecurefunc("PlayerFrame_UpdateStatus", ScrewYouPlayerFrame)
-else
+
+elseif UnitFrames.config.PVP_Style then
+--PVP布局
+TargetFrame:ClearAllPoints() 
+TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-90) --目标框体位置
+
+PetFrame:ClearAllPoints() 
+PetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",-220,-20) --目标框体位置
+
 PartyMemberFrame1:ClearAllPoints() 
-PartyMemberFrame1:SetPoint("topleft", 10, -120)  --队伍的框体位置
+PartyMemberFrame1:SetPoint("TOPLEFT", 10, -200)  --队伍的框体位置
+
+FocusFrame:SetPoint("TOPLEFT", 250, -500) --焦点的框体位置
+FocusFrameToT:SetPoint("BOTTOMRIGHT", -35, -13)  --焦点目标的框体位置
+
+Boss1TargetFrame:ClearAllPoints() 
+Boss1TargetFrame:SetPoint("TOPRIGHT",UIParent,"TOPRIGHT",-140,-430) --BOSS框体的位置
+Boss1TargetFrame.SetPoint=function()end
+
+--[[ 玩家框体固定 ]]
+local function ScrewYouPlayerFrame()
+	PlayerFrame:ClearAllPoints()
+	PlayerFrame:SetPoint("TOPLEFT", 150, -150) --玩家框体的位置
+ end
+
+hooksecurefunc("PlayerFrame_AnimateOut", function() PlayerFrame:SetAlpha(0); ScrewYouPlayerFrame() end)
+hooksecurefunc("PlayerFrame_SequenceFinished", function() PlayerFrame:SetAlpha(1); ScrewYouPlayerFrame() end)
+hooksecurefunc("PlayerFrame_UpdateStatus", ScrewYouPlayerFrame)
+
+else 
+--原系统样式
+PartyMemberFrame1:ClearAllPoints() 
+PartyMemberFrame1:SetPoint("TOPLEFT", 10, -120)  --队伍的框体位置
  end
 
 --[[ 缩放设置 ]]
@@ -93,13 +128,15 @@ _G[cbf.."Border"]:SetSize(190,40)
 _G[cbf.."Border"]:SetPoint("TOP", _G[cbf], 0, 15)
 _G[cbf.."Border"]:SetTexture(cbbs)
 _G[cbf.."Flash"]:SetSize(190,40)
+_G[cbf]:SetScale("1.2")
 _G[cbf.."Flash"]:SetPoint("TOP", _G[cbf], 0, 15)
 _G[cbf.."Flash"]:SetTexture(cbfs)
-_G[cbf]:SetScale("1.2")
 _G[cbf.."Text"]:SetPoint("TOP", _G[cbf], 0, 4)
 _G[cbf]:ClearAllPoints()
+if UnitFrames.config.PVE_Style then
 _G[cbf]:SetPoint("TOP", WorldFrame, "BOTTOM", 0, 130) --自己施法条的位置
 _G[cbf].SetPoint = function() end
+end
 _G[cbf.."Icon"]:Show()
 _G[cbf.."Icon"]:SetHeight(20)
 _G[cbf.."Icon"]:SetWidth(20)
@@ -141,15 +178,15 @@ end)
 --[[ 焦点施法条 ]]
 hooksecurefunc(FocusFrameSpellBar, "Show", function()
     FocusFrameSpellBar:SetScale("1.1")
+	if UnitFrames.config.PVE_Style then
 	FocusFrameSpellBar:ClearAllPoints()
-	if UnitFrames.config.SetPoint then
 	FocusFrameSpellBar:SetPoint("CENTER", UIParent, "CENTER", 0, 200)  --焦点施法条的位置
 	FocusFrameSpellBar.SetPoint = function() end
 	end
 end)
 FocusFrameSpellBar:SetStatusBarColor(0,0.45,0.9); FocusFrameSpellBar.SetStatusBarColor = function() end
 
-if UnitFrames.config.SetRune then
+if UnitFrames.config.SetRune or UnitFrames.config.PVE_Style then
 --[[ 符文 ]]
 RuneFrame:ClearAllPoints() 
 RuneFrame:SetPoint("CENTER",UIParent,"CENTER",0,-170) --符文的框体位置

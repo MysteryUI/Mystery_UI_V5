@@ -7,6 +7,4 @@
 	<Include file ="oGlow\load.xml"/>
 	<Include file ="ChatEmote\ChatEmote.xml"/>
 	<Include file ="DamageThreat\DamageThreat.xml"/>
-	
-	<Script file='MysteryUI.lua' />
 </Ui>

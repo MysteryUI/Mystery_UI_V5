@@ -163,7 +163,7 @@ addon:RegisterEvent("PLAYER_TARGET_CHANGED")
 addon:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
 addon:RegisterEvent("PLAYER_REGEN_ENABLED")
 
-SlashCmdList["alThreat"] = function(msg)
+SlashCmdList["Threat"] = function(msg)
 	for i = 1, 6 do
 		tList[i] = {
 			name = UnitName("player"),
@@ -177,4 +177,4 @@ SlashCmdList["alThreat"] = function(msg)
 	wipe(tList)
 	wipe(barList)
 end
-SLASH_alThreat1 = "/threat"
+SLASH_Threat1 = "/threat"
