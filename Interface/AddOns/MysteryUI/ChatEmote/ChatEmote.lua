@@ -64,7 +64,7 @@ local emotes = {
 	{"{Blush}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Shy]=]},
 	{"{Sleep}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Sleep]=]},
 	{"{Smile}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Smile]=]},
-	{"{Surprise	}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Suprise]=]},
+	{"{Surprise}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Suprise]=]},
 
 	{"{Failure}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Surrender]=]},
 	{"{Sweat}",	[=[Interface\Addons\MysteryUI\ChatEmote\icon\Sweat]=]},

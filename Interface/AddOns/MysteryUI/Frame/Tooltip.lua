@@ -350,7 +350,7 @@ local function addAuraSource(self, func, unit, index, filter)
       else 
          if caster == 'pet' or caster == 'vehicle' then 
             color = colors[select(2,UnitClass('player'))] 
-            castername = format('|cff%02X%02X%02X%s|r%s%s', color.r*255, color.g*255, color.b*255, UnitName('player'), '|cffC0C0C0的|r', UnitName(caster)) 
+            castername = format('|cff%02X%02X%02X%s|r%s%s', color.r*255, color.g*255, color.b*255, UnitName('player'), '|cffC0C0C0Of|r', UnitName(caster)) 
          else 
             partypet = caster:match('^partypet(%d+)$') 
             raidpet = caster:match('^raidpet(%d+)$') 
@@ -359,7 +359,7 @@ local function addAuraSource(self, func, unit, index, filter)
                castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName("party"..partypet), '|cffC0C0C0Of|r', UnitName(caster)) 
             elseif raidpet then 
                color = colors[select(2,UnitClass('party'..raidpet))] 
-               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName('raid'..raidpet), '|cffC0C0C0的|r', UnitName(caster)) 
+               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName('raid'..raidpet), '|cffC0C0C0Of|r', UnitName(caster)) 
             end 
          end 
       end 
