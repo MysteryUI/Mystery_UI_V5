@@ -1,6 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Include file ="embeds.xml"/>
-	
-	<Script file='DamageMeter.lua' />
-	<Script file='ThreatMeter.lua' />
-</Ui>

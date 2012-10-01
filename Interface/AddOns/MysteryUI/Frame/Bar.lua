@@ -2,8 +2,8 @@
 --by Binny
 
 local BarScale = 0.9
-local HideMainButtonArt = false  --是否隐藏狮鹫和主动作条的背景材质
-local HideExperienceBar = false  --是否隐藏经验条
+local HideMainButtonArt = false  -- true or false 是否隐藏狮鹫和主动作条的背景材质
+local HideExperienceBar = false  -- true or false 是否隐藏经验条
 
 local MenuButtonFrames = {
 	HelpMicroButton,
@@ -150,7 +150,7 @@ function SetSidebarAlpha()
 end
 
 local function HookFrame_Microbuttons(frameTarget)
-	frameTarget:HookScript("OnEnter", function() if not UnitHasVehicleUI("player") then CornerMenuFrame:SetAlpha(1) end end)
+	frameTarget:HookScript("OnEnter", function() if not UnitHasVehicleUI("player") then CornerMenuFrame:SetAlpha(1) end end) 
 	frameTarget:HookScript("OnLeave", function() CornerMenuFrame:SetAlpha(0) end)
 end
 
@@ -275,6 +275,7 @@ do
 	MainMenuBarPageNumber:Hide();
     ActionBarUpButton:Hide();
     ActionBarDownButton:Hide();
+	CornerMenuFrame:Hide(); ---隐藏暴雪系统菜单
 	-- 经验条
 	MainMenuBarTexture2:SetTexture(Empty_Art)
 	MainMenuBarTexture3:SetTexture(Empty_Art)

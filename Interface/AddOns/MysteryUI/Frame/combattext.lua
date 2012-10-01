@@ -28,11 +28,11 @@ for i = 1, 4 do
 
 	if i == 1 then
 		f:SetJustifyH("RIGHT")
-		f:SetPoint("CENTER", UIParent, "CENTER", -220, 0)
+		f:SetPoint("CENTER", UIParent, "CENTER", -180, 0)
 		f:SetSize(84, 140)
 	elseif i == 2 then
 		f:SetJustifyH("LEFT")
-		f:SetPoint("CENTER", UIParent, "CENTER", -250, 0)
+		f:SetPoint("CENTER", UIParent, "CENTER", -210, 0)
 		f:SetSize(84, 140)
 	elseif i == 3 then
 		f:SetJustifyH("CENTER")
@@ -40,7 +40,7 @@ for i = 1, 4 do
 		f:SetSize(140, 84)
 	elseif i == 4 then
 		f:SetJustifyH("RIGHT")
-		f:SetPoint("CENTER", UIParent, "CENTER", 260, 0)
+		f:SetPoint("CENTER", UIParent, "CENTER", 240, 0)
 		f:SetSize(84, 140)
 	end
 

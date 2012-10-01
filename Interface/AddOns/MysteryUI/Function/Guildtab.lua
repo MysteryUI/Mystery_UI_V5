@@ -1,5 +1,11 @@
 ﻿--在社交面板（快捷键O）和公会面板（快捷键J）上添加这两个面板的切换按钮
 
+local addonName, L = ...; 
+local function defaultFunc(L, key) 
+return key; 
+end 
+setmetatable(L, {__index=defaultFunc}); 
+
 local roster = false
 ------------------------
 
@@ -30,12 +36,12 @@ local function CreateOtherButtons()
 	f.nst2 = CreateFrame("CheckButton", nil, GuildFrame, "SpellBookSkillLineTabTemplate")
 		f.nst2:Show()
 		f.nst2:SetPoint("TOPLEFT", GuildFrame, "TOPRIGHT", 2, -45)
-		f.nst2.tooltip = "Social"
+		f.nst2.tooltip = L["社交"]
 		f.nst2:SetNormalTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon")
 	
 	f.ngt2 = CreateFrame("CheckButton", nil, f.nst2, "SpellBookSkillLineTabTemplate")
 		f.ngt2:Show()
-		f.ngt2.tooltip = "Guild"
+		f.ngt2.tooltip = L["公会"]
 		f.ngt2:SetPoint("TOPLEFT", f.nst2, "BOTTOMLEFT", 0, -21)
 		if GetGuildTabardFileNames() then
 			f.ngt2:SetNormalTexture("Interface\\SpellBook\\GuildSpellbooktabBG")
@@ -60,14 +66,14 @@ local function CreateButtons()
 		f.nst:Show()
 		f.nst:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 2, -45)
 		f.nst:SetFrameStrata("LOW")
-		f.nst.tooltip = "Social"
+		f.nst.tooltip = L["社交"]
 		f.nst:SetNormalTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon")
 
 	f.ngt = CreateFrame("CheckButton", nil, f.nst, "SpellBookSkillLineTabTemplate")
 		f.ngt:Show()
 		f.ngt:SetPoint("TOPLEFT", f.nst, "BOTTOMLEFT", 0, -21)
 		f.ngt:SetFrameStrata("LOW")
-		f.ngt.tooltip = "Guild"
+		f.ngt.tooltip = L["公会"]
 		if GetGuildTabardFileNames() then
 			f.ngt:SetNormalTexture("Interface\\SpellBook\\GuildSpellbooktabBG")
 			f.ngt.TabardEmblem:Show()

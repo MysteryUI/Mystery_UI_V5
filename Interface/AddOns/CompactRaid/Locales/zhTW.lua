@@ -11,7 +11,7 @@ if GetLocale() ~= "zhTW" then return end
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI版本 已載入，/craid 進行設置。",
+	["load prompt"] = "MysteryUI團隊框架 已載入，/craid 進行設置。",
 	["desc"] = "設置CompactRaid框架外觀和屬性，大部份設置作用於全帳號。",
 	["general options"] = "一般選項",
 	["scale"] = "縮放",

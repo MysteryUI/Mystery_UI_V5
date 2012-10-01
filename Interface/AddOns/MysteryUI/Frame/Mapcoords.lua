@@ -27,6 +27,6 @@ f:SetScript('OnUpdate', function()
     mx = (((cx / WorldMapFrame:GetScale()) - (mx - width / 2)) / width + 22 / 10000)
     my = ((((my + height / 2) - (cy / WorldMapFrame:GetScale())) / height) - 262 / 10000)
 
-    f.cursor:SetText(format('Mouse:  %.2d:%.2d', mx * 100, my * 100))
-    f.player:SetText(format('My:  %.2d:%.2d', px * 100, py * 100))
+    f.cursor:SetText(format(L['鼠标:  %.2d:%.2d'], mx * 100, my * 100))
+    f.player:SetText(format(L['自己:  %.2d:%.2d'], px * 100, py * 100))
 end)

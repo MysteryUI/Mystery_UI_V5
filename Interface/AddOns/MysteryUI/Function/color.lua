@@ -168,8 +168,8 @@
 		ChatFrame2ButtonFrameUpButton:GetRegions(),
 		ChatFrame2ButtonFrameDownButton:GetRegions(),
 		select(2, ChatFrame2ButtonFrameBottomButton:GetRegions()),
-		
-		-- 其他
+  		
+		-- 施法条
 		select(2,CastingBarFrame:GetRegions()),
 		select(2,MirrorTimer1:GetRegions()),
 		CastingBarFrameBorder,

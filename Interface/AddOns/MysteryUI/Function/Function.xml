@@ -6,4 +6,5 @@
 	<Script file='dbm.lua' />
 	<Script file='Raidfader.lua' />
 	<Script file='durability.lua' />
+	<Script file='ThreatMeter.lua' />
 </Ui>

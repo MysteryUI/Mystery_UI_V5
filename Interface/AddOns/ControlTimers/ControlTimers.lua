@@ -279,7 +279,7 @@ end
 
 function addon:ADDON_LOADED(event, addon)
 	if addon == "ControlTimers" then
-		DEFAULT_CHAT_FRAME:AddMessage("|c00FF9900[MsteryUI]: |rControlTimers v"..self.version.." Is loaded")
+--		DEFAULT_CHAT_FRAME:AddMessage("|c00FF9900[MsteryUI]: |rControlTimers v"..self.version..L["Is loaded"])
 
 		if not ControlTimersDB then
 			ControlTimersDB = {}

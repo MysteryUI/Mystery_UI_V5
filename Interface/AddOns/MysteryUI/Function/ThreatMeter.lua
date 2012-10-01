@@ -4,13 +4,13 @@ local width, height = 150, 12
 local font = GameFontNormal:GetFont()
 local font_size = 10
 local font_style = 'OUTLINE'
-local anchor = "TOPLEFT"
-local pos_x, pos_y = 200, -14
-local spacing = 4
-local backdrop_color = {0, 0, 0, 0.35}
-local border_color = {0, 0, 0, 1}
+local anchor = "LEFT"
+local pos_x, pos_y = 12, -40
+local spacing = 10
+local backdrop_color = {0, 0, 0, 0}
+local border_color = {0, 0, 0, 0}
 local border_size = 1
-local visible = 3
+local visible = 5
 
 local backdrop = {
 	bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=],
@@ -177,4 +177,4 @@ SlashCmdList["Threat"] = function(msg)
 	wipe(tList)
 	wipe(barList)
 end
-SLASH_Threat1 = "/threat"
+SLASH_Threat1 = "/TM"

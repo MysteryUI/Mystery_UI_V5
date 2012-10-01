@@ -93,7 +93,7 @@ local SkinBars = function(self)
 end
 
 local UploadDBM = function() 
-   DBM_SavedOptions.Enabled = true 
+   DBM_SavedOptions.Enabled = true --false--true 
    DBM_SavedOptions.ShowMinimapButton = false 
    DBM_SavedOptions.WarningIconLeft = false 
    DBM_SavedOptions.WarningIconRight = false 
@@ -114,7 +114,7 @@ local UploadDBM = function()
    ]]
    DBT_SavedOptions["DBM"].FillUpBars = true 
    DBT_SavedOptions["DBM"].IconLeft = true 
-   DBT_SavedOptions["DBM"].ExpandUpwards = true 
+-- DBT_SavedOptions["DBM"].ExpandUpwards = true 
    DBT_SavedOptions["DBM"].Texture = "Interface\\TargetingFrame\\UI-StatusBar" 
    DBT_SavedOptions["DBM"].IconRight = false 
    DBT_SavedOptions["DBM"].HugeBarXOffset = 0 

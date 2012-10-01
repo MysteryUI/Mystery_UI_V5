@@ -7,11 +7,11 @@
 ## Version: V5
 ## RequiredDeps: Blizzard_CombatText
 ## OptionalDeps: DBM-Core
-## SavedVariables: dmconf
-## SavedVariablesPerCharacter: UISetup, UISavedPositions, setupUI
+## SavedVariablesPerCharacter: MyUnitframesDB, UISetup, UISavedPositions, setupUI
 ## X-WoWBox-Ver: 1
 ## X-WoWBox-ID: 3340
 
+local.lua
 MysteryUI.lua
 ui.xml
 

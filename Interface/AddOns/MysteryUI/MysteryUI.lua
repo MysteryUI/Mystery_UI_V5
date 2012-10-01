@@ -1,5 +1,11 @@
 ﻿--MysteryUI核心设置
 
+local addonName, L = ...; 
+local function defaultFunc(L, key) 
+return key; 
+end 
+setmetatable(L, {__index=defaultFunc}); 
+
 local _G = _G  --解决头像在换类似天赋，符文的时候出现暴雪禁用插件的情况。
 
 --[[ 选项 ]]
@@ -8,6 +14,45 @@ local HideHotKeys = true            -- 是否隐藏快捷键和宏在技能栏�
 local HideClock = false             -- 是否隐藏暴雪时钟
 local checkthrown = true            -- 是否检毒药
 local MoveWatchFrame = true         -- 是否移动任务追踪框体
+
+--头像布局切换设置：[PVP布局:/My pvp]，[PVE布局:/My pve] 注意命令后面的大小写必须一致！
+local function slashCommand(str)
+	if (str == 'pvp') then
+        MyUnitframesDB.PVE_Style = false 
+		MyUnitframesDB.PVP_Style = true
+		StaticPopup_Show("RELOAD")
+	elseif(str == 'pve') then
+		MyUnitframesDB.PVE_Style = true 
+		MyUnitframesDB.PVP_Style = false
+		StaticPopup_Show("RELOAD")
+	elseif(str == 'bz') then
+	    MyUnitframesDB = {} 
+		StaticPopup_Show("RELOAD")
+	end
+end
+
+local eventframe = CreateFrame'Frame'
+eventframe:RegisterEvent('ADDON_LOADED')
+
+eventframe:SetScript('OnEvent', function(self, event, name)
+	if(name ~= "MysteryUI") then return end
+	self:UnregisterEvent('ADDON_LOADED')
+ 	SLASH_MysteryUI1 = '/My'
+	SlashCmdList["MysteryUI"] = function(str) slashCommand(str) end
+
+end)
+
+StaticPopupDialogs["RELOAD"] = {
+	text = L["切换布局你需要重新加载插件。"],
+	OnAccept = function() 
+		ReloadUI() 
+	end,
+	OnCancel = function() end ,
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	timeout = 0,
+	whileDead = 1,
+}
 
 --[[ 添加命令 ]]
 SlashCmdList["FRAME"] = function() print(GetMouseFocus():GetName()) end
@@ -86,7 +131,7 @@ local SetupUI = function()
 end
 
 StaticPopupDialogs["SETUP_UI"] = {
-	text = "First time on MysteryUI_V2+ with this Character. You must reload UI to configure it.", 
+	text = L["第一次使用MysteryUI_V2+你需要重新加载插件。"], 
 	button1 = ACCEPT, 
 	button2 = CANCEL,
 	OnAccept = SetupUI,
@@ -142,6 +187,7 @@ CreateBG = function(parent, noparent)
 	return bg
 end
 
+
 --[[ 隐藏快捷键和宏在技能栏里的文本 ]]
 if (HideHotKeys == true) then
 local format = string.format;
@@ -162,6 +208,8 @@ do
 end
 end
 
+--隐藏错误提示
+UIErrorsFrame:Hide()
 
 --[[ 自动出售垃圾 ]]
 local function OnEvent()
@@ -194,13 +242,13 @@ local iRepair = CreateFrame("Frame", "iRepair")
 	local cost = GetRepairAllCost()
 	local function iRepair_Guild()
 		if iRepair_Chatter then
-			print(" Guild Bank Auto Repair for: ".. GetCoinTextureString(cost) )
+			print(L[" 公会银行自动修理费用: "].. GetCoinTextureString(cost) )
 		end
 		RepairAllItems(1)
 	end
 	local function iRepair_Self()
 		if iRepair_Chatter then
-			print(" Auto Repair Service You payed: ".. GetCoinTextureString(cost) )
+			print(L[" 你支付的修理费用: "].. GetCoinTextureString(cost) )
 		end
 		RepairAllItems()
 	end
@@ -215,12 +263,12 @@ local iRepair = CreateFrame("Frame", "iRepair")
 			elseif cost <= GetMoney() then
 				iRepair_Self()
 			else
-				print(" Not enough Guild Funds to Auto Repair, Please Try Manually.")
+				print(L[" 公会没有足够的资金修理，请尝试手动。"])
 			end
 		elseif cost <= GetMoney() then
 			iRepair_Self()
 		else
-			print(" Darn you don't have enough cash to Auto Repair. You need "..GetCoinTextureString(cost).." total to repair." )
+			print(L[" 你没有足够的资金修理。你需要 "]..GetCoinTextureString(cost)..L[" 的修理费。"])
 		end
 	end
 end)
@@ -260,7 +308,7 @@ if (MoveWatchFrame == true) then
   --提示图标功能
   local function QWFM_Tooltip(self)
     GameTooltip:SetOwner(self, "ANCHOR_TOP")
-    GameTooltip:AddLine("Drag!", 0, 1, 0.5, 1, 1, 1)
+    GameTooltip:AddLine(L["拖动!"], 0, 1, 0.5, 1, 1, 1)
     GameTooltip:Show()
   end
 
@@ -304,8 +352,8 @@ f:RegisterEvent("PLAYER_LEAVE_COMBAT")
 f:SetScript("OnEvent", function()
 	local main, _, _, off, _, _, thrown = GetWeaponEnchantInfo()
 	if not UnitInVehicle("player") and(not main or not off or(not thrown and checkthrown == true)) then
-		--DEFAULT_CHAT_FRAME:AddMessage("##### NO POISONS #####", 1.0,0.96,0.41)  --聊天框提示.
-		UIErrorsFrame:AddMessage("##### NO POISONS #####", 1.0, 0.96, 0.41, 1.0);  --屏幕醒目提示.
+		--DEFAULT_CHAT_FRAME:AddMessage(L["##### 没毒药了 #####"], 1.0,0.96,0.41)  --聊天框提示.
+		UIErrorsFrame:AddMessage(L["##### 没毒药了 #####"], 1.0, 0.96, 0.41, 1.0);  --屏幕醒目提示.
 	end
 end)
 

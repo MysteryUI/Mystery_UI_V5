@@ -1,5 +1,11 @@
 ﻿--聊天增强
 
+local addonName, L = ...; 
+local function defaultFunc(L, key) 
+return key; 
+end 
+setmetatable(L, {__index=defaultFunc}); 
+
 --[[ 禁用脏话过滤器 ]]
 local frame = CreateFrame("FRAME", "DisableProfanityFilter")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -54,38 +60,38 @@ end
 DEFAULT_CHATFRAME_ALPHA = 0 
 
 -- 频道名称
-CHAT_FLAG_AFK = '[AFK] '
-CHAT_FLAG_DND = '[DND] '
-CHAT_FLAG_GM = '[GM] '
+CHAT_FLAG_AFK = L['[暂离] ']
+CHAT_FLAG_DND = L['[勿扰] ']
+CHAT_FLAG_GM = L['[GM] ']
 
 CHAT_SAY_GET = '%s:\32'
 CHAT_YELL_GET = '%s:\32'
 
-CHAT_WHISPER_GET = '[By] %s:\32'
-CHAT_WHISPER_INFORM_GET = '[Tell] %s:\32'
+CHAT_WHISPER_GET = L['[来自] %s:\32']
+CHAT_WHISPER_INFORM_GET = L['[告诉] %s:\32']
 
-CHAT_BN_WHISPER_GET = '[By] %s:\32'
-CHAT_BN_WHISPER_INFORM_GET = '[Tell] %s:\32'
+CHAT_BN_WHISPER_GET = L['[来自] %s:\32']
+CHAT_BN_WHISPER_INFORM_GET = L['[告诉] %s:\32']
 
-CHAT_GUILD_GET = '[|Hchannel:Guild|hG|h] %s:\32'
-CHAT_OFFICER_GET = '[|Hchannel:o|hO|h] %s:\32'
+CHAT_GUILD_GET = L['[|Hchannel:Guild|h公会|h] %s:\32']
+CHAT_OFFICER_GET = L['[|Hchannel:o|h官员|h] %s:\32']
 
-CHAT_PARTY_GET = '[|Hchannel:party|hP|h] %s:\32'
-CHAT_PARTY_LEADER_GET = '[|Hchannel:party|hPL|h] %s:\32'
-CHAT_PARTY_GUIDE_GET = '[|Hchannel:party|hDG|h] %s:\32'
-CHAT_MONSTER_PARTY_GET = '[|Hchannel:raid|hR|h] %s:\32'
+CHAT_PARTY_GET = L['[|Hchannel:party|h队伍|h] %s:\32']
+CHAT_PARTY_LEADER_GET = L['[|Hchannel:party|h队长|h] %s:\32']
+CHAT_PARTY_GUIDE_GET = L['[|Hchannel:party|hDG|h] %s:\32']
+CHAT_MONSTER_PARTY_GET = L['[|Hchannel:raid|hR|h] %s:\32']
 
-CHAT_RAID_GET = '[|Hchannel:raid|hR|h] %s:\32'
-CHAT_RAID_WARNING_GET = '[RW!] %s:\32'
-CHAT_RAID_LEADER_GET = '[|Hchannel:raid|hL|h] %s:\32'
+CHAT_RAID_GET = L['[|Hchannel:raid|h团队|h] %s:\32']
+CHAT_RAID_WARNING_GET = L['[警告!] %s:\32']
+CHAT_RAID_LEADER_GET = L['[|Hchannel:raid|h团队领袖|h] %s:\32']
 
-CHAT_BATTLEGROUND_GET = '[|Hchannel:Battleground|hBG|h] %s:\32'
-CHAT_BATTLEGROUND_LEADER_GET = '[|Hchannel:Battleground|hBL|h] %s:\32'
+CHAT_BATTLEGROUND_GET = L['[|Hchannel:Battleground|h战场|h] %s:\32']
+CHAT_BATTLEGROUND_LEADER_GET = L['[|Hchannel:Battleground|h战场领袖|h] %s:\32']
 
-CHAT_YOU_CHANGED_NOTICE_BN = '# |Hchannel:%d|h%s|h'
-CHAT_YOU_JOINED_NOTICE_BN = '+ |Hchannel:%d|h%s|h'
-CHAT_YOU_LEFT_NOTICE_BN = '- |Hchannel:%d|h%s|h'
-CHAT_SUSPENDED_NOTICE_BN = '- |Hchannel:%d|h%s|h'
+CHAT_YOU_CHANGED_NOTICE_BN = L['频道变更: |Hchannel:%d|h%s|h']
+CHAT_YOU_JOINED_NOTICE_BN = L['加入频道: |Hchannel:%d|h%s|h']
+CHAT_YOU_LEFT_NOTICE_BN = L['离开频道: |Hchannel:%d|h%s|h']
+CHAT_SUSPENDED_NOTICE_BN = L['离开频道: |Hchannel:%d|h%s|h']
 
 -- 复制框
 ChatTypeInfo.BATTLEGROUND.sticky = 1
@@ -147,7 +153,7 @@ function string.link(text, type, value, color)
 end
 
 StaticPopupDialogs["LINKME"] = {
-	text = "URL copy",
+	text = L["复制网址"],
 	button2 = CANCEL,
 	hasEditBox = true,
     editBoxWidth = 400,
@@ -393,7 +399,7 @@ local copyChat = function(self, chatTab)
 end
 
 local info = {
-	text = "Copy chats",
+	text = L["复制聊天内容"],
 	func = copyChat,
 	notCheckable = 1	
 }

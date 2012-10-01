@@ -1,4 +1,10 @@
-﻿--鼠标提示---
+﻿--[[鼠标提示]]---
+
+local addonName, L = ...; 
+local function defaultFunc(L, key) 
+return key; 
+end 
+setmetatable(L, {__index=defaultFunc}); 
 
 -- 简洁的公会队伍
 local a=CreateFrame("Frame")
@@ -6,7 +12,7 @@ local GameTooltip, GetGuildInfo = GameTooltip, GetGuildInfo
 a:SetScript("OnEvent",function()
     local _, rank = GetGuildInfo("mouseover")
     if rank then
-        GameTooltip:AddDoubleLine("Guild rank:",rank,1,0.82,0,1,1,1)
+        GameTooltip:AddDoubleLine(L["公會身份:"],rank,1,0.82,0,1,1,1)
         GameTooltip:Show()
     end
 end)
@@ -35,15 +41,15 @@ local cfg = {
     bgcolor = { r=0.05, g=0.05, b=0.05, t=0.9 },
     bdrcolor = { r=0.3, g=0.3, b=0.3 },
     gcolor = { r=1, g=0.1, b=0.8 },
-    you = "<You>",
+    you = L["<你>"],
     boss = "??",
     colorborderClass = true,
 }
 
 local classification = {
-    elite = "+",--精英标志
-    rare = " R",--稀有标志
-    rareelite = " R+",--稀有精英标志
+    elite = L["精英"],--精英标志
+    rare = L["稀有"],--稀有标志
+    rareelite = L["稀有精英"],--稀有精英标志
 }
 
 local hex
@@ -298,7 +304,7 @@ end
 hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 	local id = select(11,UnitBuff(...))
 	if id then
-		self:AddDoubleLine("SpellID:",id)
+		self:AddDoubleLine(L["法术ID:"],id)
 		self:Show()
 	end
 end)
@@ -306,7 +312,7 @@ end)
 hooksecurefunc(GameTooltip, "SetUnitDebuff", function(self,...)
 	local id = select(11,UnitDebuff(...))
 	if id then
-		self:AddDoubleLine("SpellID:",id)
+		self:AddDoubleLine(L["法术ID:"],id)
 		self:Show()
 	end
 end)
@@ -314,7 +320,7 @@ end)
 hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
 	local id = select(11,UnitAura(...))
 	if id then
-		self:AddDoubleLine("SpellID:",id)
+		self:AddDoubleLine(L["法术ID:"],id)
 		self:Show()
 	end
 end)
@@ -322,7 +328,7 @@ end)
 hooksecurefunc("SetItemRef", function(link, text, button, chatFrame)
 	if string.find(link,"^spell:") then
 		local id = string.sub(link,7)
-		ItemRefTooltip:AddDoubleLine("SpellID:",id)
+		ItemRefTooltip:AddDoubleLine(L["法术ID:"],id)
 		ItemRefTooltip:Show()
 	end
 end)
@@ -330,7 +336,7 @@ end)
 GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 	local id = select(3,self:GetSpell())
 	if id then
-		self:AddDoubleLine("SpellID:",id)
+		self:AddDoubleLine(L["法术ID:"],id)
 		self:Show()
 	end
 end)
@@ -350,20 +356,20 @@ local function addAuraSource(self, func, unit, index, filter)
       else 
          if caster == 'pet' or caster == 'vehicle' then 
             color = colors[select(2,UnitClass('player'))] 
-            castername = format('|cff%02X%02X%02X%s|r%s%s', color.r*255, color.g*255, color.b*255, UnitName('player'), '|cffC0C0C0Of|r', UnitName(caster)) 
+            castername = format('|cff%02X%02X%02X%s|r%s%s', color.r*255, color.g*255, color.b*255, UnitName('player'), L['|cffC0C0C0的|r'], UnitName(caster)) 
          else 
             partypet = caster:match('^partypet(%d+)$') 
             raidpet = caster:match('^raidpet(%d+)$') 
             if partypet then 
                color = colors[select(2,UnitClass('party'..partypet))] 
-               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName("party"..partypet), '|cffC0C0C0Of|r', UnitName(caster)) 
+               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName("party"..partypet), L['|cffC0C0C0的|r'], UnitName(caster)) 
             elseif raidpet then 
                color = colors[select(2,UnitClass('party'..raidpet))] 
-               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName('raid'..raidpet), '|cffC0C0C0Of|r', UnitName(caster)) 
+               castername = format('|cff%02X%02X%02X%s|r%s%s' , color.r*255, color.g*255, color.b*255, UnitName('raid'..raidpet), L['|cffC0C0C0的|r'], UnitName(caster)) 
             end 
          end 
       end 
-      self:AddDoubleLine('|cffC0C0C0By:|r', castername) 
+      self:AddDoubleLine(L['|cffC0C0C0來自:|r'], castername) 
       self:Show() 
    end 
 end 

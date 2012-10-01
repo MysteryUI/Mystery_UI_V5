@@ -87,6 +87,7 @@ elseif locale == "koKR" then -- Korean translation
 	L["Frames"] = "Frames"
 	L["Frame Settings"] = "Frame Settings"
 elseif locale == "zhCN" then -- Chinses translation by wowui.me
+    L["Is loaded"] = "已载入"
 	L["ControlTimers Config"] = "ControlTimers 配置"
 	L["Font Size:"] = "字体大小:"
 	L["Font Color:"] = "字体颜色:"
@@ -108,6 +109,7 @@ elseif locale == "zhCN" then -- Chinses translation by wowui.me
 	L["Frames"] = "框体"
 	L["Frame Settings"] = "框体设定"
 elseif locale == "zhTW" then -- Chinses translation by wowui.me
+    L["Is loaded"] = "已載入"
 	L["ControlTimers Config"] = "ControlTimers 配置"
 	L["Font Size:"] = "字型大小:"
 	L["Font Color:"] = "字型顏色:"

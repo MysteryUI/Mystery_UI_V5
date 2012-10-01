@@ -10,7 +10,7 @@ if GetLocale() ~= "zhCN" then return end
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI版本 已载入，/craid 进行设置。",
+	["load prompt"] = "MysteryUI团队框架 已载入，/craid 进行设置。",
 	["desc"] = "设置CompactRaid框体外观和属性，大部分设置作用于全账号。",
 	["general options"] = "一般选项",
 	["scale"] = "缩放",

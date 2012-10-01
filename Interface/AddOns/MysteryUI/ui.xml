@@ -6,5 +6,5 @@
 	<Include file='JPack\JPack.xml' />
 	<Include file ="oGlow\load.xml"/>
 	<Include file ="ChatEmote\ChatEmote.xml"/>
-	<Include file ="DamageThreat\DamageThreat.xml"/>
+	<Include file ="System\System.xml"/>
 </Ui>
