@@ -13,8 +13,10 @@ lpanels:CreateLayout("System", {
 	{	name = "System",  parent = "UIParent", level = 1,
     	 x_off = 3, y_off = 0, anchor_to = "BOTTOMRIGHT", anchor_from = "BOTTOMRIGHT",
 		width = 202, height = 91,  mouse = true, 
-		tex_file ="SidebarB", bg_color = "0 0 0", bg_alpha = 0.3,
-		border = "GlowTex", border_size = 5, inset = 4, border_color = "0 0 0 1",
+		tex_file ="Interface\\Addons\\MysteryUI\\MyMedia\\tex", bg_color = "0.05 0.05 0.05", bg_alpha = 0.9,
+--		tex_file ="SidebarB", bg_color = "0 0 0", bg_alpha = 0.8,
+		border = "Interface\\Tooltips\\UI-Tooltip-Border", border_size = 16, inset = 3, border_color = "0.3 0.3 0.3 1",
+--		border = "GlowTex", border_size = 5, inset = 4, border_color = "0 0 0 1",
 
        OnLoad = function(self)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD");
@@ -27,10 +29,11 @@ lpanels:CreateLayout("System", {
 		end
 	},
    {    name = "Tab5", parent = "LP_System", level = 3,
-	    strata = "BACKGROUND", tex_file = "SidebarB",
-        anchor_to = "TOPRIGHT", anchor_from = "TOPLEFT", x_off = 4, y_off = 0,  bg_color = "0 0 0",
-        width = 30, height = 91, bg_alpha = .3,  mouse = true, flip_h = false,
-		border = "GlowTex", border_size = 5, inset = 4, border_color = "0 0 0 1",
+	    strata = "BACKGROUND", tex_file = "Interface\\Addons\\MysteryUI\\MyMedia\\tex",
+        anchor_to = "TOPRIGHT", anchor_from = "TOPLEFT", x_off = 4, y_off = 0,  bg_color = "0.05 0.05 0.05",
+        width = 30, height = 91, bg_alpha = .9,  mouse = true, flip_h = false,
+		border = "Interface\\Tooltips\\UI-Tooltip-Border", border_size = 16, inset = 3, border_color = "0.3 0.3 0.3 1",
+--		border = "GlowTex", border_size = 5, inset = 4, border_color = "0 0 0 1",
 		text = {string = "S\ny\ns\nt\ne\nm\n", 
 		size = 10, shadow = { color = "1 1 1", y = -2, x = 2, alpha = .1},
 		outline = 1, font = "04B08.ttf", anchor_from = "TOP", anchor_to = "TOP", x_off = 2, y_off = -10
@@ -51,7 +54,7 @@ lpanels:CreateLayout("System", {
 	   self.bg:SetVertexColor(171/255, 174/255, 178/255, .3)  
 	   end;
 	   OnLeave=function(self)
-	   self.bg:SetVertexColor(0, 0, 0, .3)
+	   self.bg:SetVertexColor(0, 0, 0, .8)
 	   end	
     },
 	{	name = "home",  parent = "LP_System", level = 2,
@@ -79,10 +82,10 @@ lpanels:CreateLayout("System", {
 	   --self.bg:SetVertexColor(1, 164/255, 162/255, .3)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   p = CreateFrame("Frame", nil, self)
-	   p:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
+	   p:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
 	   p:SetPoint("TOP", LP_Character, "TOP", 0, 21)
-	   p:SetBackdropColor(0, 0, 0, .3)
-	   p:SetBackdropBorderColor(0, 0, 0, .7)
+	   p:SetBackdropColor(0.05, 0.05, 0.05, .9)
+	   p:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   p:SetWidth(70)
 	   p:SetHeight(30)
 	   p:SetFrameLevel(4)
@@ -109,14 +112,14 @@ lpanels:CreateLayout("System", {
 -----------------------------------------
    {	name = "spellb", parent = "LP_System", level = 2,  x_off = 39, y_off = 10, bg_alpha = 1,
 		width = 24, height = 24, anchor_to = "LEFT", anchor_from = "LEFT",
-		tex_file ="spellb", bg_color = "1 1 1", mouse = true, 
+		tex_file ="Reader", bg_color = "1 1 1", mouse = true, 
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   s = CreateFrame("Frame", nil, self)
-	   s:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   s:SetBackdropBorderColor(0, 0, 0, .7)
+	   s:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   s:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   s:SetPoint("TOP", LP_spellb, "TOP", 0, 21)
-	   s:SetBackdropColor(0, 0, 0, .3)
+	   s:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   s:SetWidth(60)
 	   s:SetHeight(30)
 	   s:SetFrameLevel(4)
@@ -143,14 +146,14 @@ lpanels:CreateLayout("System", {
 -----------------------------------------
    {	name = "talents", parent = "LP_System", level = 2,  x_off = 67, y_off = 10, bg_alpha = 1,
 		width = 24, height = 24, anchor_to = "LEFT", anchor_from = "LEFT",
-		tex_file ="tf", bg_color = "1 1 1", mouse = true, 
+		tex_file ="spellb", bg_color = "1 1 1", mouse = true, 
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   t = CreateFrame("Frame", nil, self)
-	   t:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   t:SetBackdropBorderColor(0, 0, 0, .7)
+	   t:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   t:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   t:SetPoint("TOP", LP_talents, "TOP", 0, 21)
-	   t:SetBackdropColor(0, 0, 0, .3)
+	   t:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   t:SetWidth(60)
 	   t:SetHeight(30)
 	   t:SetFrameLevel(4)
@@ -182,10 +185,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   a = CreateFrame("Frame", nil, self)
-	   a:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   a:SetBackdropBorderColor(0, 0, 0, .7)
+	   a:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   a:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   a:SetPoint("TOP", LP_Achievement, "TOP", 0, 21)
-	   a:SetBackdropColor(0, 0, 0, .3)
+	   a:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   a:SetWidth(60)
 	   a:SetHeight(30)
 	   a:SetFrameLevel(4)
@@ -216,10 +219,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   pj = CreateFrame("Frame", nil, self)
-	   pj:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   pj:SetBackdropBorderColor(0, 0, 0, .7)
+	   pj:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   pj:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   pj:SetPoint("TOP", LP_PetJournal, "TOP", 0, 21)
-	   pj:SetBackdropColor(0, 0, 0, .3)
+	   pj:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   pj:SetWidth(80)
 	   pj:SetHeight(30)
 	   pj:SetFrameLevel(4)
@@ -250,10 +253,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   q = CreateFrame("Frame", nil, self)
-	   q:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   q:SetBackdropBorderColor(0, 0, 0, .7)
+	   q:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   q:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   q:SetPoint("TOP", LP_questl, "TOP", 0, 21)
-	   q:SetBackdropColor(0, 0, 0, .3)
+	   q:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   q:SetWidth(60)
 	   q:SetHeight(30)
 	   q:SetFrameLevel(4)
@@ -284,10 +287,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   so = CreateFrame("Frame", nil, self)
-	   so:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   so:SetBackdropBorderColor(0, 0, 0, .7)
+	   so:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   so:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   so:SetPoint("TOP", LP_social, "TOP", 0, 21)
-	   so:SetBackdropColor(0, 0, 0, .3)
+	   so:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   so:SetWidth(60)
 	   so:SetHeight(30)
 	   so:SetFrameLevel(4)
@@ -318,10 +321,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   pv = CreateFrame("Frame", nil, self)
-	   pv:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   pv:SetBackdropBorderColor(0, 0, 0, .7)
+	   pv:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   pv:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   pv:SetPoint("TOP", LP_pvp, "TOP", 0, 21)
-	   pv:SetBackdropColor(0, 0, 0, .3)
+	   pv:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   pv:SetWidth(60)
 	   pv:SetHeight(30)
 	   pv:SetFrameLevel(4)
@@ -352,10 +355,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(self)
 	   self.bg:SetVertexColor(1, 1, 1, .3)
 	   lf = CreateFrame("Frame", nil, self)
-	   lf:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   lf:SetBackdropBorderColor(0, 0, 0, .7)
+	   lf:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   lf:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   lf:SetPoint("TOP", LP_lfg, "TOP", 0, 21)
-	   lf:SetBackdropColor(0, 0, 0, .3)
+	   lf:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   lf:SetWidth(80)
 	   lf:SetHeight(30)
 	   lf:SetFrameLevel(4)
@@ -386,10 +389,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(seh)
 	   seh.bg:SetVertexColor(1, 1, 1, .3)
 	   h = CreateFrame("Frame", nil, seh)
-	   h:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   h:SetBackdropBorderColor(0, 0, 0, .7)
+	   h:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   h:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   h:SetPoint("TOP", LP_GuildFrame, "TOP", 0, 21)
-	   h:SetBackdropColor(0, 0, 0, .3)
+	   h:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   h:SetWidth(60)
 	   h:SetHeight(30)
 	   h:SetFrameLevel(4)
@@ -420,10 +423,10 @@ lpanels:CreateLayout("System", {
 	   OnEnter = function(seh)
 	   seh.bg:SetVertexColor(1, 1, 1, .3)
 	   ej = CreateFrame("Frame", nil, seh)
-	   ej:SetBackdrop({bgFile = "Interface\\Addons\\MysteryUI\\System\\media\\SidebarB",edgeFile = "Interface\\Addons\\MysteryUI\\System\\media\\GlowTex", edgeSize = 4, insets = { left = 4, right = 4, top = 4, bottom = 4}})
-	   ej:SetBackdropBorderColor(0, 0, 0, .7)
+	   ej:SetBackdrop({bgFile = "Interface\\Buttons\\WHITE8x8",edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = { left = 3, right = 3, top = 3, bottom = 3}})
+	   ej:SetBackdropColor(0.05, 0.05, 0.05, .9)
 	   ej:SetPoint("TOP", LP_EncounterJournal, "TOP", 0, 21)
-	   ej:SetBackdropColor(0, 0, 0, .3)
+	   ej:SetBackdropBorderColor(0.3, 0.3, 0.3, 1)
 	   ej:SetWidth(80)
 	   ej:SetHeight(30)
 	   ej:SetFrameLevel(4)

@@ -1,4 +1,11 @@
 ﻿--[[ 大地图坐标 来自 Game92, Aftermathh ]]
+
+local addonName, L = ...; 
+local function defaultFunc(L, key) 
+return key; 
+end 
+setmetatable(L, {__index=defaultFunc}); 
+
 local playerColor = RAID_CLASS_COLORS[select(2, UnitClass('player'))]
 
 local f = CreateFrame('Frame')
