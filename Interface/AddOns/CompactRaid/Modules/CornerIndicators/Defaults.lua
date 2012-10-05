@@ -68,6 +68,13 @@ module.DEFAULT_SPELLS = {
 	DEATHKNIGHT = {
 		57330, -- Horn of Winter
 	},
+
+	MONK = {
+		115921, -- Legacy of the Emperor
+		115151, -- Renewing Mist
+		124682, -- Enveloping Mist
+		116849, -- Life Cocoon
+	},
 }
 
 local CLASS_DEFAULTS = {
@@ -114,6 +121,12 @@ local CLASS_DEFAULTS = {
 
 	DEATHKNIGHT = {
 		TOPLEFT = { spell = 57330, other = 1, ignoreMagical = 1 }, -- Horn of Winter
+	},
+
+	MONK = {
+		TOPLEFT = { spell = 115151, numeric = 1 }, -- Renewing Mist
+		TOPRIGHT = { spell = 124682, numeric = 1 }, -- Enveloping Mist
+		BOTTOMRIGHT = { spell = 115921, other = 1, lacks = 1 }, -- Legacy of the Emperor
 	},
 }
 

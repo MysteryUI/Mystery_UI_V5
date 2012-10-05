@@ -51,6 +51,7 @@ addon.spellDB = {
 	"118", 		-- Polymorph
 	"118271", 	-- 灼烧冲击
 --	"44457", 	-- 活体炸弹
+    107079,     --震山掌
 	"51514", 	-- Hex
 	"6789", 	-- Death Coil
 	"5246", 	-- Intimidating Shout 

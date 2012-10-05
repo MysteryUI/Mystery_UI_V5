@@ -10,7 +10,7 @@ local _G = _G  --解决头像在换类似天赋，符文的时候出现暴雪禁
 
 --[[ 选项 ]]
 local SellGreyCrap = true           -- 是否自动出售灰色物品.
-local HideHotKeys = true            -- 是否隐藏快捷键和宏在技能栏里的文本
+local HideHotKeys = false           -- 是否隐藏快捷键和宏在技能栏里的文本
 local HideClock = false             -- 是否隐藏暴雪时钟
 local checkthrown = true            -- 是否检毒药
 local MoveWatchFrame = true         -- 是否移动任务追踪框体
@@ -208,8 +208,18 @@ do
 end
 end
 
---隐藏错误提示
-UIErrorsFrame:Hide()
+--隐藏错误提示(我没有目标等等）
+local event = CreateFrame"Frame"
+local dummy = function() end
+
+UIErrorsFrame:UnregisterEvent"UI_ERROR_MESSAGE"
+event.UI_ERROR_MESSAGE = function(self, event, error)
+	if(not stuff[error]) then
+		UIErrorsFrame:AddMessage(error, 1, .1, .1)
+	end
+end
+	
+event:RegisterEvent"UI_ERROR_MESSAGE"
 
 --[[ 自动出售垃圾 ]]
 local function OnEvent()

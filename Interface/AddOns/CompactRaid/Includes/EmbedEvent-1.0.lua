@@ -31,7 +31,7 @@ local tinsert = tinsert
 local _
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 3
+local MINOR_VERSION = 4
 local LIB_NAME = "EmbedEvent-1.0"
 
 -- To prevent older libraries from over-riding newer ones...
@@ -46,6 +46,7 @@ local function Object_RegisterEvent(self, event, method)
 	if not frame:IsEventRegistered(event) then
 		frame:RegisterEvent(event)
 	end
+	frame.events[event] = method
 end
 
 local function Object_UnregisterEvent(self, event)

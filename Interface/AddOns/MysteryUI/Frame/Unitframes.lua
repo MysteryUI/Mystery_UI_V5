@@ -160,19 +160,19 @@ _G[cbf.."Icon"]:SetWidth(20)
 --[[ 施法计时]]
 _G[cbf].timer = _G[cbf]:CreateFontString(nil)
 _G[cbf].timer:SetFont(GameFontNormal:GetFont(), 14, "THINOUTLINE")
-_G[cbf].timer:SetPoint("RIGHT", _G[cbf], "RIGHT", 24, 0)
+_G[cbf].timer:SetPoint("RIGHT", _G[cbf], "RIGHT", 25, 0)
 _G[cbf].update = .1
 
 local tcbf = "TargetFrameSpellBar"
 _G[tcbf].timer = _G[tcbf]:CreateFontString(nil)
 _G[tcbf].timer:SetFont(GameFontNormal:GetFont(), 14, "THINOUTLINE")
-_G[tcbf].timer:SetPoint("RIGHT", _G[tcbf], "RIGHT", 24, 0)
+_G[tcbf].timer:SetPoint("RIGHT", _G[tcbf], "RIGHT", 25, 0)
 _G[tcbf].update = .1
 
 local fcbf = "FocusFrameSpellBar"
 _G[fcbf].timer = _G[fcbf]:CreateFontString(nil)
 _G[fcbf].timer:SetFont(GameFontNormal:GetFont(), 14, "THINOUTLINE")
-_G[fcbf].timer:SetPoint("RIGHT", _G[fcbf], "RIGHT", 24, 0)
+_G[fcbf].timer:SetPoint("RIGHT", _G[fcbf], "RIGHT", 25, 0)
 _G[fcbf].update = .1
 
 hooksecurefunc("CastingBarFrame_OnUpdate", function(self, elapsed)

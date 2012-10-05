@@ -5,12 +5,12 @@ local font = GameFontNormal:GetFont()
 local font_size = 10
 local font_style = 'OUTLINE'
 local anchor = "LEFT"
-local pos_x, pos_y = 12, -40
-local spacing = 10
+local pos_x, pos_y = 12, -180
+local spacing = 6
 local backdrop_color = {0, 0, 0, 0}
 local border_color = {0, 0, 0, 0}
 local border_size = 1
-local visible = 5
+local visible = 3
 
 local backdrop = {
 	bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=],

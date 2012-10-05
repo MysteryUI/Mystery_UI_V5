@@ -111,6 +111,18 @@ module.DEFAULT_SPELLS = {
 		61999, -- Raise Ally
 		47541, -- Death Coil
 	},
+
+	MONK = {
+		115178, -- Resuscitate
+		115450, -- Detox
+		115175, -- Soothing Mist
+		115151, -- Renewing Mist
+		116694, -- Surging Mist
+		124081, -- Zen Sphere
+		124682, -- Enveloping Mist
+		116849, -- Life Cocoon
+		115460, -- Healing Sphere
+	},
 }
 
 -- Entirely copied from Warbaby's GridClickSets...
@@ -150,7 +162,7 @@ local CLASS_DEFAULTS = {
 		["ctrl-1"]	= 85673, -- Word of Glory,
 		["shift-1"]	= 639, -- Holy Light
 		["alt-1"]	= 53563, -- Beacon of Light
-		["ctrl-2"]		= 20473, -- Holy Shock
+		["ctrl-2"]	= 20473, -- Holy Shock
 		["alt-2"]	= 82327, -- Holy Radiance
 		["shift-2"]	= 4987, -- Cleanse
 		["alt-ctrl-1"]	= 7328, -- Lay on Hands
@@ -183,6 +195,15 @@ local CLASS_DEFAULTS = {
 	DEATHKNIGHT = {
 		["ctrl-1"]	= 61999, -- Raise Ally
 		["alt-1"]	= 47541, -- Death Coil
+	},
+
+	MONK = {
+		["shift-1"]	= 115175, -- Soothing Mist
+		["ctrl-1"]	= 115151, -- Renewing Mist
+		["alt-1"]	= 116694, -- Surging Mist
+		["ctrl-2"]	= 124682, -- Enveloping Mist
+		["alt-2"]	= 115460, -- Healing Sphere
+		["alt-ctrl-1"]	= 116849, -- Life Cocoon
 	},
 }
 
