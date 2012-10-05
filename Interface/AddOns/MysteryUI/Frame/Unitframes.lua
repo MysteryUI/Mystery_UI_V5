@@ -25,10 +25,10 @@ eventframe:SetScript('OnEvent', function(self, event, name)
 	UnitFrames = {}
 	MyUnitframesDB = MyUnitframesDB or {}             --初始化DB 	
 	UnitFrames.config = {
-	PVE_Style = MyUnitframesDB.PVE_Style or false ,             -- true or false 是否使用PVE布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
-    PVP_Style = MyUnitframesDB.PVP_Style or false  ,            -- true or false 是否使用PVP布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
+	PVE_Style = MyUnitframesDB.PVE_Style or false ,   -- true or false 是否使用PVE布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
+    PVP_Style = MyUnitframesDB.PVP_Style or false ,   -- true or false 是否使用PVP布局（注意：PVP布局和PVE布局不能同时开启[= true]但是可以同时关闭[= false])
     classTarget = false,            -- true or false 是否其他单位显示职业图标
-	SetRune = false,                -- true or false 是否改变符文的样式和位置，（改变的话它将在屏幕中下位置以弧形排列）
+	SetAbility = false,             -- true or false 是否改变符文,真气，灵魂石等各个职业能力框体位置及样式（PVP布局默认开启，其他布局如需关闭转到216行设置）
     classColorPlayer = true,        -- true or false 是否渲染玩家职业框体颜色
     classColorTarget = true,        -- true or false 是否渲染目标职业框体颜色
     classColorFocus = true,         -- true or false 是否渲染焦点职业框体颜色
@@ -92,11 +92,19 @@ hooksecurefunc("PlayerFrame_UpdateStatus", ScrewYouPlayerFrame)
 
 elseif UnitFrames.config.PVP_Style then
 --PVP布局
+if class == "WARLOCK" then
+TargetFrame:ClearAllPoints() 
+TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-150) --术士的目标框体位置（由于目前术士宠物位置我没办法定义只能这样做了，不喜欢的建议用PVE布局）
+elseif class == "ROGUE" or  class == "WARRIOR" or class == "HUNTER" or class == "MAGE" then
+TargetFrame:ClearAllPoints() 
+TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-65) --当玩家是盗贼，战士，猎人和法师时的目标框体位置
+else
 TargetFrame:ClearAllPoints() 
 TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-90) --目标框体位置
+end
 
 PetFrame:ClearAllPoints() 
-PetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",-220,-20) --目标框体位置
+PetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",-220,-20) --宠物框体位置
 
 PartyMemberFrame1:ClearAllPoints() 
 PartyMemberFrame1:SetPoint("TOPLEFT", 10, -200)  --队伍的框体位置
@@ -202,7 +210,10 @@ hooksecurefunc(FocusFrameSpellBar, "Show", function()
 end)
 FocusFrameSpellBar:SetStatusBarColor(0,0.45,0.9); FocusFrameSpellBar.SetStatusBarColor = function() end
 
-if UnitFrames.config.SetRune or UnitFrames.config.PVE_Style then
+-----------------------
+--[[能力框]]
+-----------------------
+if UnitFrames.config.SetAbility or UnitFrames.config.PVP_Style then  --如果想PVP布局关闭请将此行改成：if UnitFrames.config.SetAbility then
 --[[ 符文 ]]
 RuneFrame:ClearAllPoints() 
 RuneFrame:SetPoint("CENTER",UIParent,"CENTER",0,-170) --符文的框体位置
@@ -215,6 +226,24 @@ RuneButtonIndividual2:SetPoint("RIGHT",RuneButtonIndividual3,"LEFT",-4,8)
 RuneButtonIndividual1:SetPoint("RIGHT",RuneButtonIndividual2,"LEFT",-4,8)
 RuneButtonIndividual5:SetPoint("LEFT",RuneButtonIndividual4,"RIGHT",4,8)
 RuneButtonIndividual6:SetPoint("LEFT",RuneButtonIndividual5,"RIGHT",4,8)
+--[[真气]]
+MonkHarmonyBar:ClearAllPoints() 
+MonkHarmonyBar:SetPoint("CENTER",UIParent,"CENTER",0,-160)--真气框体位置
+--[[暗影宝珠]]
+PriestBarFrame:ClearAllPoints() 
+PriestBarFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160)--暗影宝珠位置，不是很好看=0.0
+--[[德鲁伊百分比法力条]]
+--PlayerFrameAlternateManaBar:ClearAllPoints() 
+--PlayerFrameAlternateManaBar:SetPoint("CENTER",UIParent,"CENTER",0,-160)--德鲁伊百分比法力条位置，由于很丑我没有采用，如果你需要可以去掉注释！
+--[[日月食条]]
+EclipseBarFrame:ClearAllPoints() 
+EclipseBarFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160)--日月食条位置
+--[[神圣能量]]
+PaladinPowerBar:ClearAllPoints() 
+PaladinPowerBar:SetPoint("CENTER",UIParent,"CENTER",0,-160)--神圣能量位置
+--[[灵魂碎片]]
+ShardBarFrame:ClearAllPoints() 
+ShardBarFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160)--灵魂碎片框体位置，真心不是很好看=0.0
 end
 
 --[[ 隐藏pvp图标 ]]
