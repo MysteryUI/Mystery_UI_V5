@@ -77,15 +77,6 @@ function addon:PLAYER_LOGIN()
 		BuildButton(BagginsBag1, 45, 20, 'TOPRIGHT', -30, -6)
 		BuildButton(BagginsBag12, 45, 20, 'TOPRIGHT', -30, -6)
 		
-	-- you should look into DataBroker display on Bagnon
-	--[[elseif IsAddOnLoaded('Bagnon') then
-		local id = 1
-		hooksecurefunc(Bagnon.Frame, 'New', function(self, name)
-			local f = getglobal('BagnonFrame'..id)
-			if not f then return end
-			BuildButton(f, 45, 20, 'TOPRIGHT', -50, -8):SetFrameStrata('FULLSCREEN')
-			id = id + 1
-		end)]]
 	elseif IsAddOnLoaded('BaudBag') then
 		BuildButton(BaudBagContainer1_1, 45, 20, 'TOPRIGHT', -65, 22)
 		BuildButton(BaudBagContainer2_1, 45, 20, 'TOPRIGHT', -65, 22)

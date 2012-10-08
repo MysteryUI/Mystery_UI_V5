@@ -7,4 +7,5 @@
 	<Script file='Raidfader.lua' />
 	<Script file='durability.lua' />
 	<Script file='ThreatMeter.lua' />
+	<Script file='Filter.lua' />
 </Ui>

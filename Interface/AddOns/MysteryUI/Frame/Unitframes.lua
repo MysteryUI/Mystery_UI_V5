@@ -216,7 +216,7 @@ FocusFrameSpellBar:SetStatusBarColor(0,0.45,0.9); FocusFrameSpellBar.SetStatusBa
 if UnitFrames.config.SetAbility or UnitFrames.config.PVP_Style then  --如果想PVP布局关闭请将此行改成：if UnitFrames.config.SetAbility then
 --[[ 符文 ]]
 RuneFrame:ClearAllPoints() 
-RuneFrame:SetPoint("CENTER",UIParent,"CENTER",0,-170) --符文的框体位置
+RuneFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160) --符文的框体位置
 RuneFrame.SetPoint = function() end
 for i=1,6 do _G["RuneButtonIndividual"..i]:SetScale("1.1") end
 for i=1,6 do _G["RuneButtonIndividual"..i]:ClearAllPoints() end

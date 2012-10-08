@@ -696,7 +696,7 @@ function UnmarkOOR(button)
 		r2, g2, b2 = r1, g1, b1
 	else
 		-- unusable. second half defaults white.
-		r1, g1, b1 = 0.4, 0.4, 0.4
+		r1, g1, b1 = 0.3, 0.3, 0.3
 	end
 	local Texture_SetVertexColor = Texture_SetVertexColor
 	Texture_SetVertexColor(button.icon, r1, g1, b1)

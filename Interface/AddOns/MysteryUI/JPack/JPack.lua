@@ -93,15 +93,7 @@ local function CanGoInBag(frombag,fromslot, tobag)
    if not item then return false end
    -- Get the item's family
    local itemFamily = GetItemFamily(item)
-   
-   -- If the item is a container, then the itemFamily should be 0
-   --[[
-   local equipSlot = select(9, GetItemInfo(item))
-   if equipSlot == "INVTYPE_BAG" then
-      itemFamily = 0
-   end
-]]--
-   -- Get the bag's family
+
    local bagFamily = select(2, GetContainerNumFreeSlots(tobag))
 
    return bagFamily == 0 or bit.band(itemFamily, bagFamily) > 0
@@ -178,13 +170,6 @@ local function getPerffix(item)
 	return "1"..s
 	
 end
-
---[[
-bagIds = {1,3,5}
-packIndex ---JPack的index
-bagID --- wow 的bagId
-slotId ---- wow 的slotId
-]]
 
 --[[
 bag  背包
@@ -679,21 +664,6 @@ local function stackOnce()
 	return complet
 end
 
-
-
---[[
-		=== GuildBank ===
-		
-	http://wowprogramming.com/docs/api/
-			GetCurrentGuildBankTab	Returns the currently selected guild bank tab (number) 
-			PickupGuildBankItem		
-			GetGuildBankItemInfo(tab, slot)		返回 材质/堆叠数量/*是否锁定
-			GetGuildBankItemLink
-			GetGuildBankTabInfo
-			GetGuildBankTabPermissions
-			GetNumGuildBankTabs
-]]
-
 --堆叠一次公会银行，返回是否结束
 local function GBstackOnce()
 	local item,slotInfo
@@ -725,25 +695,6 @@ local function GBstackOnce()
 	end
 	return complet
 end
-
-
-
--- TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 --[[===================================
 		Events/slash..etc..
@@ -819,13 +770,6 @@ end
 
 ]=]
 
-
---[[
-	GUILDBANKBAGSLOTS_CHANGED will fire THREE times when you move a item
-	before this event fired, NOTHING you can do with the guildbank
-	
-	GuildBank movement check
-]]
 local GUILDBANKBAGSLOTS_CHANGED_TIMES = 0
 function JPack:GUILDBANKBAGSLOTS_CHANGED()
 	GUILDBANKBAGSLOTS_CHANGED_TIMES = GUILDBANKBAGSLOTS_CHANGED_TIMES + 1
