@@ -1,6 +1,14 @@
 ﻿--动作条增强
---by Binny
+--by Binny Mystery
 
+--设置两种布局，玩家可以2选1，
+local MyBar = true           -- true or false 是否使用小屏幕动作条布局.（默认）
+local BZBar = false          -- true or false 是否使用宽屏幕布局.（去除系统菜单，把右侧动作条替换到系统菜单位置）
+
+------------------------------
+--小屏幕动作条布局增强（默认）
+------------------------------
+if (MyBar == true) then
 local BarScale = 0.9
 local HideMainButtonArt = false  -- true or false 是否隐藏狮鹫和主动作条的背景材质
 local HideExperienceBar = false  -- true or false 是否隐藏经验条
@@ -400,6 +408,76 @@ end;
 
 SLASH_GETMOUSEOVERFRAME1 = '/getmouseoverframe'
 SlashCmdList['GETMOUSEOVERFRAME'] = GetMouseoverFrame
+end
+
+------------------------------------------------------------------------------------
+--暴雪隐藏系统菜单动作条布局，宽屏幕适用（去除系统菜单，把右侧动作条替换到系统菜单位置）
+------------------------------------------------------------------------------------
+if (BZBar == true) then
+local CornerMenuFrame = false; -- 在右下方切换系统菜单
+
+local BarScale = 0.9
+
+	MainMenuBar:SetScale(BarScale)
+	MultiBarRight:SetScale(BarScale)
+	MultiBarLeft:SetScale(BarScale)
+--	CornerMenuFrame:SetScale(BarScale)
+
+-- 主动作条重新定位 --
+local function FixStuff()
+    MainMenuBarTexture2:SetTexture("Interface\\MainMenuBar\\UI-MainMenuBar-Dwarf")
+    MainMenuBarTexture2:SetTexCoord(0, 1, 0.58203125, 0.75);
+    MainMenuBarTexture2:SetPoint("CENTER", MainMenuBarArtFrame, 124, 0)
+    MainMenuBarTexture3:SetTexture("Interface\\MainMenuBar\\UI-MainMenuBar-Dwarf")
+    MainMenuBarTexture3:SetTexCoord(0, 1, 0.58203125, 0.75);
+    MainMenuBarTexture3:SetPoint("CENTER", MainMenuBarArtFrame, 376, 0)
+    MainMenuBarRightEndCap:SetPoint("CENTER", MainMenuBarArtFrame, 536, 0)
+    MainMenuBar:SetPoint("CENTER", 4, 0)
+end
+
+-- 定位动作条 --
+local function MoveStuff()
+    MultiBarBottomRight:ClearAllPoints()
+    MultiBarBottomRight:SetPoint("LEFT", "MultiBarBottomLeft", "RIGHT", 4, 0);
+    MultiBarLeft:ClearAllPoints()
+    MultiBarLeft:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", sin(180) * 100, 98)
+    for i = 1, 12 do
+        local b = _G["MultiBarRightButton"..i]
+        if (i == 1) then
+            b:ClearAllPoints()
+            b:SetPoint("LEFT", "ActionButton12", "RIGHT", 6, 0)
+        else
+            b:ClearAllPoints()
+            b:SetPoint("LEFT", _G["MultiBarRightButton"..i-1], "RIGHT", 6, 0)
+        end
+    end
+end
+
+-- 隐藏/重新定位的东西 --
+local function HideStuff()
+    MainMenuBarPageNumber:Hide();
+    ActionBarDownButton:Hide();
+    ActionBarUpButton:Hide();
+    MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", UIParent, -1, -300)
+    CharacterMicroButton:ClearAllPoints()
+    if (CornerMenuFrame==true) then
+        CharacterMicroButton:SetPoint("BOTTOMRIGHT", UIParent, -274, -2)
+    elseif (CornerMenuFrame==false) then
+        CharacterMicroButton:SetPoint("BOTTOMRIGHT", UIParent, 5000, 0)
+    end
+end
+-- 解决WatchFrame的定位
+local o = WatchFrame.SetPoint
+function WatchFrame:SetPoint(a1, frame, a2, x, y)
+	if frame == "MinimapCluster" then o(self, a1, frame, a2, x+48, y)
+	elseif frame == "UIParent" then o(self, "BOTTOM", frame, "BOTTOM", 0, y) end
+end
+
+FixStuff()
+MoveStuff()
+HideStuff()
+end
+
 
 --------------------------------
 ---超出施法距离技能显示为红色---

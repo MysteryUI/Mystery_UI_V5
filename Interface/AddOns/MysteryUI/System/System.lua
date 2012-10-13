@@ -36,7 +36,7 @@ lpanels:CreateLayout("System", {
 --		border = "GlowTex", border_size = 5, inset = 4, border_color = "0 0 0 1",
 		text = {string = "S\ny\ns\nt\ne\nm\n", 
 		size = 10, shadow = { color = "1 1 1", y = -2, x = 2, alpha = .1},
-		outline = 1, font = "04B08.ttf", anchor_from = "TOP", anchor_to = "TOP", x_off = 2, y_off = -10
+		outline = 1, font = "04B08.TTF", anchor_from = "TOP", anchor_to = "TOP", x_off = 3, y_off = -10
 		},       
 		OnClick = function(self, button)
 		     if (not self.collapsed) then
@@ -92,7 +92,7 @@ lpanels:CreateLayout("System", {
 	      
 	    pt = p:CreateFontString(nil, 'OVERLAY')
 		pt:SetPoint("CENTER", p, "CENTER", 0, 0)
-		pt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		pt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		pt:SetTextColor(1, 1, 1)
 		pt:SetText(L["角色信息"])
 		UIFrameFadeIn(p, 2, 0, 1)
@@ -126,7 +126,7 @@ lpanels:CreateLayout("System", {
 	      
 	    st = s:CreateFontString(nil, 'OVERLAY')
 		st:SetPoint("CENTER", s, "CENTER", 0, 0)
-		st:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		st:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		st:SetTextColor(1, 1, 1)
 		st:SetText(L["法术书"])
 		UIFrameFadeIn(s, 2, 0, 1)
@@ -160,7 +160,7 @@ lpanels:CreateLayout("System", {
 	      
 	    tt = t:CreateFontString(nil, 'OVERLAY')
 		tt:SetPoint("CENTER", t, "CENTER", 0, 0)
-		tt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		tt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		tt:SetTextColor(1, 1, 1)
 		tt:SetText(L["天赋"])
 		UIFrameFadeIn(t, 2, 0, 1)
@@ -195,7 +195,7 @@ lpanels:CreateLayout("System", {
 	      
 	    at = a:CreateFontString(nil, 'OVERLAY')
 		at:SetPoint("CENTER", a, "CENTER", 0, 0)
-		at:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		at:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		at:SetTextColor(1, 1, 1)
 		at:SetText(L["成就"])
 		UIFrameFadeIn(a, 2, 0, 1)
@@ -229,7 +229,7 @@ lpanels:CreateLayout("System", {
 	      
 	    pjt = pj:CreateFontString(nil, 'OVERLAY')
 		pjt:SetPoint("CENTER", pj, "CENTER", 0, 0)
-		pjt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		pjt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		pjt:SetTextColor(1, 1, 1)
 		pjt:SetText(L["坐骑与宠物"])
 		UIFrameFadeIn(pj, 2, 0, 1)
@@ -263,7 +263,7 @@ lpanels:CreateLayout("System", {
 	      
 	    qt = q:CreateFontString(nil, 'OVERLAY')
 		qt:SetPoint("CENTER", q, "CENTER", 0, 0)
-		qt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		qt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		qt:SetTextColor(1, 1, 1)
 		qt:SetText(L["任务日志"])
 		UIFrameFadeIn(q, 2, 0, 1)
@@ -297,7 +297,7 @@ lpanels:CreateLayout("System", {
 	      
 	    sot = so:CreateFontString(nil, 'OVERLAY')
 		sot:SetPoint("CENTER", so, "CENTER", 0, 0)
-		sot:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		sot:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		sot:SetTextColor(1, 1, 1)
 		sot:SetText(L["社交"])
 		UIFrameFadeIn(so, 2, 0, 1)
@@ -331,7 +331,7 @@ lpanels:CreateLayout("System", {
 	      
 	    pvt = pv:CreateFontString(nil, 'OVERLAY')
 		pvt:SetPoint("CENTER", pv, "CENTER", 0, 0)
-		pvt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		pvt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		pvt:SetTextColor(1, 1, 1)
 		pvt:SetText(L["PVP"])
 		UIFrameFadeIn(pv, 2, 0, 1)
@@ -365,7 +365,7 @@ lpanels:CreateLayout("System", {
 	      
 	    lft = lf:CreateFontString(nil, 'OVERLAY')
 		lft:SetPoint("CENTER", lf, "CENTER", 0, 0)
-		lft:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		lft:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		lft:SetTextColor(1, 1, 1)
 		lft:SetText(L["寻找地下城"])
 		UIFrameFadeIn(lf, 2, 0, 1)
@@ -399,7 +399,7 @@ lpanels:CreateLayout("System", {
 	      
 	    ht = h:CreateFontString(nil, 'OVERLAY')
 		ht:SetPoint("CENTER", h, "CENTER", 0, 0)
-		ht:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		ht:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		ht:SetTextColor(1, 1, 1)
 		ht:SetText(L["公会"])
 		UIFrameFadeIn(h, 2, 0, 1)
@@ -433,7 +433,7 @@ lpanels:CreateLayout("System", {
 	      
 	    ejt = ej:CreateFontString(nil, 'OVERLAY')
 		ejt:SetPoint("CENTER", ej, "CENTER", 0, 0)
-		ejt:SetFont("Fonts\\ARKai_T.TTF", 14, "THICKOUTLINE")
+		ejt:SetFont("Fonts\\ARIALN.TTF", 14, "THICKOUTLINE")
 		ejt:SetTextColor(1, 1, 1)
 		ejt:SetText(L["地下城手册"])
 		UIFrameFadeIn(ej, 2, 0, 1)
