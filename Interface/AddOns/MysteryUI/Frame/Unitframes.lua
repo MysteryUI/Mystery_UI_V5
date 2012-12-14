@@ -97,6 +97,9 @@ TargetFrame:ClearAllPoints()
 TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-150) --术士的目标框体位置（由于目前术士宠物位置我没办法定义只能这样做了，不喜欢的建议用PVE布局）
 elseif class == "ROGUE" or  class == "WARRIOR" or class == "HUNTER" or class == "MAGE" then
 TargetFrame:ClearAllPoints() 
+TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-125) --当玩家是萨满时的目标框体位置
+elseif class == "SHAMAN" then
+TargetFrame:ClearAllPoints() 
 TargetFrame:SetPoint("TOPRIGHT",PlayerFrame,"TOPRIGHT",100,-65) --当玩家是盗贼，战士，猎人和法师时的目标框体位置
 else
 TargetFrame:ClearAllPoints() 

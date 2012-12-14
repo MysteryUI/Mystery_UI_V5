@@ -2,7 +2,6 @@
 	Combuctor.lua
 		Some sort of crazy visual inventory management system
 --]]
-local _G = _G 
 
 local ADDON, Addon = ...
 _G[ADDON] = LibStub('AceAddon-3.0'):NewAddon(Addon, ADDON, 'AceEvent-3.0', 'AceConsole-3.0')

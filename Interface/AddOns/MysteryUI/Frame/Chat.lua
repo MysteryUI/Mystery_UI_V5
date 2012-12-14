@@ -94,8 +94,8 @@ CHAT_YOU_LEFT_NOTICE_BN = L['离开频道: |Hchannel:%d|h%s|h']
 CHAT_SUSPENDED_NOTICE_BN = L['离开频道: |Hchannel:%d|h%s|h']
 
 -- 复制框
-ChatTypeInfo.BATTLEGROUND.sticky = 1
-ChatTypeInfo.BATTLEGROUND_LEADER.sticky = 1
+--ChatTypeInfo.BATTLEGROUND.sticky = 1
+--ChatTypeInfo.BATTLEGROUND_LEADER.sticky = 1
 ChatTypeInfo.CHANNEL.sticky = 1
 ChatTypeInfo.GUILD.sticky = 1
 ChatTypeInfo.OFFICER.sticky = 1

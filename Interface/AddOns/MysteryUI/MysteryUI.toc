@@ -1,4 +1,4 @@
-﻿## Interface: 50001
+﻿## Interface: 50100
 ## Author: Mystery
 ## Title: |cffbc8f8fMystery|r|cffb70000UI|r
 ## Notes: |cffbc8f8fMysteryUI_V2+|r|cffb70000Blizzard UI.|r

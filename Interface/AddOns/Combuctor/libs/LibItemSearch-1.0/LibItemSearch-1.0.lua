@@ -17,7 +17,7 @@
 		<op>				:=  : | = | == | != | ~= | < | > | <= | >=
 --]]
 
-local Lib = LibStub:NewLibrary('LibItemSearch-1.0', 8)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.0', 9)
 if not Lib then
   return
 else
@@ -207,7 +207,7 @@ Lib:RegisterTypedSearch{
 	end,
 
 	findItem = function(self, item, _, search)
-		local name = GetItemInfo(item)
+		local name = item:match('%[(.-)%]')
 		return match(search, name)
 	end
 }
@@ -281,14 +281,16 @@ local tooltipCache = setmetatable({}, {__index = function(t, k) local v = {} t[k
 local tooltipScanner = _G['LibItemSearchTooltipScanner'] or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'GameTooltipTemplate')
 
 local function link_FindSearchInTooltip(itemLink, search)
-	--look in the cache for the result
 	local itemID = itemLink:match('item:(%d+)')
+	if not itemID then
+		return
+	end
+	
 	local cachedResult = tooltipCache[search][itemID]
 	if cachedResult ~= nil then
 		return cachedResult
 	end
 
-	--no match?, pull in the resut from tooltip parsing
 	tooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE')
 	tooltipScanner:SetHyperlink(itemLink)
 

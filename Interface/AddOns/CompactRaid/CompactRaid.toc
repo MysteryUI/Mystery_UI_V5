@@ -1,14 +1,14 @@
-## Interface: 50001
+ï»¿## Interface: 50001
 ## Title: CompactRaid
 ## Version: 3.3
 ## Author: Abin Mystery
-## Notes: |cffbc8f8fMysteryUI|r|cffb70000CompactRaid¡£|r
-## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000ÍÅ¶Ó¿ò¼ÜCompactRaid¡£|r
-## Notes-zhTW: |cffbc8f8fMysteryUI|r|cffb70000ˆFê ¿ò¼ÜCompactRaid¡£|r
+## Notes: |cffbc8f8fMysteryUI|r|cffb70000CompactRaidã€‚|r
+## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000å›¢é˜Ÿæ¡†æž¶CompactRaidã€‚|r
+## Notes-zhTW: |cffbc8f8fMysteryUI|r|cffb70000åœ˜éšŠæ¡†æž¶CompactRaidã€‚|r
 ## SavedVariables: CompactRaidDB
 ## SavedVariablesPerCharacter: CompactRaidCharDB
 ## OptionalDeps: Clique
-## RequiredDeps: MysteryUI
+
 ## X-WoWBox-Ver: 1
 ## X-WoWBox-ID: 3340
 

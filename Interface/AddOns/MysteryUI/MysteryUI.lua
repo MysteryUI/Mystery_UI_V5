@@ -377,6 +377,14 @@ end)
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 --离开战斗回收插件内存
-local F = CreateFrame("Frame") 
-   F:RegisterEvent("PLAYER_REGEN_ENABLED") 
-   F:SetScript("OnEvent", function() _G.collectgarbage("collect") end) 
+local eventcount = 0
+local cf = CreateFrame("Frame")
+cf:RegisterAllEvents()
+cf:SetScript("OnEvent", function(self, event)
+   eventcount = eventcount + 1
+   if InCombatLockdown() then return end
+   if eventcount > 6000 or event == "PLAYER_ENTERING_WORLD" or event == "PLAYER_REGEN_ENABLED" then
+      collectgarbage("collect")
+      eventcount = 0
+   end
+end) 
