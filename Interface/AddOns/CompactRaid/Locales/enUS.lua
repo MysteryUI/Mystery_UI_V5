@@ -2,7 +2,7 @@
 -- enUS.lua
 --
 -- Abin
--- 2010/10/16
+-- 2013/03/14
 ------------------------------------------------------------
 
 local _, addon = ...
@@ -50,7 +50,7 @@ addon.L = {
 	["power bar color"] = "Power Bar Color",
 	["only show dispellable debuffs"] = "Only show dispellable debuffs",
 	["horizontally align raid groups"] = "Horizontally align raid groups",
-	["over ride prompt"] = "Contents on this page are over-ridden by CompactRaid options.",
+	["over ride prompt"] = "Contents on this page are over-ridden by MysteryUI options.",
 	["frame container options"] = "Frame Container Options",
 	["background alpha"] = "Background alpha",
 	["border size"] = "border size",

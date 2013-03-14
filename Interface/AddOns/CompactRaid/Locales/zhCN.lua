@@ -3,14 +3,14 @@
 -- 简体中文
 
 -- Abin
--- 2010/10/16
+-- 2013/03/14
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhCN" then return end
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI团队框架 已载入，/craid 进行设置。",
+	["load prompt"] = "MysteryUI团队框架已载入，版本 %s by Abin Mystery，输入 /craid 进行设置。",
 	["desc"] = "设置CompactRaid框体外观和属性，大部分设置作用于全账号。",
 	["general options"] = "一般选项",
 	["scale"] = "缩放",
@@ -52,7 +52,7 @@ addon.L = {
 	["power bar color"] = "法力条颜色",
 	["only show dispellable debuffs"] = "只显示可驱散的减益",
 	["horizontally align raid groups"] = "团队中横向排列小队",
-	["over ride prompt"] = "此页面的设置内容已由CompactRaid所接管。",
+	["over ride prompt"] = "此页面的设置内容已由MysteryUI所接管。",
 	["frame container options"] = "框体容器选项",
 	["background alpha"] = "背景透明度",
 	["border size"] = "边框宽度",

@@ -7,5 +7,5 @@
 	<Script file="Visual.lua"/>
 	<Script file="OptionFrame.lua"/>
 	<Script file="Custom.lua"/>
-	<Include file="Cataclysm\embeds.xml"/>
+	<Include file="Data\embeds.xml"/>
 </Ui>

@@ -3,7 +3,7 @@
 -- 繁體中文
 
 -- Abin
--- 2010/10/16
+-- 2013/03/14
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhTW" then return end
@@ -11,7 +11,7 @@ if GetLocale() ~= "zhTW" then return end
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI團隊框架 已載入，/craid 進行設置。",
+	["load prompt"] = "MysteryUI團隊框架已載入，版本 %s by Abin Mystery，輸入 /craid 進行設置。",
 	["desc"] = "設置CompactRaid框架外觀和屬性，大部份設置作用於全帳號。",
 	["general options"] = "一般選項",
 	["scale"] = "縮放",
@@ -53,7 +53,7 @@ addon.L = {
 	["power bar color"] = "法力條顏色",
 	["only show dispellable debuffs"] = "只顯示可驅散的減益",
 	["horizontally align raid groups"] = "團隊中橫向排列小隊",
-	["over ride prompt"] = "此頁面的設置內容已由CompactRaid所接管。",
+	["over ride prompt"] = "此頁面的設置內容已由MysteryUI所接管。",
 	["frame container options"] = "框架容器選項",
 	["background alpha"] = "背景透明度",
 	["border size"] = "邊框寬度",

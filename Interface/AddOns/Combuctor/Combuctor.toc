@@ -1,12 +1,13 @@
-## Interface: 50100
+## Interface: 50200
 ## Title: Combuctor
 ## Author: Tuller and Jaliborc (João Cardoso)
 ## Notes: Pants are a dangerous foe
-## Notes-zhCN: |cffbc8f8f暴雪风格背包|r|cffb70000不喜欢这个背包请禁用。|r
-## Notes-zhTW: |cffbc8f8f暴雪風格背包|r|cffb70000不喜歡這個背包請禁用。|r
-## Version: 5.1.2
+## Notes-zhCN: |cffbc8f8f暴雪风格|r|cffb70000背包|r
+## Notes-zhTW: |cffbc8f8f暴雪風格|r|cffb70000背包|r
+## Version: V5.2
 ## OptionalDeps: BagBrother, Ace3, LibItemCache-1.0, LibItemSearch-1.0, Unfit-1.0
 ## SavedVariables: CombuctorVersion, CombuctorDB2
+
 ## X-WoWBox-Ver: 1
 ## X-WoWBox-ID: 3340
 

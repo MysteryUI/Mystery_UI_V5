@@ -2,7 +2,7 @@
 -- OptionFrame.lua
 --
 -- Abin
--- 2012/1/03
+-- 2013/03/14
 ------------------------------------------------------------
 
 local _G = _G
@@ -438,11 +438,11 @@ local function InitOptionData(db, chardb)
 	if not db.v30 then
 		db.v30 = 1
 		db.lock =1
-		db.showSolo = 1
+		db.showSolo = 0
 		db.showParty = 1
 		db.keepgroupstogether = 1
 		db.raidFilter = "CLASS"
-		chardb.showPartyPets = 1
+		chardb.showPartyPets = 0
 	end
 
 	-- Initialize addon data

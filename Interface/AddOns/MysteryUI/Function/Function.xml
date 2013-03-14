@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Script file='ChatFilter.lua' />
     <Script file='Guildtab.lua' />
 	<Script file='color.lua' />
-	<Script file='Classcolors.lua' />
 	<Script file='Cooltimer.lua' />
 	<Script file='dbm.lua' />
 	<Script file='Raidfader.lua' />

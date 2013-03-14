@@ -2,7 +2,7 @@
 -- DisableBlizzard.lua
 --
 -- Abin
--- 2012/1/03
+-- 2013/03/14
 ------------------------------------------------------------
 
 local _G = _G
@@ -76,7 +76,7 @@ end
 
 addon:RegisterOptionCallback("showParty", function(value)
 	if value then
-		blizzPartyParent:Show()--Hide()
+		blizzPartyParent:Show()--Hide()  --Èç¹ûÄãÏë£¡
 	else
 		blizzPartyParent:Show()
 	end

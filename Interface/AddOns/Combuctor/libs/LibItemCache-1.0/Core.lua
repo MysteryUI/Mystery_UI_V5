@@ -1,23 +1,21 @@
 --[[
-Copyright 2011-2012 João Cardoso
-LibItemCache is distributed under the terms of the GNU General Public License (or the Lesser GPL).
-This file is part of LibItemCache.
+Copyright 2011-2013 João Cardoso
+LibItemCache is distributed under the terms of the GNU General Public License.
+You can redistribute it and/or modify it under the terms of the license as
+published by the Free Software Foundation.
 
-LibItemCache is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-LibItemCache is distributed in the hope that it will be useful,
+This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with LibItemCache. If not, see <http://www.gnu.org/licenses/>.
+along with this library. If not, see <http://www.gnu.org/licenses/>.
+
+This file is part of LibItemCache.
 --]]
 
-local Lib = LibStub:NewLibrary('LibItemCache-1.0', 10)
+local Lib = LibStub:NewLibrary('LibItemCache-1.0', 11)
 if not Lib then
 	return
 end
@@ -136,7 +134,7 @@ function Lib:ProcessLink (link)
 	if link:find(PetDataFormat) then
 		return self:ProcessPetLink(link)
 	else
-		return self:ProcessItemLink(link)
+		return self:ProcessItemLink('item:' .. link)
 	end
 end
 
@@ -151,7 +149,7 @@ function Lib:ProcessPetLink (partial)
 end
 
 function Lib:ProcessItemLink (partial)
-	local _, link, quality = GetItemInfo('item:' .. partial)
+	local _, link, quality = GetItemInfo(partial)
 	return GetItemIcon(partial), link, quality
 end
 

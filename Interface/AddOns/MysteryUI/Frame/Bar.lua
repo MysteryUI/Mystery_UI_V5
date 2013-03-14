@@ -283,7 +283,7 @@ do
 	MainMenuBarPageNumber:Hide();
     ActionBarUpButton:Hide();
     ActionBarDownButton:Hide();
-	CornerMenuFrame:Hide(); ---隐藏暴雪系统菜单
+	CornerMenuFrame:Show();--Hide(); ---隐藏暴雪系统菜单
 	-- 经验条
 	MainMenuBarTexture2:SetTexture(Empty_Art)
 	MainMenuBarTexture3:SetTexture(Empty_Art)

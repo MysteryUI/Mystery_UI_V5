@@ -1,9 +1,9 @@
-﻿## Title: ControlTimers
+﻿## Interface: 50200
+## Title: ControlTimers
 ## Notes: Shows Buff/Debuffs instead of portraits
 ## Notes-zhCN: |cffbc8f8f系统头像上|r|cffb70000显示控制技能。|r
 ## Notes-zhTW: |cffbc8f8f系統頭像上|r|cffb70000顯示控制技能。|r
-## Version: V5
-## Interface: 50100
+## Version: V5.2
 ## SavedVariablesPerCharacter: ControlTimersDB
 
 ## X-WoWBox-Ver: 1
