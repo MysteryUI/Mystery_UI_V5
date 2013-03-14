@@ -5,10 +5,10 @@
 ## Notes: |cffbc8f8fMysteryUI_V5|r|cffb70000Blizzard UI.|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI_V5|r|cffb70000暴雪增强界面。|r
 ## Notes-zhTW: |cffbc8f8fMysteryUI_V5|r|cffb70000暴雪增強界面。|r
-## Version: V5
 ## RequiredDeps: Blizzard_CombatText
 ## OptionalDeps: DBM-Core
 ## SavedVariablesPerCharacter: MyUnitframesDB, UISetup, UISavedPositions, setupUI
+
 ## X-WoWBox-Ver: 1
 ## X-WoWBox-ID: 3340
 
