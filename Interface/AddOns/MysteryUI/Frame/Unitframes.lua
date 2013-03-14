@@ -603,10 +603,11 @@ local function unitText(unit)
             end
         else
             _G["f"..unit.."dead"]:Hide()
+			local textDisplay = GetCVar("statusTextDisplay");--5.2生命值问题解决方式
             if (unit == "player" and GetCVarBool("playerStatusText")) or (not (unit == "player") and GetCVarBool("targetStatusText")) then
                 _G["f"..unit.."health"]:Show()
                 _G["f"..unit.."health"].text:SetText(format(h))
-                if GetCVarBool("statusTextPercentage") then
+                if textDisplay ~= "NUMERIC" then
                     hMax = UnitHealthMax(unit)
                     hPercent = math.floor((h / hMax) * 100)
                     _G["f"..unit.."percent"]:Show()
