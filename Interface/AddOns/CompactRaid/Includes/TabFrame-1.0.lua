@@ -12,7 +12,7 @@
 -- frame = UICreateTabFrame("name", parent) -- Create a tab frame
 
 -- frame:NumTabs() -- Return number of tabs created
--- frame:AddTab("text" [, data]) -- Add a new tab, return index of the newly created tab
+-- frame:AddTab("text" [, data [, "tooltipText"]]) -- Add a new tab, return index of the newly created tab
 -- frame:GetTabButton(index) -- Return the tab button
 -- frame:GetSelection() -- Return index of currently selected tab, and its associated data
 -- frame:SelectTab(index) -- Select a tab, do nothing of the tab was already selected
@@ -35,20 +35,19 @@ local ipairs = ipairs
 local type = type
 local tinsert = tinsert
 local CreateFrame = CreateFrame
+local pcall = pcall
 local GameTooltip = GameTooltip
 local _G = _G
-local _
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 5
+local MINOR_VERSION = 6
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateTabFrame_IsNewerVersion) == "function" and not UICreateTabFrame_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
 
 local function CreateBorderTexture(parent, tl, tr, tt, tb, corner, spacer)
 	local texture = parent:CreateTexture(nil, "BORDER")
-	texture:SetWidth(16)
-	texture:SetHeight(16)
+	texture:SetSize(16, 16)
 	texture:SetTexture(spacer and "Interface\\OptionsFrame\\UI-OptionsFrame-Spacer" or "Interface\\Tooltips\\UI-Tooltip-Border")
 	if tl then
 		texture:SetTexCoord(tl, tr, tt, tb)
@@ -61,8 +60,24 @@ local function CreateBorderTexture(parent, tl, tr, tt, tb, corner, spacer)
 	return texture
 end
 
+local function TabButton_UpdateTextColor(self)
+	local color
+	local state = self._tabState
+	if self._tabSelected then
+		color = HIGHLIGHT_FONT_COLOR
+	elseif self._tabDisabled then
+		color = GRAY_FONT_COLOR
+	elseif self._tabEntered then
+		color = HIGHLIGHT_FONT_COLOR
+	else
+		color = NORMAL_FONT_COLOR
+	end
+
+	self.text:SetTextColor(color.r, color.g, color.b)
+end
+
 local function TabButton_Select(self)
-	local texture
+	local _, texture
 	for _, texture in ipairs(self.deselectTextures) do
 		texture:Hide()
 	end
@@ -70,21 +85,20 @@ local function TabButton_Select(self)
 	for _, texture in ipairs(self.selectTextures) do
 		texture:Show()
 	end
-
-	self:SetNormalFontObject(GameFontHighlightSmall)
 
 	self.text:ClearAllPoints()
 	self.text:SetPoint("CENTER", 0, -1)
 
-	self.selCover:Show()
+	self:Disable()
+	self._tabSelected = 1
+	TabButton_UpdateTextColor(self)
 
-	if type(self:GetParent().OnTabSelected) == "function" then
-		self:GetParent():OnTabSelected(self:GetID(), self.data)
-	end
+	local frame = self:GetParent()
+	pcall(frame.OnTabSelected, frame, self:GetID(), self.data)
 end
 
 local function TabButton_Deselect(self, internal)
-	local texture
+	local _, texture
 	for _, texture in ipairs(self.deselectTextures) do
 		texture:Show()
 	end
@@ -93,13 +107,19 @@ local function TabButton_Deselect(self, internal)
 		texture:Hide()
 	end
 
-	self:SetNormalFontObject(GameFontNormalSmall)
 	self.text:ClearAllPoints()
 	self.text:SetPoint("CENTER", 0, -3)
-	self.selCover:Hide()
 
-	if not internal and type(self:GetParent().OnTabDeselected) == "function" then
-		self:GetParent():OnTabDeselected(self:GetID(), self.data)
+	self._tabSelected = nil
+	if not self._tabDisabled then
+		self:Enable()
+	end
+
+	TabButton_UpdateTextColor(self)
+
+	if not internal then
+		local frame = self:GetParent()
+		pcall(frame.OnTabDeselected, frame, self:GetID(), self.data)
 	end
 end
 
@@ -165,6 +185,8 @@ local function Frame_EnableTab(self, id)
 	local button = self.tabButtons[id]
 	if button then
 		button:Enable()
+		button._tabDisabled = nil
+		TabButton_UpdateTextColor(button)
 	end
 end
 
@@ -172,6 +194,8 @@ local function Frame_DisableTab(self, id)
 	local button = self.tabButtons[id]
 	if button then
 		button:Disable()
+		button._tabDisabled = 1
+		TabButton_UpdateTextColor(button)
 	end
 end
 
@@ -180,27 +204,33 @@ local function TabButton_OnClick(self)
 end
 
 local function TabButton_OnEnter(self)
-	if type(self:GetParent().OnTabTooltip) == "function" then
+	self._tabEntered = 1
+	TabButton_UpdateTextColor(self)
+
+	local frame = self:GetParent()
+	local func = frame.OnTabTooltip
+	local tooltipText = self.tooltipText
+
+	if func or tooltipText then
 		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 		GameTooltip:ClearLines()
-		self:GetParent():OnTabTooltip(self:GetID(), self.data)
+		GameTooltip:AddLine(self:GetText())
+		if func then
+			func(frame, self:GetID(), self.data)
+		else
+			GameTooltip:AddLine(tooltipText, 1, 1, 1, 1)
+		end
 		GameTooltip:Show()
 	end
 end
 
 local function TabButton_OnLeave(self)
+	self._tabEntered = nil
+	TabButton_UpdateTextColor(self)
 	GameTooltip:Hide()
 end
 
-local function TabButtonCover_OnEnter(self)
-	TabButton_OnEnter(self:GetParent())
-end
-
-local function TabButtonCover_OnLeave(self)
-	TabButton_OnLeave(self:GetParent())
-end
-
-local function Frame_AddTab(self, text, data)
+local function Frame_AddTab(self, text, data, tooltipText)
 	local id = self.numTabs + 1
 	local name = self:GetName().."Tab"..id
 
@@ -208,12 +238,13 @@ local function Frame_AddTab(self, text, data)
 	local button = CreateFrame("Button", name, self, "OptionsFrameTabButtonTemplate")
 	button.text = _G[name.."Text"]
 	button.data = data
+	button.tooltipText = tooltipText
 	button:SetID(id)
+	button.text:SetFont(STANDARD_TEXT_FONT, 12)
+	button:SetFontString(button.text)
 	button:SetText(text)
-
-	button:SetNormalFontObject(GameFontNormalSmall)
-	button:SetDisabledFontObject(GameFontDisableSmall)
-	button:SetHighlightFontObject(GameFontHighlightSmall)
+	button:SetMotionScriptsWhileDisabled(true)
+	button:SetHitRectInsets(10, 10, 5, 0)
 
 	button.deselectTextures = {}
 	tinsert(button.deselectTextures, _G[name.."Left"])
@@ -225,14 +256,6 @@ local function Frame_AddTab(self, text, data)
 	tinsert(button.selectTextures, _G[name.."MiddleDisabled"])
 	tinsert(button.selectTextures, _G[name.."RightDisabled"])
 
-	button.selCover = CreateFrame("Frame", nil, button)
-	button.selCover:SetAllPoints(button)
-	button.selCover:EnableMouse()
-	button.selCover:Hide()
-
-	button.selCover:SetScript("OnEnter", TabButtonCover_OnEnter)
-	button.selCover:SetScript("OnLeave", TabButtonCover_OnLeave)
-
 	if self.lastTab then
 		button:SetPoint("LEFT", self.lastTab, "RIGHT", -18, 0)
 	else
@@ -241,7 +264,6 @@ local function Frame_AddTab(self, text, data)
 	self.lastTab = button
 	tinsert(self.tabButtons, button)
 
-	button:SetHitRectInsets(10, 10, 5, 0)
 	button:SetScript("OnClick", TabButton_OnClick)
 	button:SetScript("OnEnter", TabButton_OnEnter)
 	button:SetScript("OnLeave", TabButton_OnLeave)

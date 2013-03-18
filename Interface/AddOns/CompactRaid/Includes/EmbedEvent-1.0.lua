@@ -85,6 +85,11 @@ local function Object_UnregisterTick(self)
 	frame.tickSeconds = nil
 end
 
+local function Object_IsTicking(self)
+	local frame = self[LIB_NAME].frame
+	return frame:IsShown()
+end
+
 local function Frame_OnEvent(self, event, ...)
 	local object = self.parentObject
 	if type(object.OnEvent) == "function" then
@@ -189,6 +194,7 @@ function EmbedEventObject(object)
 	object.UnregisterAllEvents = Object_UnregisterAllEvents
 	object.RegisterTick = Object_RegisterTick
 	object.UnregisterTick = Object_UnregisterTick
+	object.IsTicking = Object_IsTicking
 	object.BroadcastEvent = Object_BroadcastEvent
 	object.RegisterEventCallback = Object_RegisterEventCallback
 	object.BroadcastOptionEvent = Object_BroadcastOptionEvent

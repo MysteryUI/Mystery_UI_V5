@@ -604,7 +604,10 @@ local function UnitFrame_UpdateResurrect(self)
 	end
 end
 
+local GHOST_AURA, _, GHOST_TEXTURE = GetSpellInfo(8326)
+local DEATH_TEXTURE = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
 local SPIRIT_OF_REDEMPTION = GetSpellInfo(27827)
+local SPIRIT_TEXTURE = "Interface\\Icons\\Spell_Holy_GuardianSpirit"
 
 local function UnitFrame_UpdateFlags(self)
 	local unit = self.unit
@@ -617,18 +620,16 @@ local function UnitFrame_UpdateFlags(self)
 		text = PLAYER_OFFLINE
 	elseif UnitIsDead(unit) then
 		flag = "dead"
-		texture = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
+		texture = DEATH_TEXTURE
 		text = DEAD
-	elseif UnitIsGhost(unit) then
+	elseif UnitDebuff(unit, GHOST_AURA) then
 		flag = "ghost"
-		texture = "Interface\\Icons\\Ability_Vanish"
+		texture = GHOST_TEXTURE
 		text = DEAD
-	elseif self.unitClass == "PRIEST" then
-		if UnitBuff(unit, SPIRIT_OF_REDEMPTION) then
-			flag = "spirit"
-			texture = "Interface\\Icons\\Spell_Holy_GuardianSpirit"
-			text = DEAD
-		end
+	elseif self.unitClass == "PRIEST" and UnitBuff(unit, SPIRIT_OF_REDEMPTION) then
+		flag = "spirit"
+		texture = SPIRIT_TEXTURE
+		text = DEAD
 	end
 
 	self.flagIcon:SetTexture(texture)

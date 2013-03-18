@@ -57,7 +57,16 @@
 -- singleGroup:SetSelection(value [, noNotify])
 -- singleGroup:GetSelection()
 
--- page:CreatePanel(frame) -- Creates or decorates a panel with backgroud and border
+-- page:CreatePanel(frame [, noBkgnd [, noBorder]]) -- Creates or decorates a panel with backgroud and border
+
+-- control.tooltipTitle -- string, tooltip title to display
+-- control.tooltipText -- string, tooltip text to display
+
+-- or
+
+-- control:OnTooltipRequest(tooltip)
+
+-- frame:CreateRoundButton("name", parent, "icon" [, "text" [, disableInCombat]])
 
 -----------------------------------------------------------
 
@@ -84,7 +93,7 @@ local UISpecialFrames = UISpecialFrames
 local _
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 42
+local MINOR_VERSION = 62
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateInterfaceOptionPage_IsNewerVersion) == "function" and not UICreateInterfaceOptionPage_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -148,20 +157,31 @@ local function SubControl_OnShow(self)
 end
 
 local function SubControl_OnEnter(self)
-	local hasTitle = type(self.tooltipTitle) == "string"
-	local hasText = type(self.tooltipText) == "string"
-	if hasTitle or hasText then
-		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-		GameTooltip:ClearLines()
-		if hasTitle then
-			GameTooltip:AddLine(self.tooltipTitle, 1, 1, 1)
+	local func = self.OnTooltipRequest
+	if type(func) ~= "function" then
+		func = nil
+	end
+
+	if not func and not self.tooltipTitle and not self.tooltipText then
+		return
+	end
+
+	GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+	GameTooltip:ClearLines()
+
+	if func then
+		func(self, GameTooltip)
+	else
+		if self.tooltipTitle then
+			GameTooltip:AddLine(self.tooltipTitle)
 		end
 
-		if hasText then
-			GameTooltip:AddLine(self.tooltipText, nil, nil, nil, 1)
+		if self.tooltipText then
+			GameTooltip:AddLine(self.tooltipText, 1, 1, 1, 1)
 		end
-		GameTooltip:Show()
 	end
+
+	GameTooltip:Show()
 end
 
 local function SubControl_OnLeave(self)
@@ -218,7 +238,8 @@ end
 
 local function CreatePressButton(self, text, disableInCombat)
 	local button = CreateSubControl(self, "Button", text, "UIPanelButtonTemplate", disableInCombat)
-	button:SetSize(80, 21)
+	button:SetSize(80, 22)
+	button:SetMotionScriptsWhileDisabled(true)
 	return button
 end
 
@@ -240,6 +261,7 @@ end
 
 local function CreateCheckButton(self, text, disableInCombat)
 	local button = CreateSubControl(self, "CheckButton", text, "InterfaceOptionsCheckButtonTemplate", disableInCombat)
+	button:SetMotionScriptsWhileDisabled(true)
 	hooksecurefunc(button.text, "SetText", CheckButton_Text_OnSetText)
 	button.text:SetText(text)
 	button:SetScript("OnClick", nil)
@@ -643,6 +665,7 @@ local function CreateComboBox(self, text, horizontal, disableInCombat, textColor
 	local frame = CreateSubControl(self, "Button", nil, nil, disableInCombat)
 	frame:SetWidth(160)
 	frame:SetHeight(26)
+	frame:SetMotionScriptsWhileDisabled(true)
 	CreatePanel(self, frame)
 
 	local dropdown = CreateFrame("Frame", frame:GetName().."Dropdown", frame, "UIDropDownMenuTemplate")
@@ -656,6 +679,7 @@ local function CreateComboBox(self, text, horizontal, disableInCombat, textColor
 	frame.toggleButton = button
 	button:ClearAllPoints()
 	button:SetPoint("RIGHT")
+	button:SetMotionScriptsWhileDisabled(true)
 
 	if type(textColor) == "table" then
 		frame.defaultColor = textColor
@@ -816,6 +840,37 @@ local function CreateEditBox(self, text, horizontal, disableInCombat, textColor)
 	editbox.CommitText = EditBox_OnEnterPressed
 
 	return editbox
+end
+
+local function CreateRoundButton(self, name, parent, icon, text, disableInCombat)
+	local button = CreateFrame("Button", name, parent)
+	button:SetSize(31, 31)
+	button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
+
+	button:SetScript("OnEnter", SubControl_OnEnter)
+	button:SetScript("OnLeave", SubControl_OnLeave)
+
+	local border = button:CreateTexture(name and name.."Border", "OVERLAY")
+	border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+	border:SetSize(53, 53)
+	border:SetPoint("TOPLEFT")
+
+	button.icon = button:CreateTexture(name and name.."Icon", "ARTWORK")
+	button.icon:SetSize(20, 20)
+	button.icon:SetPoint("CENTER", 0, 1)
+	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	button.icon:SetTexture(icon)
+
+	button.text = button:CreateFontString(name and name.."Text", "ARTWORK", "GameFontHighlight")
+	button.text:SetPoint("LEFT", button, "RIGHT", 1, 0)
+	button.text:SetFont(STANDARD_TEXT_FONT, 13)
+	button.text:SetText(text)
+
+	if disableInCombat then
+		AddCombatDisableItem(self, button)
+	end
+
+	return button
 end
 
 local function AnchorToTopLeft(self, control, xOffset, yOffset)
@@ -1015,6 +1070,7 @@ function UICreateInterfaceOptionPage(name, title, subTitle, categoryParent, pare
 	page.AnchorToTopLeft = AnchorToTopLeft
 	page.AddCombatDisableItem = AddCombatDisableItem
 	page.CreatePanel = CreatePanel
+	page.CreateRoundButton = CreateRoundButton
 
 	return page
 end

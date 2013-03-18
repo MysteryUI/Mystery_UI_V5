@@ -7,6 +7,7 @@
 
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local InCombatLockdown = InCombatLockdown
 
 local _, addon = ...
 
@@ -172,4 +173,26 @@ container:SetScript("OnUpdate", function(self, elapsed)
 
 	self:SetSize(width, height)
 	frame:SetClampRectInsets(0, width - 16, 0, 16 - height) -- Is this function protected? Currently not, but it should be...
+end)
+
+--------------------------------------------------------------
+-- Some bugs really need to be fixed by Blizzard
+--------------------------------------------------------------
+
+local refFrame = CreateFrame("Frame", nil, frame)
+refFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
+refFrame:SetScript("OnEvent", function(self)
+	self.needRefresh = 1
+end)
+
+refFrame:SetScript("OnUpdate", function(self, elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed > 0.2 then
+		self.elapsed = 0
+		if self.needRefresh and not InCombatLockdown() then
+			self.needRefresh = nil
+			frame:Hide()
+			frame:Show()
+		end
+	end
 end)

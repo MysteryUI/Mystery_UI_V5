@@ -68,7 +68,7 @@
 -- Moonkin Aura, Shadowform, Elemental Oath
 
 -- CRITICAL_STRIKE
--- Leader of the Pack, Arcane Brilliance, Trueshot Aura, Legacy of the White Tiger, Furious Howl
+-- Leader of the Pack, Arcane Brilliance, Legacy of the White Tiger, Furious Howl
 
 --- MASTERY
 -- Legacy of the White Tiger, Blessing of Might, Grace of Air, Roar of Courage
@@ -123,7 +123,7 @@ local UnitDebuff = UnitDebuff
 local _
 
 local LIBNAME = "LibBuffGroups-1.0"
-local VERSION = 1.02
+local VERSION = 1.03
 
 local lib = _G[LIBNAME]
 if lib and lib.version >= VERSION then return end
@@ -194,7 +194,7 @@ AddAuraGroup("ATTACK_HASTE", 55610, 113742, 30809, 128433) -- Unholy Aura, Swift
 AddAuraGroup("SPELL_HASTE", 24907, 15473, 51470) -- Moonkin Aura, Shadowform, Elemental Oath
 
 -- CRITICAL_STRIKE
-AddAuraGroup("CRITICAL_STRIKE", 17007, 1459, 19506, 116956, 24604) -- Leader of the Pack, Arcane Brilliance, Trueshot Aura, Legacy of the White Tiger, Furious Howl
+AddAuraGroup("CRITICAL_STRIKE", 17007, 1459, 116956, 24604) -- Leader of the Pack, Arcane Brilliance, Trueshot Aura, Legacy of the White Tiger, Furious Howl
 
 --- MASTERY
 AddAuraGroup("MASTERY", 116781, 19740, 116956, 93435) -- Legacy of the White Tiger, Blessing of Might, Grace of Air, Roar of Courage

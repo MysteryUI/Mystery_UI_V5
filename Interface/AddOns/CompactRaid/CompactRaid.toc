@@ -1,6 +1,6 @@
 ﻿## Interface: 50200
 ## Title: CompactRaid
-## Version: 3.4(V5.2)
+## Version: 3.6(V5.22)
 ## Author: Abin Mystery
 ## Notes: |cffbc8f8fMysteryUI|r|cffb70000_CompactRaid。|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000团队框架CompactRaid。|r
