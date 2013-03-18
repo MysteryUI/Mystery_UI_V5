@@ -634,7 +634,7 @@ local function unitText(unit)
                         showManaPercent = true
                     end
                 end
-                if GetCVarBool("statusTextPercentage") and showManaPercent then
+                if textDisplay ~= "NUMERIC" and showManaPercent then
                     mMax = UnitPowerMax(unit)
                     mPercent = math.floor((m / mMax) * 100)
                     _G["f"..unit.."manapercent"]:Show()
