@@ -12,7 +12,7 @@ local _G = _G  --解决头像在换类似天赋，符文的时候出现暴雪禁
 local SellGreyCrap = true           -- 是否自动出售灰色物品.
 local HideHotKeys = false           -- 是否隐藏快捷键和宏在技能栏里的文本
 local HideClock = false             -- 是否隐藏暴雪时钟
-local checkthrown = true            -- 是否检毒药
+--local checkthrown = true            -- 是否检毒药
 local MoveWatchFrame = true         -- 是否移动任务追踪框体
 
 --头像布局切换设置：[PVP布局:/My pvp]，[PVE布局:/My pve] 注意命令后面的大小写必须一致！
@@ -102,8 +102,8 @@ local SetupUI = function()
 	SetCVar("alwaysShowActionBars", 1)
 	SetCVar("consolidateBuffs",0)
 	SetCVar("buffDurations",1)
-	SetCVar("useUiScale", 1)
-	SetCVar("uiScale", min(2, max(.9, 768/string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))))
+--	SetCVar("useUiScale", 1)
+--	SetCVar("uiScale", min(2, max(.9, 768/string.match(({GetScreenResolutions()})[GetCurrentResolution()], "%d+x(%d+)"))))
 
 	ToggleChatColorNamesByClassGroup(true, "SAY")
 	ToggleChatColorNamesByClassGroup(true, "EMOTE")
@@ -354,18 +354,18 @@ if (MoveWatchFrame == true) then
 end
  
 --[[ 盗贼毒药检查 ]]
-if(select(2,UnitClass("player")) ~= "ROGUE" or UnitLevel("player") < 20) then return end
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD") 
-f:RegisterEvent("UPDATE_STEALTH") 
-f:RegisterEvent("PLAYER_LEAVE_COMBAT") 
-f:SetScript("OnEvent", function()
-	local main, _, _, off, _, _, thrown = GetWeaponEnchantInfo()
-	if not UnitInVehicle("player") and(not main or not off or(not thrown and checkthrown == true)) then
-		--DEFAULT_CHAT_FRAME:AddMessage(L["##### 没毒药了 #####"], 1.0,0.96,0.41)  --聊天框提示.
-		UIErrorsFrame:AddMessage(L["##### 没毒药了 #####"], 1.0, 0.96, 0.41, 1.0);  --屏幕醒目提示.
-	end
-end)
+-- if(select(2,UnitClass("player")) ~= "ROGUE" or UnitLevel("player") < 20) then return end
+-- local f = CreateFrame("Frame")
+-- f:RegisterEvent("PLAYER_ENTERING_WORLD") 
+-- f:RegisterEvent("UPDATE_STEALTH") 
+-- f:RegisterEvent("PLAYER_LEAVE_COMBAT") 
+-- f:SetScript("OnEvent", function()
+	-- local main, _, _, off, _, _, thrown = GetWeaponEnchantInfo()
+	-- if not UnitInVehicle("player") and(not main or not off or(not thrown and checkthrown == true)) then
+		-- --DEFAULT_CHAT_FRAME:AddMessage(L["##### 没毒药了 #####"], 1.0,0.96,0.41)  --聊天框提示.
+		-- UIErrorsFrame:AddMessage(L["##### 没毒药了 #####"], 1.0, 0.96, 0.41, 1.0);  --屏幕醒目提示.
+	-- end
+-- end)
 
 -------------
 
