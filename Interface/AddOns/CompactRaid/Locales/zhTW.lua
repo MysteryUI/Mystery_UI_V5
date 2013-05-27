@@ -3,7 +3,7 @@
 -- 繁體中文
 
 -- Abin
--- 2013/03/14
+-- 2010/10/16
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhTW" then return end
@@ -99,4 +99,9 @@ addon.L = {
 	["tooltip position"] = "遊標提示位置",
 	["tooltip position unit frame"] = "單位框架",
 	["hide tool buttons"] = "隱藏工具按鈕",
+	["refresh frames"] = "刷新框架",
+	["tooltip text general"] = "設置單位框架的一般選項。",
+	["tooltip text raid targets"] = "設定/移除當前目標的標記圖標。",
+	["tooltip text world marks"] = "放置/移除世界標記。",
+	["tooltip text subgroups"] = "顯示/隱藏團隊中的各個小隊。",
 }

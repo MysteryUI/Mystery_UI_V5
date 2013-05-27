@@ -7,7 +7,7 @@ local AddonName, Addon = ...
 local ItemFrame = Addon:NewClass('ItemFrame', 'Button')
 
 --local bindings
-local ItemSearch = LibStub('LibItemSearch-1.0')
+local ItemSearch = LibStub('LibItemSearch-1.1')
 local FrameEvents = Addon('ItemFrameEvents')
 local Cache = LibStub('LibItemCache-1.0')
 local BagInfo = Addon('BagInfo')
@@ -107,7 +107,7 @@ function ItemFrame:HasItem(bag, slot, link)
 			return false
 		--text search
 		elseif f.name then
-			return ItemSearch:Find(link, f.name)
+			return ItemSearch:Matches(link, f.name)
 		end
 	end
 	return true

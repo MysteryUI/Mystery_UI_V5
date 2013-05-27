@@ -77,7 +77,7 @@ tierCombo:SetPoint("LEFT", tierCombo.text, "LEFT", maxWidth, 0)
 instanceCombo:SetPoint("LEFT", instanceCombo.text, "LEFT", maxWidth, 0)
 bossCombo:SetPoint("LEFT", bossCombo.text, "LEFT", maxWidth, 0)
 
-local list = UICreateVirtualScrollList(page:GetName().."DebuffList", page, 14, 1)
+local list = UICreateVirtualScrollList(page:GetName().."DebuffList", page, 14, 1, nil, "TABLE")
 page.debuffList = list
 list:SetSize(400, 282)
 list:SetPoint("TOPLEFT", bossCombo.text, "BOTTOMLEFT", 4, -36)
@@ -125,12 +125,6 @@ local function PriorityCombo_OnChange(self, value)
 end
 
 function list:OnButtonCreated(button)
-	button.icon = button:CreateTexture(nil, "ARTWORK")
-	button.icon:SetWidth(16)
-	button.icon:SetHeight(16)
-	button.icon:SetPoint("LEFT", 4, 0)
-	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-
 	button.priority = page:CreateComboBox()
 	button.priority:SetParent(button)
 	button.priority:SetWidth(100)
@@ -147,29 +141,15 @@ function list:OnButtonCreated(button)
 	button.priority:AddLine(L["ignore"], 0, nil, nil, 0.5, 0.5, 0.5)
 	button.priority.OnComboChanged = PriorityCombo_OnChange
 
-	button.text = button:CreateFontString(nil, "ARTWORK", "GameFontHighlightLeft")
-	button.text:SetPoint("LEFT", button.icon, "RIGHT", 8, 0)
-	button.text:SetPoint("RIGHT", button.priority, "LEFT")
 	button.text:SetTextColor(113 / 255, 213 / 255, 1)
 end
 
 function list:OnButtonUpdate(button, data)
-	button.icon:SetTexture(data.icon)
 	if data.custom then
 		button.text:SetText(data.name.." *")
-	else
-		button.text:SetText(data.name)
 	end
 	button.priority.spellID = data.id
 	button.priority:SetSelection(data.level, 1)
-end
-
-function list:OnButtonTooltip(button, data)
-	GameTooltip:SetHyperlink(data.link)
-end
-
-function list:OnButtonClick(button, data)
-	HandleModifiedItemClick(data.link)
 end
 
 function list:OnSelectionChanged(position, data)

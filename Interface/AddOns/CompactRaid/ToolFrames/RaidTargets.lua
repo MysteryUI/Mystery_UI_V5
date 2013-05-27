@@ -13,7 +13,7 @@ local UnitPopupButtons = UnitPopupButtons
 local _, addon = ...
 local L = addon.L
 
-local frame = addon:CreateToolbox("CompactRaidToolboxRaidTargets", 0.5, 0.5, 1)
+local frame = addon:CreateToolbox("CompactRaidToolboxRaidTargets", 0.5, 0.5, 1, BINDING_HEADER_RAID_TARGET, L["tooltip text raid targets"])
 local menu = frame:CreateMenu(BINDING_HEADER_RAID_TARGET, 1)
 
 local function IsAllowed()

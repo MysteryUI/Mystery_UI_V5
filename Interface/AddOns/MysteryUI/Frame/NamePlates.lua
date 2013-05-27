@@ -241,9 +241,11 @@
   --风格更新
   local updateStyle = function(f)
     --获取值
-    local healthBar, castBar = f:GetChildren()
-    local threatTexture, borderTexture, highlightTexture, nameText, levelText, bossIcon, raidIcon, dragonTexture = f:GetRegions()
-    local barfill, castborderTexture, shield, castbaricon = castBar:GetRegions()
+    local barFrame, nameTextFrame = f:GetChildren()
+	local healthBar, castBar = barFrame:GetChildren()
+    local threatTexture, borderTexture, highlightTexture, levelText, bossIcon, raidIcon, dragonTexture = barFrame: GetRegions() -- nameText,
+	local nameText = nameFrame:GetRegions()
+    local castborderTexture, shield, castbaricon = castBar:GetRegions()
     --应用颜色
     applyEnemyColor(f,healthBar)
     applyDifficultyColor(f,levelText)      
@@ -259,9 +261,11 @@
   --初始化风格
   local initStyle = function(f)
     --获取值
-    local healthBar, castBar = f:GetChildren()
-    local threatTexture, borderTexture, highlightTexture, nameText, levelText, bossIcon, raidIcon, dragonTexture = f:GetRegions()
-    local barfill, castborderTexture, shield, castbaricon = castBar:GetRegions()
+    local barFrame, nameTextFrame = f:GetChildren()
+	local healthBar, castBar = barFrame:GetChildren()
+    local threatTexture, borderTexture, highlightTexture, levelText, bossIcon, raidIcon, dragonTexture = barFrame: GetRegions() -- nameText,
+	local nameText = nameFrame:GetRegions()
+    local castborderTexture, shield, castbaricon = castBar:GetRegions()
     
     --初始化生命条和施法条的大小
     initHealthCastbarSize(healthBar,castBar)

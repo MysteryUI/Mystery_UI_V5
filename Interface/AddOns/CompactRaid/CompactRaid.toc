@@ -1,6 +1,6 @@
-﻿## Interface: 50200
+## Interface: 50300
 ## Title: CompactRaid
-## Version: 3.6(V5.22)
+## Version: 3.65(V5.3)
 ## Author: Abin Mystery
 ## Notes: |cffbc8f8fMysteryUI|r|cffb70000_CompactRaid。|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000团队框架CompactRaid。|r
@@ -9,7 +9,11 @@
 ## SavedVariablesPerCharacter: CompactRaidCharDB
 ## OptionalDeps: Clique
 ## X-Category: UnitFrame
-## X-eMail: msytery@vip.qq.com
+## X-eMail: abinn32@yahoo.com msytery@vip.qq.com
+## X-Curse-Packaged-Version: v3.65
+## X-Curse-Project-Name: CompactRaid
+## X-Curse-Project-ID: compactraid
+## X-Curse-Repository-ID: wow/compactraid/mainline
 
 ## X-WoWBox-Ver: 1
 ## X-WoWBox-ID: 3340

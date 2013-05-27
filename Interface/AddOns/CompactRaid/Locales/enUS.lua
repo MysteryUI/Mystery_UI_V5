@@ -2,7 +2,7 @@
 -- enUS.lua
 --
 -- Abin
--- 2013/03/14
+-- 2010/10/16
 ------------------------------------------------------------
 
 local _, addon = ...
@@ -96,4 +96,9 @@ addon.L = {
 	["tooltip position"] = "Tooltip Position",
 	["tooltip position unit frame"] = "Unit frame",
 	["hide tool buttons"] = "Hide tool buttons",
+	["refresh frames"] = "Refresh frames",
+	["tooltip text general"] = "General options for unit frames.",
+	["tooltip text raid targets"] = "Assign/remove raid target icons to current target unit.",
+	["tooltip text world marks"] = "Place/remove world marks.",
+	["tooltip text subgroups"] = "Show/hide sub groups in a raid.",
 }

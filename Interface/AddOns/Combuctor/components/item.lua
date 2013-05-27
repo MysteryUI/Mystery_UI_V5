@@ -7,7 +7,7 @@ local AddonName, Addon = ...
 local ItemSlot = Addon:NewClass('ItemSlot', 'Button')
 
 local Unfit = LibStub('Unfit-1.0')
-local ItemSearch = LibStub('LibItemSearch-1.0')
+local ItemSearch = LibStub('LibItemSearch-1.1')
 
 local BagInfo = Addon('BagInfo')
 local Cache = LibStub('LibItemCache-1.0')
@@ -259,47 +259,53 @@ function ItemSlot:IsLocked()
 	return select(3, self:GetInfo())
 end
 
---colors the item border based on the quality of the item.  hides it for common/poor items
-function ItemSlot:SetBorderQuality(quality)
-	local border = self.border
-	local qBorder = self.questBorder
-	
-	qBorder:Hide()
-	border:Hide()
-
-	if self:HighlightingQuestItems() then
-		local isQuestItem, isQuestStarter = self:IsQuestItem()
-		if isQuestItem then
-			border:SetVertexColor(1, .82, .2,  self:GetHighlightAlpha())
-			border:Show()
-			return
-		end
-
-		if isQuestStarter then
-			qBorder:SetTexture(TEXTURE_ITEM_QUEST_BANG)
-			qBorder:Show()
-			return
-		end
-	end
-	
-	local link = select(7, self:GetInfo())
-	if Unfit:IsItemUnusable(link) then
-		local r, g, b = RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b
-		border:SetVertexColor(r, g, b, self:GetHighlightAlpha())
-		border:Show()
-		return
-	end
-
-	if self:GetItem() and quality and quality > 1 then
-		local r, g, b = GetItemQualityColor(quality)
-		border:SetVertexColor(r, g, b, self:GetHighlightAlpha())
-		border:Show()
-	end
-end
-
+--colors the item border
 function ItemSlot:UpdateBorder()
 	local texture, count, locked, quality = self:GetInfo()
 	self:SetBorderQuality(quality)
+end
+
+function ItemSlot:SetBorderQuality(quality)
+	local item = self:GetItem()
+
+	self.questBorder:Hide()
+	self.border:Hide()
+
+	if self:HighlightQuestItems() then
+		local isQuestItem, isQuestStarter = self:IsQuestItem()
+		if isQuestItem then
+			return self:SetBorderColor(1, .82, .2)
+		end
+
+		if isQuestStarter then
+			self.questBorder:SetTexture(TEXTURE_ITEM_QUEST_BANG)
+			self.questBorder:Show()
+			return
+		end
+	end
+	
+	if self:HighlightUnusableItems() then
+		if Unfit:IsItemUnusable(item) then
+			return self:SetBorderColor(RED_FONT_COLOR.r, RED_FONT_COLOR.g, RED_FONT_COLOR.b)
+		end
+	end
+
+	if self:HighlightSetItems() then
+		if ItemSearch:InSet(item) then
+   			return self:SetBorderColor(.1, 1, 1)
+  		end
+  	end
+	
+	if self:HighlightItemsByQuality() then
+		if item and quality and quality > 1 then
+			self:SetBorderColor(GetItemQualityColor(quality))
+		end
+	end
+end
+
+function ItemSlot:SetBorderColor(r, g, b)
+	self.border:SetVertexColor(r, g, b, self:GetHighlightAlpha())
+	self.border:Show()
 end
 
 --cooldown
@@ -373,13 +379,21 @@ function ItemSlot:GetInfo()
 end
 
 
---[[ Item Type Highlighting ]]--
+--[[ Item Type Highlight ]]--
 
-function ItemSlot:HighlightingItemsByQuality()
+function ItemSlot:HighlightItemsByQuality()
 	return true
 end
 
-function ItemSlot:HighlightingQuestItems()
+function ItemSlot:HighlightQuestItems()
+	return true
+end
+
+function ItemSlot:HighlightUnusableItems()
+	return true
+end
+
+function ItemSlot:HighlightSetItems()
 	return true
 end
 
@@ -389,13 +403,13 @@ end
 
 local QUEST_ITEM_SEARCH = string.format('t:%s|%s', select(10, GetAuctionItemClasses()), 'quest')
 function ItemSlot:IsQuestItem()
-	local itemLink = self:GetItem()
-	if not itemLink then
+	local item = self:GetItem()
+	if not item then
 		return false, false
 	end
 
 	if self:IsCached() then
-		return ItemSearch:Find(itemLink, QUEST_ITEM_SEARCH), false
+		return ItemSearch:Matches(item, QUEST_ITEM_SEARCH), false
 	else
 		local isQuestItem, questID, isActive = GetContainerItemQuestInfo(self:GetBag(), self:GetID())
 		return isQuestItem, (questID and not isActive)

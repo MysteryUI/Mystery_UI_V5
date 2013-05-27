@@ -28,7 +28,7 @@ function module:StartCustomInput()
 	StaticPopup_Show(POPUP_ID)
 end
 
-local list = UICreateVirtualScrollList(page:GetName().."CustomList", page, 15, 1)
+local list = UICreateVirtualScrollList(page:GetName().."CustomList", page, 15, 1, nil, "TABLE")
 page.customLst = list
 list:SetAllPoints(debuffList)
 list:Hide()
@@ -98,28 +98,7 @@ label:SetPoint("BOTTOMLEFT", page.listPanel, "TOPLEFT")
 label:SetText(L["debuff list"])
 
 function list:OnButtonCreated(button)
-	button.icon = button:CreateTexture(nil, "ARTWORK")
-	button.icon:SetWidth(16)
-	button.icon:SetHeight(16)
-	button.icon:SetPoint("LEFT", 4, 0)
-	button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-
-	button.text = button:CreateFontString(nil, "ARTWORK", "GameFontHighlightLeft")
-	button.text:SetPoint("LEFT", button.icon, "RIGHT", 8, 0)
 	button.text:SetTextColor(113 / 255, 213 / 255, 1)
-end
-
-function list:OnButtonUpdate(button, data)
-	button.icon:SetTexture(data.icon)
-	button.text:SetText(data.name)
-end
-
-function list:OnButtonTooltip(button, data)
-	GameTooltip:SetHyperlink(data.link)
-end
-
-function list:OnButtonClick(button, data)
-	HandleModifiedItemClick(data.link)
 end
 
 function list:OnSelectionChanged(position, data)

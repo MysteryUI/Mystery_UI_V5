@@ -240,7 +240,7 @@ addon:RegisterOptionCallback("raidFilter", function(value)
 	local groupBy, groupingOrder, sortMethod
 	if value == "CLASS" then
 		groupBy = "CLASS"
-		groupingOrder = "PALADIN,DRUID,WARRIOR,WARLOCK,DEATHKNIGHT,MAGE,ROGUE,PRIEST,HUNTER,SHAMAN"
+		groupingOrder = "PALADIN,DRUID,WARRIOR,WARLOCK,DEATHKNIGHT,MAGE,ROGUE,PRIEST,HUNTER,SHAMAN,MONK"
 
 	elseif value == "ROLE" then
 		groupBy = "ROLE"
@@ -322,7 +322,7 @@ addon:RegisterOptionCallback("grouphoriz", UpdateLayout)
 addon:RegisterOptionCallback("spacing", UpdateLayout)
 
 local function SetAllHeadersAttribute(name, value)
-	local header
+	local _, header
 	for _, header in pairs(groupHeaders) do
 		header:SetAttribute(name, value)
 	end

@@ -249,7 +249,21 @@ local function Frame_CreateSecureMenu(self, title, rightIcon)
 	return menu
 end
 
-function addon:CreateToolbox(name, r, g, b)
+local function Frame_OnEnter(self)
+	if self.tooltipTitle then
+		GameTooltip_SetDefaultAnchor(GameTooltip, self)
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine(self.tooltipTitle)
+		GameTooltip:AddLine(self.tooltipText, 1, 1, 1, 1)
+		GameTooltip:Show()
+	end
+end
+
+local function Frame_OnLeave(self)
+	GameTooltip:Hide()
+end
+
+function addon:CreateToolbox(name, r, g, b, tooltipTitle, tooltipText)
 	local frame = CreateFrame("Button", name, toolboxParent, "SecureHandlerClickTemplate,UIMenuButtonStretchTemplate")
 	local prev = toolFrames[#toolFrames]
 	if prev then
@@ -261,12 +275,16 @@ function addon:CreateToolbox(name, r, g, b)
 	tinsert(toolFrames, frame)
 	frame:SetSize(24, 15)
 	self:RegisterMainFrameMover(frame)
+	frame.tooltipTitle, frame.tooltipText = tooltipTitle, tooltipText
 
 	local texture = frame:CreateTexture(name.."Texture", "ARTWORK")
 	texture:SetSize(10, 10)
 	texture:SetPoint("CENTER", 0, -1)
 	texture:SetTexture("Interface\\RaidFrame\\Raid-WorldPing")
 	texture:SetVertexColor(r, g, b)
+
+	frame:SetScript("OnEnter", Frame_OnEnter)
+	frame:SetScript("OnLeave", Frame_OnLeave)
 
 	frame:SetAttribute("_onclick", [[
 		local menuframe = self:GetFrameRef("menuframe")

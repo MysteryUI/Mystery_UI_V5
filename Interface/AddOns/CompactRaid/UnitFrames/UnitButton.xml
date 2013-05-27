@@ -2,7 +2,7 @@
 	<Button name="AbinCompactRaidUnitButtonTemplate" inherits="SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate" hidden="true" virtual="true">	
 		<Attributes>
 			<Attribute name="type1" type="string" value="target"/>
-			<Attribute name="type2" type="string" value="menu"/>
+			<Attribute name="type2" type="string" value="togglemenu"/>
 			<Attribute name="toggleForVehicle" type="boolean" value="true"/>			
 		</Attributes>
 		<Size><AbsDimension x="64" y="36"/></Size>

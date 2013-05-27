@@ -100,7 +100,6 @@ function list:OnButtonUpdate(button, data)
 		frame:Show()
 	end
 
-	--button.icon:SetTexture(data.file)
 	button.text:SetText(data.key)
 	button.idText:SetFormattedText("%d", data.id)
 end

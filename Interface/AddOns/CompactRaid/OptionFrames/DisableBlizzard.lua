@@ -40,7 +40,7 @@ DisableBlizzardFrame(CompactUnitFrameProfilesDeleteButton)
 
 CompactUnitFrameProfiles:UnregisterAllEvents()
 CompactUnitFrameProfiles:SetScript("OnEvent", nil)
-UIParent:UnregisterEvent("RAID_ROSTER_UPDATE")
+UIParent:UnregisterEvent("GROUP_ROSTER_UPDATE")
 
 -- Display some infomation so the user won't get confused when he sees a blank page
 local prompt = CompactUnitFrameProfiles:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -76,7 +76,7 @@ end
 
 addon:RegisterOptionCallback("showParty", function(value)
 	if value then
-		blizzPartyParent:Show()--Hide()  --如果你想！
+		blizzPartyParent:Hide()  --如果你想！
 	else
 		blizzPartyParent:Show()
 	end

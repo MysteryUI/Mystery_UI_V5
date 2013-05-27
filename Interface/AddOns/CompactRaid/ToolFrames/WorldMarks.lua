@@ -20,7 +20,7 @@ local function IsAllowed()
 	end
 end
 
-local frame = addon:CreateToolbox("CompactRaidToolboxWorldMarks", 0, 1, 0)
+local frame = addon:CreateToolbox("CompactRaidToolboxWorldMarks", 0, 1, 0, L["world marks"], L["tooltip text world marks"])
 RegisterStateDriver(frame, "visibility", "[group] show; hide")
 
 local menu = frame:CreateMenu(L["world marks"])

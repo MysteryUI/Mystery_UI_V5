@@ -146,7 +146,7 @@ local CLASS_DEFAULTS = {
 		["alt-2"]	= 18562, -- Swiftmend
 		["ctrl-2"]	= 33763, -- Lifebloom
 		["shift-2"]	= 88423, -- Nature's Curse
-		--["alt-ctrl-1"]	= "emergent",
+		["alt-ctrl-1"]	= "emergent",
 	},
 
 	SHAMAN = {
@@ -218,7 +218,7 @@ local function MakeEmergentMacro(spell1, spell2)
 end
 
 local EMERGENT_MACROS = {
-	--DRUID = MakeEmergentMacro(17116, 5185),
+	DRUID = MakeEmergentMacro(132158, 5185),
 	SHAMAN = MakeEmergentMacro(16188, 77472),
 }
 
@@ -244,7 +244,7 @@ for key, value in pairs(temp) do
 end
 
 defaultdb["1"] = "action:target"
-defaultdb["2"] = "action:menu"
+defaultdb["2"] = "action:togglemenu"
 
 function module:GetDefaultDB(key)
 	if key == "talent" then

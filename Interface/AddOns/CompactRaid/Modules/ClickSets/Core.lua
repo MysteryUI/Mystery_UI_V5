@@ -26,7 +26,7 @@ if not module then return end
 
 module.initialOff = 1
 module.BINDING_MODIFIERS = { "", "shift-", "ctrl-", "alt-", "ctrl-shift-", "alt-shift-", "alt-ctrl-", "alt-ctrl-shift-" }
-module.ACTION_TYPES = { menu = 1, target = 1, assist = 1, focus = 1, spell = 2, macro = 2, buildin = 2 }
+module.ACTION_TYPES = { togglemenu = 1, target = 1, assist = 1, focus = 1, spell = 2, macro = 2, buildin = 2 }
 
 local function AssignBindToUnitFrame(frame, modifier, id, action, extra)
 	local bindType, bindKey, bindValue
@@ -71,7 +71,7 @@ local function AssignBindToUnitFrame(frame, modifier, id, action, extra)
 			if id == 1 then
 				bindType = "target"
 			elseif id == 2 then
-				bindType = "menu"
+				bindType = "togglemenu"
 			end
 		end
 		frame:SetAttribute(modifier.."type"..id, bindType)
@@ -163,7 +163,17 @@ local function ConvertDB(db)
 		end
 
 		if not db["2"] then
-			db["2"] = "action:menu"
+			db["2"] = "action:togglemenu"
+		end
+	end
+end
+
+-- Change action "menu" to "togglemenu" for 5.3
+local function Convert_ToggleMenu(db)
+	local key, value
+	for key, value in pairs(db) do
+		if value == "action:menu" then
+			db[key] = "action:togglemenu"
 		end
 	end
 end
@@ -190,6 +200,7 @@ end
 
 function module:OnTalentGroupChange(talentGroup, talentdb, firstTime)
 	ConvertDB(talentdb)
+	Convert_ToggleMenu(talentdb)
 	AssignAll()
 	self:UpdateWheelCast()
 	self:InitOptionData()

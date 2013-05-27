@@ -16,8 +16,12 @@
 -- object:UnregisterEvent("event")
 -- object:RegisterAllEvents()
 -- object:UnregisterAllEvents()
--- object:RegisterTick(seconds)
+
+-- object:RegisterTick(interval) -- object:OnTick() will be called automatically
 -- object:UnregisterTick()
+-- object:SetInterval(interval)
+-- object:IsTicking()
+
 -- object:BroadcastEvent("event" [, ...])
 -- object:RegisterEventCallback("event", func [, arg1])
 -- object:BroadcastOptionEvent(option [, ...])
@@ -28,10 +32,9 @@
 local type = type
 local CreateFrame = CreateFrame
 local tinsert = tinsert
-local _
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 4
+local MINOR_VERSION = 6
 local LIB_NAME = "EmbedEvent-1.0"
 
 -- To prevent older libraries from over-riding newer ones...
@@ -69,13 +72,19 @@ local function Object_UnregisterAllEvents(self)
 	return self[LIB_NAME].frame:UnregisterAllEvents()
 end
 
-local function Object_RegisterTick(self, seconds)
-	if type(seconds) ~= "number" or seconds < 0.2 then
-		seconds = 0.2
+local function Object_SetInterval(self, interval)
+	if type(interval) ~= "number" or interval < 0.2 then
+		interval = 0.2
 	end
 
 	local frame = self[LIB_NAME].frame
-	frame.tickSeconds = seconds
+	frame.elapsed = 0
+	frame.tickSeconds = interval
+end
+
+local function Object_RegisterTick(self, interval)
+	Object_SetInterval(self, interval)
+	local frame = self[LIB_NAME].frame
 	frame:Show()
 end
 
@@ -194,6 +203,7 @@ function EmbedEventObject(object)
 	object.UnregisterAllEvents = Object_UnregisterAllEvents
 	object.RegisterTick = Object_RegisterTick
 	object.UnregisterTick = Object_UnregisterTick
+	object.SetInterval = Object_SetInterval
 	object.IsTicking = Object_IsTicking
 	object.BroadcastEvent = Object_BroadcastEvent
 	object.RegisterEventCallback = Object_RegisterEventCallback

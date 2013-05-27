@@ -144,7 +144,7 @@ function tabFrame:OnTabSelected(id)
 		if modifier == "" and (id == 1 or id == 2) then
 			line.disabled = 1
 			if not value then
-				value = id == 2 and "menu" or "target"
+				value = id == 2 and "togglemenu" or "target"
 			end
 		else
 			line.disabled = nil
@@ -177,7 +177,7 @@ for i = 1, #module.BINDING_MODIFIERS do
 
 	combo:AddLine(NONE)
 	combo:AddLine(TARGET, "target")
-	combo:AddLine(L["menu"], "menu")
+	combo:AddLine(L["menu"], "togglemenu")
 	combo:AddLine(BINDING_NAME_ASSISTTARGET, "assist")
 	combo:AddLine(SET_FOCUS, "focus")
 	combo:AddLine(FOLLOW, "follow")

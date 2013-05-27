@@ -3,7 +3,7 @@
 -- 简体中文
 
 -- Abin
--- 2013/03/14
+-- 2010/10/16
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhCN" then return end
@@ -98,4 +98,9 @@ addon.L = {
 	["tooltip position"] = "鼠标提示位置",
 	["tooltip position unit frame"] = "单位框体",
 	["hide tool buttons"] = "隐藏工具按钮",
+	["refresh frames"] = "刷新框体",
+	["tooltip text general"] = "设置单位框体的一般选项。",
+	["tooltip text raid targets"] = "设定/移除当前目标的标记图标。",
+	["tooltip text world marks"] = "放置/移除世界标记。",
+	["tooltip text subgroups"] = "显示/隐藏团队中的各个小队。",
 }

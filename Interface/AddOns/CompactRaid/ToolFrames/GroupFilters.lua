@@ -14,7 +14,7 @@ local L = addon.L
 
 if not addon.GetRaidGroup then return end
 
-local frame = addon:CreateToolbox("CompactRaidToolboxGroupFilter", 1, 1, 1)
+local frame = addon:CreateToolbox("CompactRaidToolboxGroupFilter", 1, 1, 1, RAID, L["tooltip text subgroups"])
 frame:Hide()
 
 addon:RegisterOptionCallback("keepgroupstogether", function(value)

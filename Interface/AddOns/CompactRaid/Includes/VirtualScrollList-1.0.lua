@@ -11,9 +11,9 @@
 -- API Documentation:
 -----------------------------------------------------------
 
--- frame = UICreateVirtualScrollList("name", parent, maxButtons [, selectable [, "buttonTemplate"]) -- Create a virtual scroll list frame
+-- frame = UICreateVirtualScrollList("name", parent, maxButtons [, selectable [, checkable [, "listType" [, "buttonTemplate"]]]) -- Create a virtual scroll list frame, if "listType" is specified "ITEM", "SPELL", "SPELL_ITEM", "ITEM_SPELL", the list will automatically display icons, names and tooltips for spell/item info
 
--- frame:CreateBorder() -- Decorate the list frame with a tooltip border
+-- frame:CreateBorder(hasBkgnd) -- Decorate the list frame with a tooltip border and an optional background
 -- frame:EnableDrag(enable) -- Enable drag-drop
 -- frame:IsDragEnabled(enable) -- Return whether drag-drop is enabled
 -- frame:GetScrollOffset() -- Return current scroll offset (0-N)
@@ -21,6 +21,7 @@
 -- frame:CheckVisible([position]) -- Check whether a position is visible in the list (nil-invalid, 0-visible, other-invisible), "position" defaults to current selection
 -- frame:EnsureVisible([position]) -- Ensure a position being visible, scroll the list if needed, "position" defaults to current selection
 -- frame:RefreshContents() -- Refresh the entire list, call only when necessary!
+-- frame:ScheduleRefresh() -- Schedule a contents refreshing on next "OnUpdate" call
 
 -- frame:SetSelection(position) -- Select a data
 -- frame:GetSelection() -- Get current selection
@@ -42,15 +43,16 @@
 -- Callback Methods:
 -----------------------------------------------------------
 
--- frame:OnReceiveDrag(cursorInfo, cursorType, button, isClick) --  Called when the list or a list button receives a drag-drop or a click with something at cursor
+-- frame:OnReceiveDrag(dataType, data, subType, subData) --  Called when the list or a list button receives a drag-drop or a click with something at cursor
 -- frame:OnButtonCreated(button) -- Called when a new list button is created
 -- frame:OnButtonUpdate(button, data) -- Called when a list button needs to be re-painted
--- frame:OnButtonTooltip(button, data) -- Called when the mouse hovers a list button, you only need to populate texts into GameTooltip
+-- frame:OnButtonTooltip(button, data, tooltip) -- Called when the mouse hovers a list button, you only need to populate texts into tooltip(GameTooltip)
 -- frame:OnButtonEnter(button, data, motion) -- Called when the mouse hovers a list button
 -- frame:OnButtonLeave(button, data, motion) -- Called when the mouse leaves a list button
 -- frame:OnSelectionChanged(position, data) -- Called when the selection changed
 -- frame:OnButtonClick(button, data, flag, down) -- Called when a list button is clicked
 -- frame:OnButtonDoubleClick(button, data) -- Called when a list button is double-clicked
+-- frame:OnButtonCheckBox(button, data, checkbox, checked) -- Called when a list button checkbox is checked or unchecked
 
 -----------------------------------------------------------
 
@@ -65,14 +67,22 @@ local ipairs = ipairs
 local wipe = wipe
 local error = error
 local format = format
+local strupper = strupper
 local hooksecurefunc = hooksecurefunc
 local GetCursorInfo = GetCursorInfo
 local ClearCursor = ClearCursor
+local GetSpellInfo = GetSpellInfo
+local GetSpellLink = GetSpellLink
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
+local pcall = pcall
+local HandleModifiedItemClick = HandleModifiedItemClick
+local GameTooltip = GameTooltip
 
 local NIL = "!2BFF-1B787839!"
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 24
+local MINOR_VERSION = 31
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateVirtualScrollList_IsNewerVersion) == "function" and not UICreateVirtualScrollList_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -149,6 +159,62 @@ local function Frame_TextureButton(self, textureName, button)
 	end
 end
 
+local SPELL_COLOR_R, SPELL_COLOR_G, SPELL_COLOR_B, SPELL_COLOR_CODE = 0x71 / 0xff, 0xd5 / 0xff, 1
+
+local function GetSpellData(id)
+	local name, _, icon = GetSpellInfo(id)
+	local link = GetSpellLink(id)
+	return name, icon, link, SPELL_COLOR_R, SPELL_COLOR_G, SPELL_COLOR_B
+end
+
+local function GetItemData(id)
+	local name, link, quality, _, _, _, _, _, _, icon = GetItemInfo(id)
+	local r, g, b = GetItemQualityColor(quality)
+	return name, icon, link, r, g, b
+end
+
+local function GetDataInfo(listType, id)
+	if type(id) == "table" and listType == "TABLE" then
+		return id.name, id.icon, id.link, id.r, id.g, id.b
+	end
+
+	if type(id) == "number" and id > 0 then
+		if listType == "SPELL" then
+			return GetSpellData(id)
+		elseif listType == "ITEM" then
+			return GetItemData(id)
+		end
+	end
+end
+
+local function Frame_UpdateButton(self, button, data)
+	if self.listType then
+		button._dataLink = nil
+		local name, icon, link, r, g, b = GetDataInfo(self.listType, data)
+		button._dataLink = link
+		button.icon:SetTexture(icon)
+		button.text:SetText(name)
+		if r then
+			button.text:SetTextColor(r, g, b)
+		end
+	end
+	SafeCall(self.OnButtonUpdate, self, button, data)
+end
+
+local function Frame_OnButtonTooltip(self, button, data)
+	if button._dataLink then
+		GameTooltip:SetOwner(button, "ANCHOR_LEFT")
+		GameTooltip:ClearLines()
+		pcall(GameTooltip.SetHyperlink, GameTooltip, button._dataLink)
+		GameTooltip:Show()
+	elseif type(self.OnButtonTooltip) == "function" then
+		GameTooltip:SetOwner(button, "ANCHOR_LEFT")
+		GameTooltip:ClearLines()
+		self:OnButtonTooltip(button, data, GameTooltip)
+		GameTooltip:Show()
+	end
+end
+
 -- Schedule a frame refresh
 local function Frame_ScheduleRefresh(self)
 	self.needRefresh = 1
@@ -165,21 +231,18 @@ local function Frame_SetScrollOffset(self, offset)
 	end
 end
 
-local function Frame_ProcessOnReceiveDrag(self, button, isClick)
+local function Frame_ProcessOnReceiveDrag(self)
 	if not self:IsDragEnabled() then
 		return
 	end
 
-	local cursorInfo, cursorType = GetCursorInfo()
-	ClearCursor()
-
-	if cursorInfo then
-		if self:IsDragEnabled() then
-			SafeCall(self.OnReceiveDrag, self, cursorInfo, cursorType, button, isClick)
+	local dataType, data, subType, subData = GetCursorInfo()
+	if dataType then
+		if SafeCall(self.OnReceiveDrag, self, dataType, data, subType, subData) then
+			ClearCursor()
 		end
+		return dataType
 	end
-
-	return cursorInfo
 end
 
 local function Frame_OnSelectionChanged(self)
@@ -194,27 +257,20 @@ local function ListButton_OnEnter(self, motion)
 	local parent = self:GetParent()
 	Frame_TextureButton(parent, "highlightTexture", self)
 	SafeCall(parent.OnButtonEnter, parent, self, self.data, motion)
-	if type(parent.OnButtonTooltip) == "function" then
-		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-		GameTooltip:ClearLines()
-		parent:OnButtonTooltip(self, self.data)
-		GameTooltip:Show()
-	end
+	Frame_OnButtonTooltip(parent, self, self.data)
 end
 
 local function ListButton_OnLeave(self, motion)
 	local parent = self:GetParent()
 	Frame_TextureButton(parent, "highlightTexture")
-	if parent.OnButtonTooltip then
-		GameTooltip:Hide()
-	end
+	GameTooltip:Hide()
 	SafeCall(parent.OnButtonLeave, parent, self, self.data, motion)
 end
 
 local function ListButton_OnClick(self, flag, down)
 	local parent = self:GetParent()
 	if flag == "LeftButton" then
-		if Frame_ProcessOnReceiveDrag(parent, self, 1) then
+		if Frame_ProcessOnReceiveDrag(parent) then
 			return
 		end
 
@@ -228,6 +284,10 @@ local function ListButton_OnClick(self, flag, down)
 		end
 	end
 
+	if self._dataLink then
+		HandleModifiedItemClick(self._dataLink)
+	end
+
 	SafeCall(parent.OnButtonClick, parent, self, self.data, flag, down)
 end
 
@@ -239,7 +299,7 @@ local function ListButton_OnDoubleClick(self, flag)
 end
 
 local function ListButton_OnReceiveDrag(self)
-	Frame_ProcessOnReceiveDrag(self:GetParent(), self)
+	Frame_ProcessOnReceiveDrag(self:GetParent())
 end
 
 -- Get the list button which is currently displaying the given data
@@ -251,8 +311,14 @@ local function Frame_UpdateButtonData(self, position)
 	local button = Frame_PositionToButton(self, position)
 	if button then
 		button.data = DecodeData(self.listData[position])
-		SafeCall(self.OnButtonUpdate, self, button, button.data)
+		Frame_UpdateButton(self, button, button.data)
 	end
+end
+
+local function CheckBox_OnClick(self)
+	local button = self:GetParent()
+	local parent = button:GetParent()
+	SafeCall(parent.OnButtonCheckBox, parent, button, button.data, self, self:GetChecked() and 1 or nil)
 end
 
 -- Create a list button
@@ -274,6 +340,27 @@ local function Frame_CreateListButton(self, id)
 	end
 
 	tinsert(self.listButtons, button)
+
+	if self.checkbox then
+		button.check = CreateFrame("CheckButton", button:GetName().."Check", button, "InterfaceOptionsCheckButtonTemplate")
+		button.check:SetHitRectInsets(0, 0, 0, 0)
+		button.check:SetPoint("LEFT", 4, 0)
+		button.check:SetScript("OnClick", CheckBox_OnClick)
+	end
+
+	if self.listType then
+		button.icon = button:CreateTexture(button:GetName().."Icon", "BORDER")
+		button.icon:SetSize(16, 16)
+		button.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+		if button.check then
+			button.icon:SetPoint("LEFT", button.check, "RIGHT", 4, 0)
+		else
+			button.icon:SetPoint("LEFT", 4, 0)
+		end
+		button.text = button:CreateFontString(button:GetName().."Text", "BORDER", "GameFontHighlightLeft")
+		button.text:SetPoint("LEFT", button.icon, "RIGHT", 4, 0)
+	end
+
 	SafeCall(self.OnButtonCreated, self, button, id)
 
 	button:HookScript("OnEnter", ListButton_OnEnter)
@@ -334,7 +421,7 @@ local function Frame_UpdateList(self)
 			end
 
 			button.data = DecodeData(data)
-			SafeCall(self.OnButtonUpdate, self, button, button.data)
+			Frame_UpdateButton(self, button, button.data)
 			button:Hide()
 			button:Show()
 		elseif button then
@@ -421,7 +508,7 @@ local function Frame_InsertData(self, data, position)
 	position = type(position) == "number" and min(limit, max(1, floor(position))) or limit
 	tinsert(self.listData, position, EncodeData(data))
 
-	if self.selectable then
+	if self.selection and position < self.selection then
 		self.selection = position
 		Frame_OnSelectionChanged(self)
 	end
@@ -502,10 +589,6 @@ local function Frame_UpdateData(self, position)
 		position = self.selection
 	end
 
-	if type(self.OnButtonUpdate) ~= "function" then
-		return
-	end
-
 	local data = self.listData[position]
 	if not data then
 		return
@@ -519,7 +602,7 @@ local function Frame_UpdateData(self, position)
 
 	local button = Frame_PositionToButton(self, position)
 	if button then
-		self:OnButtonUpdate(button, DecodeData(data))
+		Frame_UpdateButton(self, button, DecodeData(data))
 		return 1
 	end
 end
@@ -542,8 +625,12 @@ local function Frame_GetSelection(self)
 end
 
 local function Frame_SetSelection(self, position)
-	if not self.selectable or type(position) ~= "number" or not self.listData[position] then
+	if not self.selectable then
 		return
+	end
+
+	if type(position) ~= "number" or not self.listData[position] then
+		position = 0
 	end
 
 	if self.selection ~= position then
@@ -621,7 +708,7 @@ local function Frame_OnReceiveDrag(self)
 end
 
 local function Frame_OnMouseDown(self, flag)
-	Frame_ProcessOnReceiveDrag(self, nil, flag)
+	Frame_ProcessOnReceiveDrag(self)
 end
 
 local function Frame_EnableDrag(self, enable)
@@ -641,30 +728,47 @@ local function Frame_IsDragEnabled(self)
 end
 
 local function Frame_BindDataList(self, list)
-	if type(list) ~= "table" then
-		list = nil
-	end
-
-	if list == self.listData then
-		return
-	end
-
-
-	if list then
+	if type(list) == "table" then
 		self.listData = list
 		Frame_UpdateList(self)
 	else
 		Frame_Clear(self)
 	end
+
+	Frame_SetSelection(self, 0)
 end
 
-local function Frame_CreateBorder(self)
-	self:SetBackdrop({ edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = {left = 5, right = 5, top = 5, bottom = 5 } })
-	self:SetBackdropBorderColor(0.75, 0.75, 0.75, 0.75)
+local function Frame_CreateBorder(self, hasBkgnd)
+	local frame = self.borderFrame
+	if frame then
+		return frame
+	end
+
+	frame = CreateFrame("Frame", nil, self)
+	self.borderFrame = frame
+
+	frame:SetBackdrop({ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", tile = true, tileSize = 16, edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = {left = 5, right = 5, top = 5, bottom = 5 } })
+	frame:SetBackdropBorderColor(0.75, 0.75, 0.75, 0.75)
+	frame:SetPoint("TOPLEFT", -4, 5)
+	frame:SetPoint("BOTTOMRIGHT", 4, -4)
+
+	if not hasBkgnd then
+		frame:SetBackdropColor(0, 0, 0, 0)
+	end
+
+	return frame
+end
+
+local function ItemEventFrame_OnShow(self)
+	self:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+end
+
+local function ItemEventFrame_OnEvent(self)
+	Frame_ScheduleRefresh(self:GetParent())
 end
 
 -- Create the scroll list frame
-function UICreateVirtualScrollList(name, parent, maxButtons, selectable, buttonTemplate)
+function UICreateVirtualScrollList(name, parent, maxButtons, selectable, checkbox, listType, buttonTemplate)
 	if type(name) ~= "string" then
 		error(format("bad argument #1 to 'UICreateVirtualScrollList' (string expected, got %s)", type(name)))
 		return
@@ -679,9 +783,24 @@ function UICreateVirtualScrollList(name, parent, maxButtons, selectable, buttonT
 	frame:EnableMouseWheel(true)
 	frame.maxButtons = type(maxButtons) == "number" and max(1, floor(maxButtons)) or 1
 	frame.selectable = selectable
-	frame.buttonTemplate = type(buttonTemplate) == "string" and buttonTemplate or nil
+	frame.checkbox = checkbox
 	frame.listButtons = {}
 	frame.listData = {}
+
+	if type(listType) == "string" then
+		frame.listType = listType
+	end
+
+	if type(buttonTemplate) == "string" then
+		frame.buttonTemplate = buttonTemplate
+	end
+
+	if listType == "ITEM" then
+		local ief = CreateFrame("Frame", nil, frame)
+		ief:SetScript("OnShow", ItemEventFrame_OnShow)
+		ief:SetScript("OnHide", itemEventFrame.UnregisterAllEvents)
+		ief:SetScript("OnEvent", ItemEventFrame_OnEvent)
+	end
 
 	local scrollBar = CreateFrame("Frame", name.."ScrollBar", frame)
 	frame.scrollBar = scrollBar
@@ -758,6 +877,7 @@ function UICreateVirtualScrollList(name, parent, maxButtons, selectable, buttonT
 	frame.IsDragEnabled = Frame_IsDragEnabled
 	frame.BindDataList = Frame_BindDataList
 	frame.MoveData = Frame_MoveData
+	frame.ScheduleRefresh = Frame_ScheduleRefresh
 	return frame
 end
 

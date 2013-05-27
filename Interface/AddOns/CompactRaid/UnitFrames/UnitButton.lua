@@ -608,6 +608,7 @@ local GHOST_AURA, _, GHOST_TEXTURE = GetSpellInfo(8326)
 local DEATH_TEXTURE = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
 local SPIRIT_OF_REDEMPTION = GetSpellInfo(27827)
 local SPIRIT_TEXTURE = "Interface\\Icons\\Spell_Holy_GuardianSpirit"
+local CAUTERIZE_AURA, _, CAUTERIZE_TEXTURE = GetSpellInfo(87023)
 
 local function UnitFrame_UpdateFlags(self)
 	local unit = self.unit
@@ -630,6 +631,10 @@ local function UnitFrame_UpdateFlags(self)
 		flag = "spirit"
 		texture = SPIRIT_TEXTURE
 		text = DEAD
+	elseif self.unitClass == "MAGE" and select(11, UnitDebuff(unit, CAUTERIZE_AURA)) == 87023 then
+		flag = "dying"
+		texture = CAUTERIZE_TEXTURE
+		text = CAUTERIZE_AURA
 	end
 
 	self.flagIcon:SetTexture(texture)
@@ -710,7 +715,7 @@ end
 local function UnitFrame_RegisterEvents(self)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED")
-	self:RegisterEvent("RAID_ROSTER_UPDATE")
+	self:RegisterEvent("GROUP_ROSTER_UPDATE")
 	self:RegisterEvent("UNIT_HEALTH")
 	self:RegisterEvent("UNIT_MAXHEALTH")
 	self:RegisterEvent("UNIT_POWER")
@@ -758,6 +763,7 @@ end
 local function UnitFrame_OnEnter(self)
 	local unit = self.displayedUnit
 	if not unit then return end
+	self.needUpdate = 1
 	self.highlight:Show()
 
 	if not (addon.db.showtooltip == 0 or (addon.db.showtooltip == 1 and InCombatLockdown())) then
@@ -830,7 +836,7 @@ local function UnitFrame_OnAttributeChanged(self, name, value)
 end
 
 local function UnitFrame_OnEvent(self, event, unit)
-	if event == "PLAYER_ENTERING_WORLD" or event == "PARTY_MEMBERS_CHANGED" or event == "RAID_ROSTER_UPDATE" then
+	if event == "PLAYER_ENTERING_WORLD" or event == "PARTY_MEMBERS_CHANGED" or event == "GROUP_ROSTER_UPDATE" then
 		self.needUpdate = 1
 	elseif event == "PLAYER_TARGET_CHANGED" then
 		UnitFrame_UpdateTarget(self)
@@ -869,7 +875,7 @@ local function UnitFrame_OnEvent(self, event, unit)
 			UnitFrame_UpdatePowerMax(self)
 			UnitFrame_UpdatePower(self)
 			UnitFrame_UpdatePowerType(self)
-		elseif event == "UNIT_AURA" then
+		elseif event == "UNIT_AURA" or event == "UNIT_FLAGS" then
 			UnitFrame_UpdateAuras(self)
 			self.flagChanged = 1
 		elseif event == "UNIT_THREAT_SITUATION_UPDATE" then
@@ -878,8 +884,6 @@ local function UnitFrame_OnEvent(self, event, unit)
 			UnitFrame_UpdateReadyCheck(self)
 		elseif event == "INCOMING_RESURRECT_CHANGED" then
 			UnitFrame_UpdateResurrect(self)
-		elseif event == "UNIT_FLAGS" then
-			self.flagChanged = 1
 		end
 	end
 end

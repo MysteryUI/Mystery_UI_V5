@@ -23,10 +23,20 @@ local function IsAllowed(officer)
 	end
 end
 
-local frame = addon:CreateToolbox("CompactRaidToolboxGeneral", 1, 1, 0)
+local frame = addon:CreateToolbox("CompactRaidToolboxGeneral", 1, 1, 0, GENERAL, L["tooltip text general"])
 local menu = frame:CreateMenu(GENERAL)
 
-local button = menu:AddClickButton(CONVERT_TO_RAID, "SecureHandlerStateTemplate")
+-- Refresh
+local button = menu:AddClickButton(L["refresh frames"])
+button:SetFrameRef("container", addon:GetMainFrame())
+button:SetAttribute("_onclick", [[
+	self:GetParent():Hide()
+	local container = self:GetFrameRef("container")
+	container:Hide()
+	container:Show()
+]])
+
+button = menu:AddClickButton(CONVERT_TO_RAID, "SecureHandlerStateTemplate")
 
 button:SetScript("OnUpdate", function(self)
 	self:Grayout(not IsAllowed())

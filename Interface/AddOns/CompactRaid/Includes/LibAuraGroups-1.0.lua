@@ -59,7 +59,7 @@
 -- Horn of the Winter, Trueshot Aura, Battle Shout
 
 -- SPELL_POWER
--- Arcane Brilliance, Burning Wrath, Dark Intent
+-- Arcane Brilliance, Burning Wrath, Dark Intent, Dalaran Brilliance
 
 -- ATTACK_HASTE
 -- Unholy Aura, Swiftblade's Cunning, Unleashed Rage, Serpent's Swiftness
@@ -123,7 +123,7 @@ local UnitDebuff = UnitDebuff
 local _
 
 local LIBNAME = "LibBuffGroups-1.0"
-local VERSION = 1.03
+local VERSION = 1.04
 
 local lib = _G[LIBNAME]
 if lib and lib.version >= VERSION then return end
@@ -179,13 +179,13 @@ end
 AddAuraGroup("STATS", 1126, 115921, 20217, 90363) -- Mark of the Wild, Legacy of the Emperor, Blessing of Kings, Embrace of the Shale Spider
 
 -- STAMINA
-AddAuraGroup("STAMINA", 21562, 103127, 469, 90364) -- Power Word: Fortitude, Imp: Blood Pact, Commanding Shout, Qiraji Fortitude
+AddAuraGroup("STAMINA", 109773, 21562, 103127, 469, 90364) -- Dark Intent, Power Word: Fortitude, Imp: Blood Pact, Commanding Shout, Qiraji Fortitude
 
 -- ATTACK_POWER
 AddAuraGroup("ATTACK_POWER", 57330, 19506, 6673) -- Horn of the Winter, Trueshot Aura, Battle Shout
 
 -- SPELL_POWER
-AddAuraGroup("SPELL_POWER", 1459, 77747, 109773) -- Arcane Brilliance, Burning Wrath, Dark Intent
+AddAuraGroup("SPELL_POWER", 109773, 1459, 77747, 61316) -- Dark Intent, Arcane Brilliance, Burning Wrath, Dalaran Brilliance
 
 -- ATTACK_HASTE
 AddAuraGroup("ATTACK_HASTE", 55610, 113742, 30809, 128433) -- Unholy Aura, Swiftblade's Cunning, Unleashed Rage, Serpent's Swiftness
