@@ -28,6 +28,29 @@ end)
 
 local menu = frame:CreateMenu(RAID)
 
+local button = menu:AddClickButton(L["group swap"], nil, nil, 1)
+
+function button:OnClick()
+	if addon:GroupSwapEnabled() then
+		addon:DisableGroupSwap()
+	else
+		addon:EnableGroupSwap()
+	end
+end
+
+button:SetScript("OnShow", function(self)
+	if addon:CanGroupSwap() then
+		self.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+		if addon:GroupSwapEnabled() then
+			self.check:Show()
+		else
+			self.check:Hide()
+		end
+	else
+		self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	end
+end)
+
 local function Button_OnUpdate(self)
 	local filterGroup = self.filterGroup
 	if filterGroup:IsShown() then

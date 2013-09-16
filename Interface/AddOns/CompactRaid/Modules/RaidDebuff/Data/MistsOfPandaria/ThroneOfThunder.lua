@@ -14,9 +14,10 @@ local BOSS
 
 -- Jin'rokh the Breaker (827)
 BOSS = 827
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 138002)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 138002, 1)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 138349)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 137423, 5)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 137423, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 138732, 5)
 
 -- Horridon (819)
 BOSS = 819
@@ -40,6 +41,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 136857)
 -- Tortos (825)
 BOSS = 825
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 137633)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 140701, 4)
 
 -- Megaera (821)
 BOSS = 821
@@ -49,6 +51,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 139841)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 139839)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 140179, 4)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 139993)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 139857, 5)
 
 -- Ji-Kun (828)
 BOSS = 828
@@ -85,8 +88,8 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 136962, 5)
 -- Iron Qon (817)
 BOSS = 817
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 134691, 4)
---module:RegisterDebuff(TIER, INSTANCE, BOSS, 134647)
---module:RegisterDebuff(TIER, INSTANCE, BOSS, 136193)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 134647)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136193)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 137669)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136892)
 
@@ -100,6 +103,8 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 137440)
 BOSS = 832
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 134912, 5)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136478)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 135695, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136295, 4)
 
 -- Common
 module:RegisterDebuff(TIER, INSTANCE, 0, 140049)

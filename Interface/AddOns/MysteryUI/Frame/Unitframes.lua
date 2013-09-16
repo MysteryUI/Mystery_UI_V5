@@ -247,6 +247,9 @@ PaladinPowerBar:SetPoint("CENTER",UIParent,"CENTER",0,-160)--神圣能量位置
 --[[灵魂碎片]]
 ShardBarFrame:ClearAllPoints() 
 ShardBarFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160)--灵魂碎片框体位置，真心不是很好看=0.0
+--[[恶魔之怒]]
+WarlockPowerFrame:ClearAllPoints() 
+WarlockPowerFrame:SetPoint("CENTER",UIParent,"CENTER",0,-160)--恶魔之怒框体位置
 end
 
 --[[ 隐藏pvp图标 ]]

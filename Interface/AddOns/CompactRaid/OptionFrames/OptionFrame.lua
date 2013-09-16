@@ -230,10 +230,10 @@ local anchor
 local group = templates:CreateOptionMultiSelectionGroup(page, L["general options"])
 page:AnchorToTopLeft(group, 0, -6)
 group:AddButton(L["lock position"], "lock")
-group:AddButton(L["show solo"], "showSolo", 1)
-group:AddButton(L["show party"], "showParty", 1)
-group:AddButton(L["show party pets"], "showPartyPets", 1, "charOption", 1)
-group:AddButton(L["show raid pets"], "showRaidPets", 1, "charOption", 1)
+group:AddButton(L["show solo"], "showSolo", 0)
+group:AddButton(L["show party"], "showParty", 0)
+group:AddButton(L["show party pets"], "showPartyPets", 0, "charOption", 1)
+group:AddButton(L["show raid pets"], "showRaidPets", 0, "charOption", 1)
 group:AddButton(L["horizontal align"], "grouphoriz", 1)
 group:AddButton(L["keep raid groups together"], "keepgroupstogether", 1)
 
@@ -439,7 +439,7 @@ local function InitOptionData(db, chardb)
 		db.v30 = 1
 		db.lock =1
 		db.showSolo = 0
-		db.showParty = 1
+		db.showParty = 0
 		db.keepgroupstogether = 1
 		db.raidFilter = "CLASS"
 		chardb.showPartyPets = 0
@@ -458,8 +458,8 @@ local function InitOptionData(db, chardb)
 	LoadOption("hideToolboxes", 1)
 
 	LoadOption("hidebarbkgnd", 1)
-	LoadOption("showSolo")
-	LoadOption("showParty")
+	LoadOption("showSolo", 0)
+	LoadOption("showParty", 0)
 	LoadOption("showPartyPets", nil, nil, nil, 1)
 	LoadOption("showRaidPets", nil, nil, nil, 1)
 

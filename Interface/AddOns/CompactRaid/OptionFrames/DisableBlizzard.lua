@@ -76,7 +76,7 @@ end
 
 addon:RegisterOptionCallback("showParty", function(value)
 	if value then
-		blizzPartyParent:Hide()  --Èç¹ûÄãÏë£¡
+		blizzPartyParent:Hide()
 	else
 		blizzPartyParent:Show()
 	end

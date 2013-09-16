@@ -2,17 +2,16 @@
 -- zhTW.lua
 -- 繁體中文
 
--- Abin
--- 2010/10/16
+-- Abin Mystery
+-- 2013/09/12
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhTW" then return end
-
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI團隊框架已載入，版本 %s by Abin Mystery，輸入 /craid 進行設置。",
-	["desc"] = "設置CompactRaid框架外觀和屬性，大部份設置作用於全帳號。",
+	["load prompt"] = "版本 %s by Abin 已載入，輸入 /craid 進行設置。",
+	["desc"] = "設置MysteryUI團隊框架外觀和屬性，大部份設置作用於全帳號。",
 	["general options"] = "一般選項",
 	["scale"] = "縮放",
 	["x-offset"] = "X偏移",
@@ -103,5 +102,9 @@ addon.L = {
 	["tooltip text general"] = "設置單位框架的一般選項。",
 	["tooltip text raid targets"] = "設定/移除當前目標的標記圖標。",
 	["tooltip text world marks"] = "放置/移除世界標記。",
-	["tooltip text subgroups"] = "顯示/隱藏團隊中的各個小隊。",
+	["tooltip text subgroups"] = "操作團隊中的各個小隊。",
+	["group swap"] = "開啟換隊模式",
+	["group swap notify"] = "新功能：|cff00ff00換隊模式|r\n點擊下方的\"團隊\"工具按鈕，選擇\"開啟換隊模式\"（需要團長或助理權限）。",
+	["group swap prompt"] = "拖動隊員框體到另一個隊員框體上或另一小隊上以更改他的隊伍。按ESC退出換隊模式。",
+	["cannot change groups in combat"] = "無法在戰鬥中開啟換隊模式。",
 }

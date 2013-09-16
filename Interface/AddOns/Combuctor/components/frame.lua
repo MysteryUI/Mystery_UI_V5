@@ -51,7 +51,7 @@
 
 local AddonName, Addon = ...
 local InventoryFrame = Addon:NewClass('Frame', 'Frame')
-Addon.Frames = {}
+Addon.frames = {}
 
 --local references
 local L = LibStub('AceLocale-3.0'):GetLocale(AddonName)
@@ -108,7 +108,7 @@ function InventoryFrame:New(titleText, settings, isBank, key)
 
 	lastID = lastID + 1
 	tinsert(UISpecialFrames, f:GetName())
-  	Addon.Frames[key] = f
+  	Addon.frames[key] = f
 
 	return f
 end
@@ -507,12 +507,10 @@ function InventoryFrame:OnHide()
 	PlaySound('igBackPackClose')
 	Addon('FrameEvents'):Unregister(self)
 
-	--it may look stupid, but yes
 	if self:IsBank() and self:AtBank() then
 		CloseBankFrame()
 	end
 
-	--return to showing the current player on close
 	self:SetPlayer(UnitName('player'))
 end
 
@@ -564,5 +562,5 @@ function InventoryFrame:IsBank()
 end
 
 function InventoryFrame:AtBank()
-	return Addon('InventoryEvents').AtBank()
+	return Addon.BagEvents.atBank
 end

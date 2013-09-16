@@ -251,7 +251,7 @@ end
 
 local function Frame_OnEnter(self)
 	if self.tooltipTitle then
-		GameTooltip_SetDefaultAnchor(GameTooltip, self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:ClearLines()
 		GameTooltip:AddLine(self.tooltipTitle)
 		GameTooltip:AddLine(self.tooltipText, 1, 1, 1, 1)
@@ -297,6 +297,7 @@ function addon:CreateToolbox(name, r, g, b, tooltipTitle, tooltipText)
 		end
 	]])
 
+	frame:SetScript("PreClick", Frame_OnLeave)
 	frame.CreateMenu = Frame_CreateSecureMenu
 	return frame
 end

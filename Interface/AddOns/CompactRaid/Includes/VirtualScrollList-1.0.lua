@@ -82,7 +82,7 @@ local GameTooltip = GameTooltip
 local NIL = "!2BFF-1B787839!"
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 31
+local MINOR_VERSION = 35
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateVirtualScrollList_IsNewerVersion) == "function" and not UICreateVirtualScrollList_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -99,45 +99,6 @@ local function SafeCall(func, ...)
 	if type(func) == "function" then
 		return func(...)
 	end
-end
-
--- Update slider buttons stats: enable/disable according to scroll range and offset
-local function Slider_UpdateSliderButtons(self)
-	local low, high = self:GetMinMaxValues()
-	local value = self:GetValue()
-	local up = self:GetParent().Up
-	local down = self:GetParent().Down
-
-	if low and high and value then
-		if value <= low then
-			up:Disable()
-		else
-			up:Enable()
-		end
-
-		if value >= high then
-			down:Disable()
-		else
-			down:Enable()
-		end
-	end
-end
-
-local function ScrollBar_Button_OnClick(self)
-	local slider = self:GetParent().slider
-	slider:SetValue(slider:GetValue() + self.value)
-end
-
--- Create slider button: Up/Down
-local function ScrollBar_CreateScrollButton(self, value)
-	local button = CreateFrame("Button", self:GetName()..value.."Button", self, "UIPanelScroll"..value.."ButtonTemplate")
-	button.value = value == "Up" and -1 or 1
-	self[value] = button
-	button:SetWidth(16)
-	button:SetHeight(14)
-	button:SetPoint(value == "Up" and "TOP" or "BOTTOM")
-	button:Disable()
-	button:SetScript("OnClick", ScrollBar_Button_OnClick)
 end
 
 -- Apply or remove a texture(highlight/checked) to/from a particular list button
@@ -202,31 +163,33 @@ local function Frame_UpdateButton(self, button, data)
 end
 
 local function Frame_OnButtonTooltip(self, button, data)
+	GameTooltip:SetOwner(button, "ANCHOR_LEFT")
+	GameTooltip:ClearLines()
+
 	if button._dataLink then
-		GameTooltip:SetOwner(button, "ANCHOR_LEFT")
-		GameTooltip:ClearLines()
 		pcall(GameTooltip.SetHyperlink, GameTooltip, button._dataLink)
-		GameTooltip:Show()
-	elseif type(self.OnButtonTooltip) == "function" then
-		GameTooltip:SetOwner(button, "ANCHOR_LEFT")
-		GameTooltip:ClearLines()
-		self:OnButtonTooltip(button, data, GameTooltip)
-		GameTooltip:Show()
 	end
+
+	if type(self.OnButtonTooltip) == "function" then
+		self:OnButtonTooltip(button, data, GameTooltip)
+	end
+
+	GameTooltip:Show()
 end
 
 -- Schedule a frame refresh
 local function Frame_ScheduleRefresh(self)
+	self._updateElapsed = 0
 	self.needRefresh = 1
 end
 
 local function Frame_GetScrollOffset(self)
-	return self.slider:GetValue()
+	return self.scrollBar:GetValue()
 end
 
 local function Frame_SetScrollOffset(self, offset)
 	if type(offset) == "number" then
-		self.slider:SetValue(offset)
+		self.scrollBar:SetValue(offset)
 		return Frame_GetScrollOffset(self)
 	end
 end
@@ -326,7 +289,9 @@ local function Frame_CreateListButton(self, id)
 	local button = CreateFrame("Button", self:GetName().."Button"..id, self, self.buttonTemplate)
 	button:SetID(id)
 
-	if button:GetHeight() == 0 then
+	if type(self.buttonHeight) == "number" then
+		button:SetHeight(self.buttonHeight)
+	else
 		button:SetHeight(20)
 	end
 
@@ -405,7 +370,7 @@ end
 
 -- Update list buttons' contents, gives the user a chance to re-paint buttons
 local function Frame_UpdateList(self)
-	local offset = self.slider:GetValue()
+	local offset = self.scrollBar:GetValue()
 	local i, checkedButton
 	for i = 1, self.maxButtons do
 		local button = self.listButtons[i]
@@ -436,30 +401,28 @@ end
 local function Frame_RefreshContents(self)
 	self.needRefresh = nil
 	local scrollBar = self.scrollBar
-	local slider = self.slider
 	local maxButtons = self.maxButtons
 	local dataCount = #(self.listData)
 	local range = max(0, dataCount - maxButtons)
 
 	if range > 0 then
-		slider.thumb:SetHeight(max(6, slider:GetHeight() * (maxButtons / dataCount)))
-		scrollBar:SetWidth(14)
+		scrollBar:SetWidth(16)
 		scrollBar:Show()
 	else
 		scrollBar:Hide()
 		scrollBar:SetWidth(1)
 	end
 
-	slider:SetMinMaxValues(0, range)
-	if slider:GetValue() > range then
-		slider:SetValue(range)
+	scrollBar:SetMinMaxValues(0, range)
+	if scrollBar:GetValue() > range then
+		scrollBar:SetValue(range)
 	else
 		Frame_UpdateList(self)
 	end
 end
 
-local function Slider_OnValueChanged(self, value)
-	Frame_UpdateList(self.listFrame)
+local function ScrollBar_OnValueChanged(self, value)
+	Frame_UpdateList(self:GetParent())
 end
 
 local function Frame_GetDataCount(self)
@@ -690,16 +653,20 @@ local function Frame_MoveData(self, position, direction)
 end
 
 local function Frame_OnMouseWheel(self, value)
-	local slider = self.slider
-	local _, range = slider:GetMinMaxValues()
+	local scrollBar = self.scrollBar
+	local _, range = scrollBar:GetMinMaxValues()
 	if range > 0 then
-		slider:SetValue(slider:GetValue() - max(1, range / 10) * value)
+		scrollBar:SetValue(scrollBar:GetValue() - max(1, range / 10) * value)
 	end
 end
 
-local function Frame_OnUpdate(self)
-	if self.needRefresh then
-		Frame_RefreshContents(self)
+local function Frame_OnUpdate(self, elapsed)
+	self._updateElapsed = (self._updateElapsed or 0) + elapsed
+	if self._updateElapsed > 0.2 then
+		self._updateElapsed = 0
+		if self.needRefresh then
+			Frame_RefreshContents(self)
+		end
 	end
 end
 
@@ -793,6 +760,8 @@ function UICreateVirtualScrollList(name, parent, maxButtons, selectable, checkbo
 
 	if type(buttonTemplate) == "string" then
 		frame.buttonTemplate = buttonTemplate
+	elseif type(buttonTemplate) == "number" and buttonTemplate > 1 then
+		frame.buttonHeight = buttonTemplate
 	end
 
 	if listType == "ITEM" then
@@ -802,36 +771,16 @@ function UICreateVirtualScrollList(name, parent, maxButtons, selectable, checkbo
 		ief:SetScript("OnEvent", ItemEventFrame_OnEvent)
 	end
 
-	local scrollBar = CreateFrame("Frame", name.."ScrollBar", frame)
+	local scrollBar = CreateFrame("Slider", frame:GetName().."ScrollBar", frame, "UIPanelScrollBarTemplate")
 	frame.scrollBar = scrollBar
+	scrollBar:SetScript("OnValueChanged", ScrollBar_OnValueChanged)
+	scrollBar:SetPoint("TOPRIGHT", 0, -16)
+	scrollBar:SetPoint("BOTTOMRIGHT", 0, 16)
 	scrollBar:Hide()
 	scrollBar:SetWidth(1)
-	scrollBar:SetPoint("TOPRIGHT")
-	scrollBar:SetPoint("BOTTOMRIGHT")
-	ScrollBar_CreateScrollButton(scrollBar, "Up")
-	ScrollBar_CreateScrollButton(scrollBar, "Down")
-
-	local slider = CreateFrame("Slider", scrollBar:GetName().."Slider", scrollBar)
-	frame.slider = slider
-	scrollBar.slider = slider
-	slider.listFrame = frame
-	slider:SetValueStep(1)
-	slider:SetWidth(14)
-	slider:SetPoint("TOP", scrollBar.Up, "BOTTOM", 0, -1)
-	slider:SetPoint("BOTTOM", scrollBar.Down, "TOP", 0, 1)
-	slider:SetMinMaxValues(0, 0)
-	slider:SetValue(0)
-	hooksecurefunc(slider, "SetMinMaxValues", Slider_UpdateSliderButtons)
-	hooksecurefunc(slider, "SetValue", Slider_UpdateSliderButtons)
-
-	local thumb = slider:CreateTexture(name.."SliderThumbTexture", "OVERLAY")
-	slider.thumb = thumb
-	thumb:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-	thumb:SetWidth(slider:GetWidth())
-	thumb:SetGradientAlpha("HORIZONTAL", 0.5, 0.5, 0.5, 0.75, 0.15, 0.15, 0.15, 1)
-	slider:SetThumbTexture(thumb)
-
-	slider:SetScript("OnValueChanged", Slider_OnValueChanged)
+	scrollBar:SetValueStep(1)
+	scrollBar:SetMinMaxValues(0, 0)
+	scrollBar:SetValue(0)
 
 	frame.highlightTexture = frame:CreateTexture(name.."HighlightTexture", "BORDER")
 	frame.highlightTexture:Hide()

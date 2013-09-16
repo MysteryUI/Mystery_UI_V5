@@ -356,11 +356,13 @@ do
 	for i, name in pairs(BagButtonFrameList) do
 		name:SetParent(CornerMenuFrame.BagButtonFrame)
 	end
-	
-    MainMenuBarBackpackButton:ClearAllPoints();
-	MainMenuBarBackpackButton:SetPoint("BOTTOM");
-	MainMenuBarBackpackButton:SetPoint("RIGHT", -60, 0);
-	--MainMenuBarBackpackButton:SetScale(.8)
+	--隐藏背包，如果需要显示请注释掉下面这句并把【包裹定位】下面的注释打开即可！
+	MainMenuBarBackpackButton:Hide();
+	-- --包裹定位
+    -- MainMenuBarBackpackButton:ClearAllPoints();
+	-- MainMenuBarBackpackButton:SetPoint("BOTTOM");
+	-- MainMenuBarBackpackButton:SetPoint("RIGHT", -60, 0);
+	-- --MainMenuBarBackpackButton:SetScale(.8)
 	
 	-- 设置上下翻查按钮
 	for i, name in pairs(BagButtonFrameList) do HookFrame_CornerBar( name) end
