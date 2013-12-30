@@ -39,7 +39,8 @@ eventframe:SetScript('OnEvent', function(self, event, name)
     customStatusText = true,        -- true or false (是否自定义状态文本)
     autoManaPercent = true,         -- true or false (是否用百分比显示法力值)
     thousandSeparators = true,      -- true or false  是否在1000...1000.000...1000.000.000的.上添加空位隔符
-    simpleHealth = true,            -- 是否用K.M.G来精简计数 199.999 (200.000 to 200 k, 3.000.000 to 3 m)
+    simpleHealth = true,            -- 是否用K.M.G来精简计数 199.999 (200.000 to 200 k, 3.000.000 to 3 m)如果采用此计数法请把下面ChinaCountingMethod = true改成false,
+	ChinaCountingMethod = false,    -- 是否采用中国传统计数方式，如果采用中国计数法请把上面simpleHealth = true,改成false,
 	RaidHide = false,               -- 是否隐藏暴雪系统团队框体
 }
 
@@ -51,6 +52,8 @@ UnitFrames.config.phrases = {
     ["kilo"] = " k",  -- simpleHealth 1.000
     ["mega"] = " m",  -- simpleHealth 1.000.000
     ["giga"] = " g",  -- simpleHealth 1.000.000.000
+	["ten thousand"] = " 万",   
+    ["a hundred million"] = " 亿", 
 }
 
 --[[ 设置位置 ]]
@@ -533,6 +536,25 @@ end
     PartyMemberFrame4ManaBar:SetHeight(4)
 
 ---------------------------------------------------
+--BOSS能量条框架
+---------------------------------------------------
+
+PlayerPowerBarAlt:SetScale(0.8)
+PlayerPowerBarAlt:SetMovable(true)
+PlayerPowerBarAlt:SetUserPlaced(true)
+PlayerPowerBarAlt:SetFrameStrata("HIGH")
+PlayerPowerBarAlt:SetScript("OnMouseDown", function()
+if (IsAltKeyDown()) then
+PlayerPowerBarAlt:ClearAllPoints()
+PlayerPowerBarAlt:StartMoving()
+end
+end)
+
+PlayerPowerBarAlt:SetScript('OnMouseUp', function(self, button)
+PlayerPowerBarAlt:StopMovingOrSizing()
+end)
+
+---------------------------------------------------
 -- 文本
 ---------------------------------------------------
 local function createFrame(name, parent, point, xOffset, yOffset, width, alignment)
@@ -584,6 +606,10 @@ local function format(n)
 --  elseif config.simpleHealth and strLen > 5 then -- no simpleHealth under 100.000
     elseif config.simpleHealth and n > 199999 then -- no simpleHealth under 199.999
         return round(n/1e3, 0)..config.phrases["kilo"]
+    elseif config.ChinaCountingMethod and strLen > 8 then
+        return round(n/1e8, 1)..config.phrases["a hundred million"]
+    elseif config.ChinaCountingMethod and strLen > 4 and n > 199999 then  
+        return round(n/1e4, 1)..config.phrases["ten thousand"]
     elseif config.thousandSeparators then
         local left, num, right = string.match(n, '^([^%d]*%d)(%d*)(.-)')
         return left..(num:reverse():gsub('(%d%d%d)', '%1'..config.phrases["1000 separator"]):reverse())..right
