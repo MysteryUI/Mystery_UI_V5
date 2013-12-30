@@ -62,9 +62,9 @@ function addon:GetPartyFramesMatrix()
 	end
 
 	if addon.db.grouphoriz then
-		return count, hasPet and 2 or 1
+		return count, hasPet and 2 or 1, hasPet
 	else
-		return hasPet and 2 or 1, count
+		return hasPet and 2 or 1, count, hasPet
 	end
 end
 

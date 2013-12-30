@@ -131,7 +131,7 @@ local SetupUI = function()
 end
 
 StaticPopupDialogs["SETUP_UI"] = {
-	text = L["第一次使用MysteryUI_V2+你需要重新加载插件。"], 
+	text = L["第一次使用MysteryUI_V5你需要重新加载插件。"], 
 	button1 = ACCEPT, 
 	button2 = CANCEL,
 	OnAccept = SetupUI,

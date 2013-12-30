@@ -76,7 +76,6 @@ module.DEFAULT_SPELLS = {
 		53563, -- Beacon of Light
 		4987, -- Cleanse
 		7328, -- Redemption
-		31789, -- Righteous Defense
 		1038, -- Hand of Salvation
 		1044, -- Hand of Freedom
 		1022, -- Hand of Protection
@@ -206,6 +205,10 @@ local CLASS_DEFAULTS = {
 		["alt-ctrl-1"]	= 116849, -- Life Cocoon
 	},
 }
+
+function module:GetSpecialMacro()
+	return "/stopcasting\n/target mouseover\n/click ExtraActionButton1\n/targetlasttarget"
+end
 
 local MACRO_FORMAT = "/stopcasting\n/cast %s\n/cast [@mouseover] %s"
 

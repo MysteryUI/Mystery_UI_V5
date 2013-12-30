@@ -182,6 +182,11 @@ for i = 1, #module.BINDING_MODIFIERS do
 	combo:AddLine(SET_FOCUS, "focus")
 	combo:AddLine(FOLLOW, "follow")
 
+	local line = combo:AddLine(L["transfer special spell"], "special", emergentIcon)
+	line.tooltipTitle = L["transfer special spell"]
+	line.tooltipText = module:GetSpecialMacro()
+	line.tooltipOnButton = 1
+
 	combo:AddLine(L["built-in spells"], "spacer", nil, "isTitle,notCheckable")
 
 	local emergentMacro, emergentIcon = module:GetEmergentMacro()

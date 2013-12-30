@@ -231,7 +231,6 @@ local function Frame_CreateSecureMenu(self, title, rightIcon)
 		end
 
 		self:GetParent():SetAttribute("menushown", nil)
-		self:Hide()
 		self:UnregisterAutoHide()
 		self:CallMethod("_OnHide")
 	]])

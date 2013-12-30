@@ -3,15 +3,16 @@
 -- 繁體中文
 
 -- Abin Mystery
--- 2013/09/12
+-- 2013/12/30
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhTW" then return end
+
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "版本 %s by Abin 已載入，輸入 /craid 進行設置。",
-	["desc"] = "設置MysteryUI團隊框架外觀和屬性，大部份設置作用於全帳號。",
+	["load prompt"] = "MysteryUI團隊框架已載入，版本 %s by Abin，輸入 /craid 進行設置。",
+	["desc"] = "設置CompactRaid框架外觀和屬性，大部份設置作用於全帳號。",
 	["general options"] = "一般選項",
 	["scale"] = "縮放",
 	["x-offset"] = "X偏移",
@@ -44,7 +45,7 @@ addon.L = {
 	["buff scale"] = "增益縮放",
 	["debuff scale"] = "減益縮放",
 	["dispel scale"] = "驅散縮放",
-	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
+--	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
 	["world marks"] = "世界標記",
 	["unit options"] = "單位框架設置",
 	["lock position"] = "鎖定位置",
@@ -89,8 +90,8 @@ addon.L = {
 	["memory monitor tooltip recommenation 2"] = "小退遊戲。",
 	["memory monitor tooltip recommenation none"] = "|cff00ff00記憶體佔用合理。|r",
 	["memory monitor tooltip title option"] = "此選項佔用較多記憶體",
-	["memory monitor tooltip text option 1"] = "啟用這一選項將創建|cffff000020個|r額外的按鈕并佔用大約|cffff0000%d KB|r記憶體。",
-	["memory monitor tooltip text option 2"] = "更改這一選項將創建|cffff000040個|r額外的按鈕并佔用大約|cffff0000%d KB|r記憶體。這些記憶體將在小退遊戲後被釋放。",
+	["memory monitor tooltip text option 1"] = "啟用這一選項將創建|cffff0000%d個|r額外的按鈕并佔用大約|cffff0000%d KB|r記憶體。",
+	["memory monitor tooltip text option 2"] = "更改這一選項將創建|cffff0000%d個|r額外的按鈕并佔用大約|cffff0000%d KB|r記憶體。這些記憶體將在小退遊戲後被釋放。",
 	["enable module"] = "啟用模塊",
 	["unit background color"] = "單位背景顏色",
 	["hide role icon"] = "隱藏職責圖標",
@@ -107,4 +108,7 @@ addon.L = {
 	["group swap notify"] = "新功能：|cff00ff00換隊模式|r\n點擊下方的\"團隊\"工具按鈕，選擇\"開啟換隊模式\"（需要團長或助理權限）。",
 	["group swap prompt"] = "拖動隊員框體到另一個隊員框體上或另一小隊上以更改他的隊伍。按ESC退出換隊模式。",
 	["cannot change groups in combat"] = "無法在戰鬥中開啟換隊模式。",
+	["hide privilege icons"] = "隱藏權限圖標",
+	["show friendly npc"] = "顯示友善NPC（角色設置）",
+	["hide direction arrow"] = "隱藏方向箭頭（需要TomTom）",
 }

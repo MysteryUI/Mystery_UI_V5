@@ -53,7 +53,7 @@
 -- Mark of the Wild, Legacy of the Emperor, Blessing of Kings, Embrace of the Shale Spider
 
 -- STAMINA
--- Power Word: Fortitude, Imp: Blood Pact, Commanding Shout, Qiraji Fortitude
+-- Power Word: Fortitude, Imp: Blood Pact, Commanding Shout, Qiraji Fortitude, Dark Intent
 
 -- ATTACK_POWER
 -- Horn of the Winter, Trueshot Aura, Battle Shout
@@ -68,7 +68,7 @@
 -- Moonkin Aura, Shadowform, Elemental Oath
 
 -- CRITICAL_STRIKE
--- Leader of the Pack, Arcane Brilliance, Legacy of the White Tiger, Furious Howl
+-- Leader of the Pack, Arcane Brilliance, Legacy of the White Tiger, Furious Howl, Dalaran Brilliance
 
 --- MASTERY
 -- Legacy of the White Tiger, Blessing of Might, Grace of Air, Roar of Courage
@@ -123,7 +123,7 @@ local UnitDebuff = UnitDebuff
 local _
 
 local LIBNAME = "LibBuffGroups-1.0"
-local VERSION = 1.04
+local VERSION = 1.06
 
 local lib = _G[LIBNAME]
 if lib and lib.version >= VERSION then return end
@@ -133,6 +133,7 @@ if not lib then
 	_G[LIBNAME] = lib
 end
 lib.version = VERSION
+_G.LibBuffGroups = lib
 
 local auraGroupList = {} -- Aura groups
 local debuffGroupList = {} -- Debuff effect groups
@@ -194,7 +195,7 @@ AddAuraGroup("ATTACK_HASTE", 55610, 113742, 30809, 128433) -- Unholy Aura, Swift
 AddAuraGroup("SPELL_HASTE", 24907, 15473, 51470) -- Moonkin Aura, Shadowform, Elemental Oath
 
 -- CRITICAL_STRIKE
-AddAuraGroup("CRITICAL_STRIKE", 17007, 1459, 116956, 24604) -- Leader of the Pack, Arcane Brilliance, Trueshot Aura, Legacy of the White Tiger, Furious Howl
+AddAuraGroup("CRITICAL_STRIKE", 17007, 1459, 116781, 24604, 61316) -- Leader of the Pack, Arcane Brilliance, Legacy of the White Tiger, Furious Howl, Dalaran Brilliance
 
 --- MASTERY
 AddAuraGroup("MASTERY", 116781, 19740, 116956, 93435) -- Legacy of the White Tiger, Blessing of Might, Grace of Air, Roar of Courage

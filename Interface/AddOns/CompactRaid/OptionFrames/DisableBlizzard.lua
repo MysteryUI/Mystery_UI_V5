@@ -8,7 +8,10 @@
 local _G = _G
 local RegisterStateDriver = RegisterStateDriver
 local SetCVar = SetCVar
-local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local HideUIPanel = HideUIPanel
+local InterfaceOptionsFrame = InterfaceOptionsFrame
+local GameMenuFrame = GameMenuFrame
+local UIParent = UIParent
 
 local _, addon = ...
 local L = addon.L
@@ -51,33 +54,39 @@ local button = CreateFrame("Button", "CompactRaidOverrideButton", CompactUnitFra
 button:SetSize(120, 24)
 button:SetPoint("TOP", prompt, "BOTTOM", 0, -16)
 button:SetText(SETTINGS)
+
 button:SetScript("OnClick", function(self)
+	HideUIPanel(InterfaceOptionsFrame)
+	HideUIPanel(GameMenuFrame)
 	addon.optionFrame:Show()
 end)
 
-local blizzPartyParent = CreateFrame("Frame", nil, UIParent, "SecureFrameTemplate")
+local blizzPartyParent = CreateFrame("Frame", "CompactRaidDisableBlizzardPartyParentFrame", UIParent, "SecureFrameTemplate")
+blizzPartyParent:Hide()
 blizzPartyParent:RegisterEvent("VARIABLES_LOADED")
+
 blizzPartyParent:SetScript("OnEvent", function(self)
 	SetCVar("useCompactPartyFrames", "0")
+	--SetCVar("raidFramesDisplayIncomingHeals", 1) -- To fix a Blizzard error introduced in patch 5.4 (cvar removed in patch 5.4.1)
 end)
 
-local i
-for i = 1, MAX_PARTY_MEMBERS do
-	local frame = _G["PartyMemberFrame"..i]
-	if frame then
-		frame:SetParent(blizzPartyParent)
-		--RegisterStateDriver(frame, "visibility", "show") -- just for debug
-	end
-end
-
-if PartyMemberBackground then
-	PartyMemberBackground:SetParent(blizzPartyParent)
-end
-
 addon:RegisterOptionCallback("showParty", function(value)
-	if value then
-		blizzPartyParent:Hide()
-	else
-		blizzPartyParent:Show()
+	local i
+	for i = 1, 4 do
+		local frame = _G["PartyMemberFrame"..i]
+		if value then
+			frame:SetParent(blizzPartyParent)
+		else
+			frame:SetParent(UIParent)
+		end
+	end
+
+	local bkgnd = PartyMemberBackground
+	if bkgnd then
+		if value then
+			bkgnd:SetParent(blizzPartyParent)
+		else
+			bkgnd:SetParent(UIParent)
+		end
 	end
 end)

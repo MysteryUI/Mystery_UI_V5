@@ -158,11 +158,16 @@ addon:RegisterEventCallback("OnModuleRestoreDefaults", function(module)
 	end
 end)
 
-function templates:CreateModulePage(module)
+function templates:CreateModulePage(module, page)
 	local dualTalent = module:HasFlag("talent")
 	local secure = module:HasFlag("secure")
 
-	local page = self:CreateOptionFrame(nil, module.title, module.desc, dualTalent)
+	if dualTalents then
+		local dualTalentText = frame:CreateFontString(frame:GetName().."DualTalentText", "ARTWORK", "GameFontGreenSmall")
+		frame.dualTalentText = dualTalentText
+		dualTalentText:SetPoint("LEFT", frame.title, "RIGHT", 8, 0)
+	end
+
 	page.module = module
 	module.optionPage = page
 
@@ -170,7 +175,7 @@ function templates:CreateModulePage(module)
 	page.buttonDefaults = defaults
 	defaults.module = module
 	defaults:SetSize(96, 24)
-	defaults:SetPoint("RIGHT", addon.optionFrame.buttonClose, "LEFT")
+	defaults:SetPoint("RIGHT", addon.optionFrame:GetOperationButton(1), "LEFT")
 	defaults.tooltipText = format(L["restore defaults tooltip"], module.title)
 	defaults:SetScript("OnClick", DefaultsButton_OnClick)
 
@@ -192,8 +197,6 @@ function templates:CreateModulePage(module)
 			sync.tooltipText = format(L["sync dual-talent tooltip"], module.title)
 		end
 	end
-
-	return page
 end
 
 function templates:CreateScrollFrame(name, parent, scrollRespondingFrame, createChild)

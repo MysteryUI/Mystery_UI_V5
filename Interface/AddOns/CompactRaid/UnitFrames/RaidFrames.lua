@@ -126,7 +126,7 @@ end
 local raidGroup = CreateGroupHeader("group", "CompactRaidGroupHeaderGroup", 40, "SecureGroupHeaderTemplate")
 
 -- Pets
-local petGroup = CreateGroupHeader("pet", "CompactRaidGroupHeaderPet", 20, "SecureGroupPetHeaderTemplate")
+local petGroup = CreateGroupHeader("pet", "CompactRaidGroupHeaderPet", 10, "SecureGroupPetHeaderTemplate")
 petGroup:SetAttribute("filterOnPet", 1)
 frame:SetFrameRef("petgroup", petGroup)
 
@@ -179,13 +179,15 @@ function addon:GetRaidFramesMatrix()
 	end
 
 	local petCols, petRows = Header_GetMatrix(petGroup)
+	local hasPet = petCols > 0 or petRows > 0
+
 	if addon:GetLayoutData() then
 		rows = rows + petRows
 	else
 		cols = cols + petCols
 	end
 
-	return cols, rows
+	return cols, rows, hasPet
 end
 
 addon:RegisterOptionCallback("showRaidPets", function(value)

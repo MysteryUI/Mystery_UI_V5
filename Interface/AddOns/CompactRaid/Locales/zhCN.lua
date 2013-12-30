@@ -1,9 +1,9 @@
 ------------------------------------------------------------
--- zhTW.lua
+-- zhCN.lua
 -- 简体中文
 
 -- Abin Mystery
--- 2013/09/12
+-- 2013/12/30
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhCN" then return end
@@ -11,7 +11,7 @@ local _, addon = ...
 
 addon.L = {
 	["load prompt"] = "MysteryUI团队框架已载入，版本 %s by Abin，输入 /craid 进行设置。",
-	["desc"] = "设置MysteryUI团队框体外观和属性，大部分设置作用于全账号。",
+	["desc"] = "设置CompactRaid框体外观和属性，大部分设置作用于全账号。",
 	["general options"] = "一般选项",
 	["scale"] = "缩放",
 	["x-offset"] = "X偏移",
@@ -44,7 +44,7 @@ addon.L = {
 	["buff scale"] = "增益缩放",
 	["debuff scale"] = "减益缩放",
 	["dispel scale"] = "驱散缩放",
-	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
+--	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
 	["world marks"] = "世界标记",
 	["unit options"] = "单位框体设置",
 	["lock position"] = "锁定位置",
@@ -89,8 +89,8 @@ addon.L = {
 	["memory monitor tooltip recommenation 2"] = "小退游戏。",
 	["memory monitor tooltip recommenation none"] = "|cff00ff00内存占用合理。|r",
 	["memory monitor tooltip title option"] = "此选项占用较多内存",
-	["memory monitor tooltip text option 1"] = "启用这一选项将创建|cffff000020个|r额外的按钮并占用大约|cffff0000%d KB|r内存。",
-	["memory monitor tooltip text option 2"] = "更改这一选项将创建|cffff000040个|r额外的按钮并占用大约|cffff0000%d KB|r内存，这些内存将在小退游戏后被释放。",
+	["memory monitor tooltip text option 1"] = "启用这一选项将创建|cffff0000%d个|r额外的按钮并占用大约|cffff0000%d KB|r内存。",
+	["memory monitor tooltip text option 2"] = "更改这一选项将创建|cffff0000%d个|r额外的按钮并占用大约|cffff0000%d KB|r内存，这些内存将在小退游戏后被释放。",
 	["enable module"] = "启用模块",
 	["unit background color"] = "单位背景颜色",
 	["hide role icon"] = "隐藏职责图标",
@@ -107,4 +107,7 @@ addon.L = {
 	["group swap notify"] = "新功能：|cff00ff00换队模式|r\n点击下方的\"团队\"工具按钮，选择\"开启换队模式\"（需要团长或助理权限）。",
 	["group swap prompt"] = "拖动队员框体到另一个队员框体上或另一小队上以更改他的队伍。按ESC退出换队模式。",
 	["cannot change groups in combat"] = "无法在战斗中开启换队模式",
+	["hide privilege icons"] = "隐藏权限图标",
+	["show friendly npc"] = "显示友善NPC（角色设置）",
+	["hide direction arrow"] = "隐藏方向箭头（需要TomTom）",
 }

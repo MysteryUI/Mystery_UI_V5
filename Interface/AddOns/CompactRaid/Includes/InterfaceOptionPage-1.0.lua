@@ -93,7 +93,7 @@ local UISpecialFrames = UISpecialFrames
 local _
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 62
+local MINOR_VERSION = 64
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateInterfaceOptionPage_IsNewerVersion) == "function" and not UICreateInterfaceOptionPage_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -238,7 +238,7 @@ end
 
 local function CreatePressButton(self, text, disableInCombat)
 	local button = CreateSubControl(self, "Button", text, "UIPanelButtonTemplate", disableInCombat)
-	button:SetSize(80, 22)
+	button:SetSize(96, 24)
 	button:SetMotionScriptsWhileDisabled(true)
 	return button
 end
@@ -888,6 +888,11 @@ local function Toggle(self)
 	end
 end
 
+local function OpenInterfaceOptionPage(self)
+	InterfaceOptionsFrame_OpenToCategory(self)
+	InterfaceOptionsFrame_OpenToCategory(self)
+end
+
 local DIALOG_STYLES = {
 	TITLE_DIALOG = function(self)
 		self:SetBackdrop({ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", tile = true, tileSize = 32, edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", edgeSize = 32, insets = {left = 11, right = 12, top = 12, bottom = 11 }, })
@@ -1052,7 +1057,7 @@ function UICreateInterfaceOptionPage(name, title, subTitle, categoryParent, pare
 		page.name = title
 		page.parent = categoryParent
 		InterfaceOptions_AddCategory(page)
-		page.Open = InterfaceOptionsFrame_OpenToCategory
+		page.Open = OpenInterfaceOptionPage
 	end
 
 	page:HookScript("OnShow", SubControl_OnShow)

@@ -20,4 +20,5 @@ CompactRaid:RegisterLocale("ClickSets", "enUS", {
 	["scroll"] = "Scroll",
 	["Emergent macro"] = "Emergent Healing Macro",
 	["menu"] = "Menu",
+	["transfer special spell"] = "Transfer special spell",
 })

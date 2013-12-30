@@ -71,11 +71,11 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 133792, 4)
 -- Primordius (820)
 BOSS = 820
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136050, 5)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 140546, 2)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 136185)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 136187)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 136183)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 136181)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 140546)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136185, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136187, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136183, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136181, 4)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136228, 5)
 
 -- Dark Animus (824)
@@ -96,8 +96,9 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 136892)
 -- Twin Consorts (829)
 BOSS = 829
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 137341)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 137360, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 137360, 5)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 137440)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 137408, 4)
 
 -- Lei Shen (832)
 BOSS = 832
@@ -105,7 +106,10 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 134912, 5)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136478)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 135695, 4)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 136295, 4)
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 136914, 4)
 
 -- Common
 module:RegisterDebuff(TIER, INSTANCE, 0, 140049)
 module:RegisterDebuff(TIER, INSTANCE, 0, 140629)
+module:RegisterDebuff(TIER, INSTANCE, 0, 138742)
+module:RegisterDebuff(TIER, INSTANCE, 0, 140682)

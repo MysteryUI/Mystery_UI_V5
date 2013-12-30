@@ -47,6 +47,10 @@ local function AssignBindToUnitFrame(frame, modifier, id, action, extra)
 			bindType = "macro"
 			bindKey = "macrotext"
 			bindValue = module:GetEmergentMacro()
+		elseif extra == "special" then
+			bindType = "macro"
+			bindKey = "macrotext"
+			bindValue = module:GetSpecialMacro()
 		else
 			bindType = "spell"
 			bindKey = "spell"

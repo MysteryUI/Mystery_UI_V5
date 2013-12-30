@@ -17,162 +17,46 @@ local templates = addon.optionTemplates
 -- The option frame
 -------------------------------------------------------
 
-local frame = UICreateInterfaceOptionPage("CompactRaidOptionFrame", addon.name.." "..addon.version, nil, nil, UIParent)
+local frame = UICreateModularOptionFrame("CompactRaidOptionFrame", addon.name, addon.version, CLOSE)
 addon.optionFrame = frame
-frame:SetDialogStyle("TITLE_DIALOG", true)
-frame:SetSize(858, 660)
-frame:SetPoint("CENTER")
+frame:SetSize(870, 666)
 
-------------------------------------------------------------
--- Register slash command to toggle the option frame
-------------------------------------------------------------
-SLASH_COMPACTRAID1 = "/compactraid"
-SLASH_COMPACTRAID2 = "/craid"
-SlashCmdList["COMPACTRAID"] = function(cmd)
-	if cmd and strlower(cmd) == "debug" then
-		addon:SetDebugMode(not addon:IsDebugMode())
-	else
-		frame:Toggle()
-	end
-end
-
-function frame:AddCategory(title, optionPage, parentTitle)
-	if type(title) ~= "string" or type(optionPage) ~= "table" then
-		return
-	end
-
-	optionPage:Hide()
-	optionPage:SetParent(self.pageContainer)
-	optionPage:ClearAllPoints()
-	optionPage:SetAllPoints(self.pageContainer)
-
-	local level = 1
-	local position
-	if type(parentTitle) == "string" then
-		position = self.categories:FindData(parentTitle, function(data, text) return data.title == text end)
-		local data = self.categories:GetData(position)
-		if data then
-			level = data.level + 1
-		end
-	end
-	self.categories:InsertData({ title = title, page = optionPage, level = level }, position and position + 1)
-end
+-- The special page to notify user that the slected module is disabled
+frame.disabledPage = templates:CreateDisabledPage(frame.pageContainer)
 
 addon:RegisterEventCallback("OnModuleCreated", function(module)
-	local page = templates:CreateModulePage(module)
-	frame:AddCategory(module.title, page, module.parent)
+	local category = frame:AddCategory(module.name, module.title, module.desc, module.parent)
+	category.module = module
+	templates:CreateModulePage(module, category.page)
+end)
+
+function frame:OnCategorySelect(category)
+	local disabledPage = self.disabledPage
+	disabledPage:Hide()
+	disabledPage.peerPage = category.page
+
+	local page = category.page
+	local module = page.module
+
+	if module and not module:IsEnabled() then
+		disabledPage:Show()
+		category.page:Hide()
+	end
+
+	LibMsgBox:Clear()
+end
+
+function frame:GetSelectedPage()
+	local category = self:GetOpenedCategory()
+	return category and category.page
+end
+
+frame:SetScript("OnHide", function(self)
+	LibMsgBox:Clear()
 end)
 
 -------------------------------------------------------
--- Left panel: container of module categories
--------------------------------------------------------
-
-local leftPanel = CreateFrame("Frame", frame:GetName().."LeftPanel", frame)
-frame.leftPanel = leftPanel
-leftPanel:SetBackdrop({ tile = true, tileSize = 16, edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = {left = 5, right = 5, top = 5, bottom = 5 }})
-leftPanel:SetBackdropBorderColor(0.75, 0.75, 0.75, 0.75)
-leftPanel:SetPoint("TOPLEFT", 24, -32)
-leftPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMLEFT", 220, 50)
-
-local list = UICreateVirtualScrollList(leftPanel:GetName().."List", leftPanel, 10, 1)
-frame.categories = list
-list:SetPoint("TOPLEFT", 4, -5)
-list:SetPoint("BOTTOMRIGHT", -4, 4)
-
-function list:OnButtonCreated(button)
-	local text = button:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
-	button.text = text
-end
-
-function list:OnButtonUpdate(button, data)
-	local text = button.text
-	text:ClearAllPoints()
-	text:SetPoint("LEFT", (data.level - 1) * 8 + 5, 0)
-	button.text:SetText(data.title)
-	if self.checkedTexture.button == button then
-		self.curButton = button
-		button.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-	end
-end
-
-local selectedPage
-function frame:GetSelectedPage()
-	return selectedPage
-end
-
-function list:OnSelectionChanged(position, data)
-	local disabledPage = frame.disabledPage
-	disabledPage:Hide()
-
-	local page = selectedPage
-	if page then
-		page:Hide()
-		addon:BroadcastEvent("OnModulePageHide", page.module, page)
-	end
-
-	page = data and data.page
-	disabledPage.peerPage = page
-
-	selectedPage = page
-	if page then
-		local module = page.module
-		local disabled = module and not module:IsEnabled()
-		if disabled then
-			disabledPage:Show()
-		else
-			page:Show()
-		end
-
-		addon:BroadcastEvent("OnModulePageShow", module, page, disabled)
-	end
-
-	if self.curButton then
-		self.curButton.text:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-	end
-
-	self.curButton = self.checkedTexture.button
-	if self.curButton then
-		self.curButton.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-	end
-end
-
-function list:OnButtonEnter(button, data, motion)
-	button.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-end
-
-function list:OnButtonLeave(button, data, motion)
-	if button ~= self.curButton then
-		button.text:SetTextColor(NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b)
-	end
-end
-
--------------------------------------------------------
--- Right panel: container of option pages
--------------------------------------------------------
-
-local rightPanel = CreateFrame("Frame", frame:GetName().."RightPanel", frame)
-frame.rightPanel = rightPanel
-rightPanel:SetBackdrop({ tile = true, tileSize = 16, edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border", edgeSize = 16, insets = {left = 5, right = 5, top = 5, bottom = 5 }})
-rightPanel:SetBackdropBorderColor(0.75, 0.75, 0.75, 0.75)
-rightPanel:SetPoint("TOPRIGHT", -24, -24)
-rightPanel:SetPoint("BOTTOMLEFT", leftPanel, "BOTTOMRIGHT", 12, 0)
-
-local pageContainer = CreateFrame("Frame", frame:GetName().."PageContainer", rightPanel)
-frame.pageContainer = pageContainer
-pageContainer:SetPoint("TOPLEFT", 6, -6)
-pageContainer:SetPoint("BOTTOMRIGHT", -5, 5)
-
-local buttonClose = CreateFrame("Button", frame:GetName().."Close", frame, "UIPanelButtonTemplate")
-frame.buttonClose = buttonClose
-buttonClose:SetSize(96, 24)
-buttonClose:SetText(CLOSE)
-buttonClose:SetPoint("TOPRIGHT", rightPanel, "BOTTOMRIGHT", 0, -5)
-buttonClose:SetScript("OnClick", function() frame:Hide() end)
-
-frame.disabledPage = templates:CreateDisabledPage(pageContainer)
-
--------------------------------------------------------
--- The first option page
+-- The Core module and its option page
 -------------------------------------------------------
 
 local module = {}
@@ -188,20 +72,29 @@ function module:HasFlag(flag)
 	return flag == "secure"
 end
 
-local scrollFrame = templates:CreateScrollFrame(frame:GetName().."CoreScrollFrame", rightPanel)
+local category = frame:AddCategory("Core", L["core module"].."|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:0:0:0:-1|t", L["desc"])
+local page = category.page
 
-local page = templates:CreateModulePage(module)
+category.module = module
+templates:CreateModulePage(module, page)
+page.module = nil
+
+local scrollFrame = templates:CreateScrollFrame(frame:GetName().."CoreScrollFrame", frame.pageContainer)
+scrollFrame:SetPoint("TOPLEFT")
+scrollFrame:SetPoint("BOTTOMRIGHT", -17, 0)
+
 page:SetParent(scrollFrame)
 page.buttonDefaults:SetParent(scrollFrame)
 page:Show()
 page:SetSize(200, 200)
+page:ClearAllPoints()
 scrollFrame:SetScrollChild(page)
 
-page.module = nil
 module.optionPage = scrollFrame
+category.page = scrollFrame
 
 local arrowFrame = templates:CreateNotifyFrame(frame:GetName().."ArrowFrame", scrollFrame, 186, 1)
-arrowFrame:SetPoint("BOTTOMRIGHT", rightPanel, "BOTTOMRIGHT", -28, 26)
+arrowFrame:SetPoint("BOTTOMRIGHT", frame.rightPanel, "BOTTOMRIGHT", -28, 26)
 arrowFrame:SetText(L["scroll down for more options"])
 
 local function UpdateArrowFrame()
@@ -215,12 +108,6 @@ end
 scrollFrame:HookScript("OnScrollRangeChanged", UpdateArrowFrame)
 scrollFrame:HookScript("OnVerticalScroll", UpdateArrowFrame)
 
-frame:AddCategory(L["core module"].."|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:0:0:0:-1|t", scrollFrame)
-scrollFrame:ClearAllPoints()
-scrollFrame:SetPoint("TOPLEFT")
-scrollFrame:SetPoint("BOTTOMRIGHT", -22, 0)
-list:SetSelection(1)
-
 ------------------------------------------------------------
 -- General option items
 ------------------------------------------------------------
@@ -229,11 +116,12 @@ local anchor
 
 local group = templates:CreateOptionMultiSelectionGroup(page, L["general options"])
 page:AnchorToTopLeft(group, 0, -6)
-group:AddButton(L["lock position"], "lock")
+group:AddButton(L["lock position"], "lock",1)
 group:AddButton(L["show solo"], "showSolo", 0)
 group:AddButton(L["show party"], "showParty", 0)
-group:AddButton(L["show party pets"], "showPartyPets", 0, "charOption", 1)
-group:AddButton(L["show raid pets"], "showRaidPets", 0, "charOption", 1)
+group:AddButton(L["show party pets"], "showPartyPets", 0, "charOption", 0)
+group:AddButton(L["show raid pets"], "showRaidPets", 0, "charOption", 0)
+group:AddButton(L["show friendly npc"], "showFriendlyNpc", 1, "charOption", 1)
 group:AddButton(L["horizontal align"], "grouphoriz", 1)
 group:AddButton(L["keep raid groups together"], "keepgroupstogether", 1)
 
@@ -244,8 +132,8 @@ end)
 
 local MEMORY_PER_BUTTON = 3.85 -- Approximated memory consumption per unit button, in kilo-bytes
 
-templates:CreateCheckButtonInfo(group[5], L["memory monitor tooltip title option"], format(L["memory monitor tooltip text option 1"], MEMORY_PER_BUTTON * 20))
-templates:CreateCheckButtonInfo(group[7], L["memory monitor tooltip title option"], format(L["memory monitor tooltip text option 2"], MEMORY_PER_BUTTON * 40))
+templates:CreateCheckButtonInfo(group[5], L["memory monitor tooltip title option"], format(L["memory monitor tooltip text option 1"], 10, MEMORY_PER_BUTTON * 10))
+templates:CreateCheckButtonInfo(group[8], L["memory monitor tooltip title option"], format(L["memory monitor tooltip text option 2"], 40, MEMORY_PER_BUTTON * 40))
 
 ------------------------------------------------------------
 -- Raid option items
@@ -309,15 +197,17 @@ group:AddButton(L["tooltip position unit frame"], 1)
 anchor = group[1]
 group = templates:CreateOptionMultiSelectionGroup(page, L["unit options"])
 group:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -16)
+group:AddButton(L["hide privilege icons"], "hidePrivIcons")
 group:AddButton(L["hide role icon"], "hideRoleIcon")
 group:AddButton(L["hide raid target icon"], "hideRaidIcon")
+group:AddButton(L["hide direction arrow"], "hideDirectionArrow")
 group:AddButton(L["invert bar color"], "invertColor")
 group:AddButton(L["hide bar background"], "hidebarbkgnd")
 
 local bkColor = templates:CreateLabeledColorSwatch(nil, page, L["unit background color"], "unitBkColor")
 bkColor:SetPoint("TOP", group[-1], "BOTTOM", 0, -4)
 
-local scaleSlider = templates:CreateOptionSlider(page, "scale", L["frame scale"], 25, 300, 5, "%d%%", 1)
+local scaleSlider = templates:CreateOptionSlider(page, "scale", L["frame scale"], 20, 300, 5, "%d%%", 1)
 scaleSlider:SetPoint("TOPLEFT", group[-1], "BOTTOMLEFT", 8, -56)
 
 local spacingSlider = templates:CreateOptionSlider(page, "spacing", L["unit spacing"], 0, 10, 1, nil, 1)
@@ -437,7 +327,6 @@ local function InitOptionData(db, chardb)
 	-- Some option features are changed in recent update
 	if not db.v30 then
 		db.v30 = 1
-		db.lock =1
 		db.showSolo = 0
 		db.showParty = 0
 		db.keepgroupstogether = 1
@@ -445,23 +334,31 @@ local function InitOptionData(db, chardb)
 		chardb.showPartyPets = 0
 	end
 
+	if not chardb.v381 then
+		chardb.v381 = 1
+		chardb.showFriendlyNpc = 1
+	end
+
 	-- Initialize addon data
-	LoadOption("scale", 100, 25, 300)
+	LoadOption("scale", 100, 20, 300)
 	LoadOption("width", 64, 24, 120)
-	LoadOption("height", 40, 24, 120)
-	LoadOption("spacing", 2, 0, 10)
-	LoadOption("outrangeAlpha", 60, 0, 100)
+	LoadOption("height", 36, 24, 120)
+	LoadOption("spacing", 1, 0, 10)
+	LoadOption("outrangeAlpha", 40, 0, 100)
 	LoadOptionColor("unitBkColor", 0, 0, 0)
+	LoadOption("hidePrivIcons")
 	LoadOption("hideRoleIcon")
 	LoadOption("hideRaidIcon")
+	LoadOption("hideDirectionArrow")
 	LoadOption("tooltipPosition", 1, 0, 1)
-	LoadOption("hideToolboxes", 1)
+	LoadOption("hideToolboxes",1)
 
-	LoadOption("hidebarbkgnd", 1)
-	LoadOption("showSolo", 0)
-	LoadOption("showParty", 0)
+	LoadOption("hidebarbkgnd",1)
+	LoadOption("showSolo",0)
+	LoadOption("showParty",0)
 	LoadOption("showPartyPets", nil, nil, nil, 1)
 	LoadOption("showRaidPets", nil, nil, nil, 1)
+	LoadOption("showFriendlyNpc", nil, nil, nil, 1)
 
 	LoadOption("powerBarHeight", 3, 0, 10)
 
@@ -469,7 +366,7 @@ local function InitOptionData(db, chardb)
 	LoadOption("showtooltip", 1, 0, 2)
 
 	LoadOption("nameWidthLimit", 75, 0, 100)
-	LoadOption("nameHeight", 12, 4, 20)
+	LoadOption("nameHeight", 14, 4, 20)
 	LoadOption("nameXOffset", 0, -20, 20)
 	LoadOption("nameYOffset", 0, -20, 20)
 
@@ -486,8 +383,8 @@ local function InitOptionData(db, chardb)
 	LoadOption("keepgroupstogether")
 	LoadOption("raidFilter")
 
-	LoadOption("containerAlpha", 0, 0, 100)
-	LoadOption("containerBorderSize", 12, 0, 24)
+	LoadOption("containerAlpha", 75, 0, 100)
+	LoadOption("containerBorderSize", 0, 0, 24)
 
 	LoadOption("hideBuffs")
 	LoadOption("hideDebuffs")
@@ -514,7 +411,7 @@ end
 ------------------------------------------------------------
 
 local monitor = templates:CreateInfoButton(frame:GetName().."MemoryMonitor", scrollFrame)
-monitor:SetPoint("TOPLEFT", leftPanel, "BOTTOMLEFT", 0, -9)
+monitor:SetPoint("TOPLEFT", frame.leftPanel, "BOTTOMLEFT", 0, -9)
 
 function monitor:OnTooltip(tooltip)
 	tooltip:AddLine(L["memory monitor tooltip title"])
@@ -537,12 +434,12 @@ monitorText:SetPoint("LEFT", monitor, "RIGHT", 4, 0)
 local function UpdateMemoryUsage()
 	local buttons = addon:NumButtons()
 	local color
-	if buttons <= 52 then
-		color = "00ff00" -- Best case: solo (2), party (10), one raid (40)
-	elseif buttons <= 72 then
-		color = "ffff00" -- Normal case: solo (2), party (10), one raid (40), raid pet (20)
+	if buttons <= 57 then
+		color = "00ff00" -- Best case: solo (2), party (10), one raid (40), friendly NPC (5)
+	elseif buttons <= 67 then
+		color = "ffff00" -- Normal case: solo (2), party (10), one raid (40), friendly NPC (5), raid pet (10)
 	else
-		color = "ff0000" -- Worst case: all (112) - solo (2), party (10), two raid (40 * 2), raid pet (20)
+		color = "ff0000" -- Worst case: all (107) - solo (2), party (10), two raids (40 * 2), friendly NPC (5), raid pet (10)
 	end
 
 	UpdateAddOnMemoryUsage()
@@ -558,3 +455,17 @@ monitor:SetScript("OnUpdate", function(self, elapsed)
 		UpdateMemoryUsage()
 	end
 end)
+
+------------------------------------------------------------
+-- Register slash command to toggle the option frame
+------------------------------------------------------------
+SLASH_COMPACTRAID1 = "/compactraid"
+SLASH_COMPACTRAID2 = "/craid"
+
+SlashCmdList["COMPACTRAID"] = function(cmd)
+	if cmd and strlower(cmd) == "debug" then
+		addon:SetDebugMode(not addon:IsDebugMode())
+	else
+		frame:Toggle()
+	end
+end

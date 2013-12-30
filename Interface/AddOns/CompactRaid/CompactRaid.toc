@@ -1,16 +1,16 @@
-﻿## Interface: 50400
+## Interface: 50400
 ## Title: CompactRaid
-## Version: 3.7(V5.4)
+## Version: 3.83(v5.42)
 ## Author: Abin
 ## Notes: |cffbc8f8fMysteryUI|r|cffb70000_CompactRaid。|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000团队框架CompactRaid。|r
 ## Notes-zhTW: |cffbc8f8fMysteryUI|r|cffb70000團隊框架CompactRaid。|r
 ## SavedVariables: CompactRaidDB
 ## SavedVariablesPerCharacter: CompactRaidCharDB
-## OptionalDeps: Clique
+## OptionalDeps: Clique, TomTom
 ## X-Category: UnitFrame
 ## X-eMail: abinn32@yahoo.com
-## X-Curse-Packaged-Version: v3.7(V5.4)
+## X-Curse-Packaged-Version: 3.83(v5.42)
 ## X-Curse-Project-Name: CompactRaid
 ## X-Curse-Project-ID: compactraid
 ## X-Curse-Repository-ID: wow/compactraid/mainline
@@ -23,6 +23,8 @@ Includes\InterfaceOptionPage-1.0.lua
 Includes\VirtualScrollList-1.0.lua
 Includes\TabFrame-1.0.lua
 Includes\LibAuraGroups-1.0.lua
+Includes\LibMsgBox-1.0.lua
+Includes\ModularOptionFrame.lua
 
 Locales\enUS.lua
 Locales\zhCN.lua

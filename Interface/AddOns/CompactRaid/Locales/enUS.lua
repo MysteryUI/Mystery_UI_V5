@@ -1,15 +1,15 @@
 ------------------------------------------------------------
 -- enUS.lua
 --
--- Abin Mystery
--- 2013/09/12
+-- Abin
+-- 2013/12/30
 ------------------------------------------------------------
 
 local _, addon = ...
 
 addon.L = {
 	["load prompt"] = "Version %s by Abin loaded, type /craid for options.",
-	["desc"] = "Configures MysteryUI-Raid frames appearences and attributes, most options apply to entire account.",
+	["desc"] = "Configures CompactRaid frames appearences and attributes, most options apply to entire account.",
 	["general options"] = "General Options",
 	["scale"] = "Scale",
 	["x-offset"] = "x-off",
@@ -42,7 +42,7 @@ addon.L = {
 	["buff scale"] = "Buff scale",
 	["debuff scale"] = "Debuff scale",
 	["dispel scale"] = "Dispel scale",
-	["version error"] = "[%s] Requires CompactRaid %s, current version is %s.",
+--	["version error"] = "[%s] Requires CompactRaid %s, current version is %s.",
 	["world marks"] = "World marks",
 	["unit options"] = "Unit Frame Options",
 	["lock position"] = "Lock position",
@@ -87,8 +87,8 @@ addon.L = {
 	["memory monitor tooltip recommenation 2"] = "Re-login your character",
 	["memory monitor tooltip recommenation none"] = "|cff00ff00Memory usage optimized.|r",
 	["memory monitor tooltip title option"] = "This option is memory consuming",
-	["memory monitor tooltip text option 1"] = "Enabling this option will create |cffff000020|r extra buttons and consume appr. |cffff0000%d KB|r memory.",
-	["memory monitor tooltip text option 2"] = "Changing this option will create |cffff000040|r extra buttons and consume appr. |cffff0000%d KB|r memory until re-login.",
+	["memory monitor tooltip text option 1"] = "Enabling this option will create |cffff0000%d|r extra buttons and consume appr. |cffff0000%d KB|r memory.",
+	["memory monitor tooltip text option 2"] = "Changing this option will create |cffff0000%d|r extra buttons and consume appr. |cffff0000%d KB|r memory until re-login.",
 	["enable module"] = "Enable module",
 	["unit background color"] = "Unit background color",
 	["hide role icon"] = "Hide role icon",
@@ -105,4 +105,7 @@ addon.L = {
 	["group swap notify"] = "New feature: |cff00ff00Group Changing|r\nClick the \"Raid\"tool button below, choose \"Enable group changing\" (requires leader or assist privilege).",
 	["group swap prompt"] = "Drag an unit frame onto another unit frame or another group to change its group. Press ESC to quit group changing.",
 	["cannot change groups in combat"] = "Cannot change groups in combat",
+	["hide privilege icons"] = "Hide privilege icons",
+	["show friendly npc"] = "Show friendly NPC (character option)",
+	["hide direction arrow"] = "Hide direction arrow (Requires TomTom)",
 }

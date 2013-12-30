@@ -21,11 +21,12 @@ petButton:SetAttribute("unit", "pet")
 RegisterStateDriver(petButton, "visibility", "[nopet] hide; [vehicleui] hide; show")
 
 function addon:GetSoloFramesMatrix()
-	local count = petButton:IsVisible() and 2 or 1
+	local hasPet = petButton:IsVisible()
+	local count = hasPet and 2 or 1
 	if addon.db.grouphoriz then
-		return count, 1
+		return count, 1, hasPet
 	else
-		return 1, count
+		return 1, count, hasPet
 	end
 end
 

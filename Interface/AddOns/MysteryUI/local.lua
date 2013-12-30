@@ -1,7 +1,7 @@
 local _, L = ...; 
 if GetLocale() == "zhCN" then 
 --插件核心
-L["第一次使用MysteryUI_V2+你需要重新加载插件。"] = "第一次使用MysteryUI_V2+你需要重新加载插件。" 
+L["第一次使用MysteryUI_V5你需要重新加载插件。"] = "第一次使用MysteryUI_V5你需要重新加载插件。" 
 L["切换布局你需要重新加载插件。"] = "切换布局你需要重新加载插件。"
 L[" 公会银行自动修理费用: "] = " 公会银行自动修理费用: " 
 L[" 你支付的修理费用: "] = " 你支付的修理费用: " 
@@ -126,7 +126,7 @@ L["{委屈}"] = "{委屈}"
 
 elseif GetLocale() == "zhTW" then
 --插件核心
-L["第一次使用MysteryUI_V2+你需要重新加载插件。"] = "第一次使用MysteryUI_V2 +你需要重新加載插件。" 
+L["第一次使用MysteryUI_V5你需要重新加载插件。"] = "第一次使用MysteryUI_V5你需要重新加載插件。" 
 L["切换布局你需要重新加载插件。"] = "切換佈局你需要重新加載插件。"
 L[" 公会银行自动修理费用: "] = " 公會銀行自動修理費用: " 
 L[" 你支付的修理费用: "] = " 你支付的修理費用: " 
@@ -251,7 +251,7 @@ L["{委屈}"] = "{委屈}"
 
 else
 --插件核心
-L["第一次使用MysteryUI_V2+你需要重新加载插件。"] = "First time on MysteryUI_V2+ with this Character. You must reload UI to configure it."
+L["第一次使用MysteryUI_V5你需要重新加载插件。"] = "First time on MysteryUI_V5 with this Character. You must reload UI to configure it."
 L["切换布局你需要重新加载插件。"] = "Switching Style. You must reload UI to configure it."
 L[" 公会银行自动修理费用: "] = " Guild Bank Auto Repair for: " 
 L[" 你支付的修理费用: "] = " Auto Repair Service You payed: " 

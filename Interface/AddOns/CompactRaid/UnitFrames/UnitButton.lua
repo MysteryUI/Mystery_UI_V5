@@ -54,6 +54,10 @@ local GetTexCoordsForRoleSmallCircle = GetTexCoordsForRoleSmallCircle
 local GetNumTalents = GetNumTalents
 local GetTalentInfo = GetTalentInfo
 local UnitGUID = UnitGUID
+local tonumber = tonumber
+local GetRaidRosterInfo = GetRaidRosterInfo
+local UnitIsGroupLeader = UnitIsGroupLeader
+local GetLootMethod = GetLootMethod
 
 local _, addon = ...
 
@@ -604,6 +608,66 @@ local function UnitFrame_UpdateResurrect(self)
 	end
 end
 
+local function UnitFrame_UpdatePrivilege(self)
+	local privFrame = self.privFrame
+	if addon.db.hidePrivIcons then
+		privFrame:Hide()
+		return
+	end
+
+	local raidIndex, partyIndex = self.raidIndex, self.partyIndex
+	local rank, loot, _
+
+	if raidIndex then
+		_, rank, _, _, _, _, _, _, _, _, loot = GetRaidRosterInfo(raidIndex)
+	elseif partyIndex then
+		if UnitIsGroupLeader(self.unit or "") then
+			rank = 2
+		end
+
+		local lootMethod, lootMaster = GetLootMethod()
+		if lootMethod == "master" and partyIndex == lootMaster then
+			loot = 1
+		end
+	end
+
+	local leaderIcon, lootIcon = self.leaderIcon, self.lootIcon
+	local iconCount = 0
+
+	if rank == 2 then
+		iconCount = iconCount + 1
+		leaderIcon:SetTexture("Interface\\GroupFrame\\UI-Group-LeaderIcon")
+		leaderIcon:Show()
+	elseif rank == 1 then
+		iconCount = iconCount + 1
+		leaderIcon:SetTexture("Interface\\GroupFrame\\UI-Group-AssistantIcon")
+		leaderIcon:Show()
+	else
+		rank = nil
+		leaderIcon:Hide()
+	end
+
+	if loot then
+		iconCount = iconCount + 1
+		loot = 1
+		lootIcon:Show()
+	else
+		loot = nil
+		lootIcon:Hide()
+	end
+
+	if iconCount > 0 then
+		privFrame:SetWidth(iconCount * privFrame:GetHeight())
+	end
+
+	privFrame:Show()
+
+	if self.privilegeLeader ~= rank or self.privilegeLoot ~= loot then
+		self.privilegeLeader, self.privilegeLoot = rank, loot
+		BroadcastUnitNotify(self, "OnPrivilegeChange", rank, loot)
+	end
+end
+
 local GHOST_AURA, _, GHOST_TEXTURE = GetSpellInfo(8326)
 local DEATH_TEXTURE = "Interface\\TargetingFrame\\UI-TargetingFrame-Skull"
 local SPIRIT_OF_REDEMPTION = GetSpellInfo(27827)
@@ -662,7 +726,7 @@ local function UnitFrame_UpdateInRange(self)
 	end
 
 	inRange = inRange and 1 or nil
-	self:SetAlpha(inRange and 1 or outrangeOpacity)
+	self.artFrame:SetAlpha(inRange and 1 or outrangeOpacity)
 	if inRange ~= self.inRange then
 		self.inRange = inRange
 		BroadcastUnitNotify(self, "OnRangeChange", inRange)
@@ -690,6 +754,10 @@ local function UnitFrame_UpdateBkgndColor(self)
 end
 
 local function UnitFrame_UpdateAll(self)
+	if not self:IsVisible() then
+		return
+	end
+
 	self.inRange = 0
 	UnitFrame_UpdateVehicleStatus(self)
 	UnitFrame_UpdateResurrect(self)
@@ -710,6 +778,7 @@ local function UnitFrame_UpdateAll(self)
 	UnitFrame_UpdateReadyCheck(self)
 	UnitFrame_UpdateInRange(self)
 	UnitFrame_UpdateRaidIcon(self)
+	UnitFrame_UpdatePrivilege(self)
 end
 
 local function UnitFrame_RegisterEvents(self)
@@ -826,11 +895,24 @@ end
 
 local function UnitFrame_OnAttributeChanged(self, name, value)
 	if name == "unit" then
+		self.unit, self.displayedUnit, self.raidIndex, self.partyIndex = nil
 		if type(value) == "string" then
 			self.unit = value
 			self.displayedUnit = value
-		else
-			self.unit, self.displayedUnit = nil
+
+			if value == "player" then
+				self.partyIndex = 0
+			else
+				local _, _, index = strfind(value, "^raid(%d+)$")
+				if index then
+					self.raidIndex = tonumber(index)
+				else
+					_, _, index = strfind(value, "^party(%d+)$")
+					if index then
+						self.partyIndex = tonumber(index)
+					end
+				end
+			end
 		end
 	end
 end
@@ -924,6 +1006,10 @@ end
 
 local function UnitFrame_GetRaidIconStatus(self)
 	return self.raidIconStatus
+end
+
+local function UnitFrame_GetPrivilege(self)
+	return self.privilegeLeader, self.privilegeLoot
 end
 
 local optionTable = {
@@ -1054,6 +1140,10 @@ local optionTable = {
 	hideRaidIcon = function(frame, value)
 		UnitFrame_UpdateRaidIcon(frame)
 	end,
+
+	hidePrivIcons = function(frame, value)
+		UnitFrame_UpdatePrivilege(frame)
+	end,
 }
 
 optionTable.nameYOffset = optionTable.nameXOffset
@@ -1090,30 +1180,35 @@ function addon._UnitButton_OnLoad(frame)
 	frame:RegisterForClicks(addon.db.clickDownMode and "AnyDown" or "AnyUp")
 	local name = frame:GetName()
 
+	-- Art frame
+	local artFrame = CreateFrame("Frame", name.."ArtFrame", frame)
+	frame.artFrame = artFrame
+	artFrame:SetAllPoints(frame)
+
 	-- Background (black)
-	local background = frame:CreateTexture(name.."Background", "BACKGROUND")
+	local background = artFrame:CreateTexture(name.."Background", "BACKGROUND")
 	frame.background = background
-	background:SetAllPoints(frame)
+	background:SetAllPoints(artFrame)
 	background:SetTexture(bkgndColor.r, bkgndColor.g, bkgndColor.b, 1)
 
 	-- Health bar
-	local healthBar = CreateFrame("StatusBar", name.."HealthBar", frame)
+	local healthBar = CreateFrame("StatusBar", name.."HealthBar", artFrame)
 	frame.healthBar = healthBar
 	healthBar:SetPoint("TOPLEFT", 1, -1)
 	healthBar:SetPoint("BOTTOMRIGHT", -1, 2)
 	healthBar:SetStatusBarTexture(addon:GetMedia("statusbar"))
-	background = frame:CreateTexture(name.."HealthBarBackground", "BORDER")
+	background = artFrame:CreateTexture(name.."HealthBarBackground", "BORDER")
 	frame.healthBarBackground = background
 	background:SetTexture(addon:GetMedia("statusbar"))
 	background:SetAllPoints(healthBar)
 
 	-- Power bar
-	local powerBar = CreateFrame("StatusBar", name.."PowerBar", frame)
+	local powerBar = CreateFrame("StatusBar", name.."PowerBar", artFrame)
 	frame.powerBar = powerBar
 	powerBar:SetPoint("TOPLEFT", healthBar, "BOTTOMLEFT")
 	powerBar:SetPoint("BOTTOMRIGHT", -1, 1)
 	powerBar:SetStatusBarTexture(addon:GetMedia("statusbar"))
-	background = frame:CreateTexture(name.."PowerBarBackground", "BORDER")
+	background = artFrame:CreateTexture(name.."PowerBarBackground", "BORDER")
 	frame.powerBarBackground = background
 	background:SetTexture(addon:GetMedia("statusbar"))
 	background:SetAllPoints(powerBar)
@@ -1126,14 +1221,14 @@ function addon._UnitButton_OnLoad(frame)
 	incomingHeal:SetTexture(addon:GetMedia("statusbar"))
 	incomingHeal:Hide()
 
-	-- Art frame
-	local artFrame = CreateFrame("Frame", name.."ArtFrame", frame)
-	frame.artFrame = artFrame
-	artFrame:SetAllPoints(frame)
-	artFrame:SetFrameLevel(50)
+	-- Layer frame
+	local layerFrame = CreateFrame("Frame", name.."LayerFrame", artFrame)
+	frame.layerFrame = layerFrame
+	layerFrame:SetAllPoints(artFrame)
+	layerFrame:SetFrameLevel(50)
 
 	-- Highlight texture
-	local highlight = artFrame:CreateTexture(name.."Highlight", "BACKGROUND")
+	local highlight = layerFrame:CreateTexture(name.."Highlight", "BACKGROUND")
 	frame.highlight = highlight
 	highlight:SetAllPoints(frame)
 	highlight:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
@@ -1142,37 +1237,37 @@ function addon._UnitButton_OnLoad(frame)
 	highlight:Hide()
 
 	-- Name text
-	local nameText = artFrame:CreateFontString(name.."NameText", "BORDER", "GameFontHighlightSmall")
+	local nameText = layerFrame:CreateFontString(name.."NameText", "BORDER", "GameFontHighlightSmall")
 	frame.nameText = nameText
 	nameText:SetPoint("CENTER", healthBar, "CENTER")
 	nameText:SetFont(addon:GetMedia("font"), 12)
 
 	-- Status text
-	local statusText = artFrame:CreateFontString(name.."StatusText", "OVERLAY", "GameFontDisableSmall")
+	local statusText = layerFrame:CreateFontString(name.."StatusText", "OVERLAY", "GameFontDisableSmall")
 	frame.statusText = statusText
 	statusText:SetPoint("TOP", nameText, "BOTTOM", 0, 1)
 	statusText:SetFont(addon:GetMedia("font"), 10)
 
-	local healthText = artFrame:CreateFontString(name.."StatusText", "OVERLAY", "GameFontDisableSmall")
+	local healthText = layerFrame:CreateFontString(name.."StatusText", "OVERLAY", "GameFontDisableSmall")
 	frame.healthText = healthText
 	healthText:SetPoint("TOP", nameText, "BOTTOM", 0, 1)
 	healthText:SetFont(addon:GetMedia("font"), 10)
 
 	-- Role icon
-	local roleIcon = artFrame:CreateTexture(name.."RoleIcon", "ARTWORK")
+	local roleIcon = layerFrame:CreateTexture(name.."RoleIcon", "ARTWORK")
 	frame.roleIcon = roleIcon
 	roleIcon:SetPoint("TOPLEFT")
 	roleIcon:SetSize(12, 12)
 
 	-- Flag icon (dead/ghost/spirit)
-	local flagIcon = artFrame:CreateTexture(name.."FlagIcon", "ARTWORK")
+	local flagIcon = layerFrame:CreateTexture(name.."FlagIcon", "ARTWORK")
 	frame.flagIcon = flagIcon
 	flagIcon:SetSize(18, 18)
 	flagIcon:SetPoint("CENTER")
 	flagIcon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
 
 	-- Resurrect icon
-	local resIcon = artFrame:CreateTexture(name.."ResIcon", "ARTWORK")
+	local resIcon = layerFrame:CreateTexture(name.."ResIcon", "ARTWORK")
 	frame.resIcon = resIcon
 	resIcon:SetSize(18, 18)
 	resIcon:SetPoint("CENTER")
@@ -1181,7 +1276,7 @@ function addon._UnitButton_OnLoad(frame)
 	resIcon:Hide()
 
 	-- Raid icon
-	local raidIcon = artFrame:CreateTexture(name.."RaidIcon", "OVERLAY")
+	local raidIcon = layerFrame:CreateTexture(name.."RaidIcon", "OVERLAY")
 	frame.raidIcon = raidIcon
 	raidIcon:SetSize(14, 14)
 	raidIcon:SetPoint("TOP", 0, 3)
@@ -1189,15 +1284,34 @@ function addon._UnitButton_OnLoad(frame)
 	raidIcon:Hide()
 
 	-- Ready check icon
-	local readyCheckIcon = artFrame:CreateTexture(name.."ReadyCheckIcon", "OVERLAY")
+	local readyCheckIcon = layerFrame:CreateTexture(name.."ReadyCheckIcon", "OVERLAY")
 	frame.readyCheckIcon = readyCheckIcon
 	readyCheckIcon:SetSize(16, 16)
 	readyCheckIcon:SetPoint("CENTER", healthBar, "CENTER")
 	readyCheckIcon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons")
 	readyCheckIcon:Hide()
 
+	-- Container of privilege icons
+	local privFrame = CreateFrame("Frame", name.."PrivilegeFrame", layerFrame)
+	frame.privFrame = privFrame
+	privFrame:SetPoint("BOTTOM", healthBar, "BOTTOM", 0, -1)
+	privFrame:SetSize(11, 11)
+
+	local leaderIcon = privFrame:CreateTexture(name.."LeaderIcon", "OVERLAY")
+	frame.leaderIcon = leaderIcon
+	leaderIcon:SetPoint("LEFT")
+	leaderIcon:SetSize(11, 11)
+	leaderIcon:Hide()
+
+	local lootIcon = privFrame:CreateTexture(name.."LootIcon", "OVERLAY")
+	frame.lootIcon = lootIcon
+	lootIcon:SetPoint("RIGHT")
+	lootIcon:SetSize(11, 11)
+	lootIcon:SetTexture("Interface\\GroupFrame\\UI-Group-MasterLooter")
+	lootIcon:Hide()
+
 	-- Aggro highlight
-	local aggroHighlight = artFrame:CreateTexture(name.."AggroHighlight", "BORDER")
+	local aggroHighlight = layerFrame:CreateTexture(name.."AggroHighlight", "BORDER")
 	frame.aggroHighlight = aggroHighlight
 	aggroHighlight:SetAllPoints(frame)
 	aggroHighlight:SetTexture("Interface\\RaidFrame\\Raid-FrameHighlights")
@@ -1205,7 +1319,7 @@ function addon._UnitButton_OnLoad(frame)
 	aggroHighlight:Hide()
 
 	-- Selection highlight
-	local selectionHighlight = artFrame:CreateTexture(name.."SelectionHighlight", "ARTWORK")
+	local selectionHighlight = layerFrame:CreateTexture(name.."SelectionHighlight", "ARTWORK")
 	frame.selectionHighlight = selectionHighlight
 	selectionHighlight:SetAllPoints(frame)
 	selectionHighlight:SetTexture("Interface\\RaidFrame\\Raid-FrameHighlights")
@@ -1213,9 +1327,9 @@ function addon._UnitButton_OnLoad(frame)
 	selectionHighlight:Hide()
 
 	-- Aura frames
-	local buffParent = CreateFrame("Frame", name.."BuffParent", artFrame)
-	local debuffParent = CreateFrame("Frame", name.."DeBuffParent", artFrame)
-	local dispelParent = CreateFrame("Frame", name.."DispelParent", artFrame)
+	local buffParent = CreateFrame("Frame", name.."BuffParent", layerFrame)
+	local debuffParent = CreateFrame("Frame", name.."DeBuffParent", layerFrame)
+	local dispelParent = CreateFrame("Frame", name.."DispelParent", layerFrame)
 	frame.buffParent = buffParent
 	frame.debuffParent = debuffParent
 	frame.dispelParent = dispelParent
@@ -1248,9 +1362,9 @@ function addon._UnitButton_OnLoad(frame)
 	end
 
 	-- Visual parent frame
-	local visualParent = CreateFrame("Frame", name.."VisualParent", frame)
+	local visualParent = CreateFrame("Frame", name.."VisualParent", layerFrame)
 	frame.visualParent = visualParent
-	visualParent:SetAllPoints(frame)
+	visualParent:SetAllPoints(layerFrame)
 	visualParent:SetFrameLevel(100)
 
 	-- Basic scripts
@@ -1293,6 +1407,7 @@ function addon._UnitButton_OnLoad(frame)
 	frame.IsInRange = UnitFrame_IsInRange
 	frame.GetRoleIconStatus = UnitFrame_GetRoleIconStatus
 	frame.GetRaidIconStatus = UnitFrame_GetRaidIconStatus
+	frame.GetPrivilege = UnitFrame_GetPrivilege
 
 	tinsert(unitFrames, frame)
 	CheckAndApplyDynamicOptions(frame)

@@ -14,6 +14,7 @@ local HideMainButtonArt = false  -- true or false 是否隐藏狮鹫和主动作
 local HideExperienceBar = false  -- true or false 是否隐藏经验条
 
 local MenuButtonFrames = {
+    StoreMicroButton,          --5.42更新商城按钮
 	HelpMicroButton,
 	MainMenuMicroButton,
 	EJMicroButton,
@@ -117,7 +118,7 @@ local function RefreshMainActionBars()
 		anchorOffset = 4
 	end
 	
-	-- 宠物动作条, PetActionButton1
+	-- 宠物动作条, PetActionButton1	
 	if PetActionBarFrame:IsShown() then
 		--print("PetActionBarFrame")
 		PetActionButton1:ClearAllPoints()
@@ -125,7 +126,6 @@ local function RefreshMainActionBars()
 		anchor = PetActionButton1
 		anchorOffset = 4
 	end
-	
 	-- [[ 姿态栏
 	if StanceBarFrame:IsShown() then
 		--print("StanceBarFrame")
@@ -413,7 +413,7 @@ SlashCmdList['GETMOUSEOVERFRAME'] = GetMouseoverFrame
 end
 
 ------------------------------------------------------------------------------------
---暴雪隐藏系统菜单动作条布局，宽屏幕适用（去除系统菜单，把右侧动作条替换到系统菜单位置）
+--宽屏布局=暴雪隐藏系统菜单动作条布局，宽屏幕适用（去除系统菜单，把右侧动作条替换到系统菜单位置）
 ------------------------------------------------------------------------------------
 if (BZBar == true) then
 local CornerMenuFrame = false; -- 在右下方切换系统菜单

@@ -16,5 +16,5 @@ BOSS = 691
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 119622)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 119626)
 
-BOSS = 725
--- No remarkable raid debuff
+BOSS = 861
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 144690, 5)

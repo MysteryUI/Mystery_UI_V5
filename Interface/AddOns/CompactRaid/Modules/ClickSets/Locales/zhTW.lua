@@ -20,4 +20,5 @@ CompactRaid:RegisterLocale("ClickSets", "zhTW", {
 	["scroll"] = "滾動",
 	["Emergent macro"] = "緊急治療巨集",
 	["menu"] = "菜單",
+	["transfer special spell"] = "傳遞特殊技能",
 })

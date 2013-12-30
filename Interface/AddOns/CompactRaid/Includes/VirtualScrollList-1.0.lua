@@ -82,7 +82,7 @@ local GameTooltip = GameTooltip
 local NIL = "!2BFF-1B787839!"
 
 local MAJOR_VERSION = 1
-local MINOR_VERSION = 35
+local MINOR_VERSION = 36
 
 -- To prevent older libraries from over-riding newer ones...
 if type(UICreateVirtualScrollList_IsNewerVersion) == "function" and not UICreateVirtualScrollList_IsNewerVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -110,7 +110,8 @@ local function Frame_TextureButton(self, textureName, button)
 				texture.button = button
 				texture:SetParent(button)
 				texture:ClearAllPoints()
-				texture:SetAllPoints(button)
+				texture:SetPoint("TOPLEFT", 0, -1)
+				texture:SetPoint("BOTTOMRIGHT")
 				texture:Show()
 			end
 		else
@@ -218,7 +219,9 @@ end
 
 local function ListButton_OnEnter(self, motion)
 	local parent = self:GetParent()
-	Frame_TextureButton(parent, "highlightTexture", self)
+	if not parent.selectable or parent.checkedTexture:GetParent() ~= self then
+		Frame_TextureButton(parent, "highlightTexture", self)
+	end
 	SafeCall(parent.OnButtonEnter, parent, self, self.data, motion)
 	Frame_OnButtonTooltip(parent, self, self.data)
 end
@@ -241,6 +244,7 @@ local function ListButton_OnClick(self, flag, down)
 			local dataIndex = self:GetID() + Frame_GetScrollOffset(parent)
 			if parent.selection ~= dataIndex then
 				Frame_TextureButton(self:GetParent(), "checkedTexture", self)
+				Frame_TextureButton(self:GetParent(), "highlightTexture")
 				parent.selection = dataIndex
 				Frame_OnSelectionChanged(parent)
 			end
@@ -784,16 +788,16 @@ function UICreateVirtualScrollList(name, parent, maxButtons, selectable, checkbo
 
 	frame.highlightTexture = frame:CreateTexture(name.."HighlightTexture", "BORDER")
 	frame.highlightTexture:Hide()
-	frame.highlightTexture:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	frame.highlightTexture:SetTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight")
 	frame.highlightTexture:SetBlendMode("ADD")
-	frame.highlightTexture:SetVertexColor(1, 1, 1, 0.7)
+	frame.highlightTexture:SetVertexColor(0.196, 0.388, 0.8, 0.8)
 
 	if selectable then
 		frame.checkedTexture = frame:CreateTexture(name.."CheckedTexture", "BORDER")
 		frame.checkedTexture:Hide()
 		frame.checkedTexture:SetTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 		frame.checkedTexture:SetBlendMode("ADD")
-		frame.checkedTexture:SetVertexColor(1, 1, 1, 0.7)
+		frame.checkedTexture:SetVertexColor(1, 1, 1, 0.8)
 	end
 
 	frame:SetScript("OnShow", Frame_ScheduleRefresh)

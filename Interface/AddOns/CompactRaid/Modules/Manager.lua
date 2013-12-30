@@ -16,16 +16,14 @@ local format = format
 local pairs = pairs
 local GetActiveSpecGroup = GetActiveSpecGroup
 local GetNumSpecGroups = GetNumSpecGroups
-local StaticPopup_Show = StaticPopup_Show
-local StaticPopup_Hide = StaticPopup_Hide
 local TALENT_SPEC_PRIMARY = TALENT_SPEC_PRIMARY
 local TALENT_SPEC_SECONDARY = TALENT_SPEC_SECONDARY
 
 local _, addon = ...
 local L = addon.L
 
-local OBSOLETE_MODULES = { ["BarTextures"] = 1, ["RaidDebuff_Records"] = 1, ["PartyTargets"] = 1 } -- Obsolete modules, reject them from registering
-local OBSOLETE_ADDONS = { ["CompactRaid_ClickSets"] = 1, ["CompactRaid_PartyTargets"] = 1, ["CompactRaid_RaidDebuff_WotLK"] = 1, ["CompactRaid_RaidDebuff_CTM"] = 1 }
+local OBSOLETE_MODULES = { ["BarTextures"] = 1, ["RaidDebuff_Records"] = 1, ["PartyTargets"] = 1, ["Direction"] = 1 } -- Obsolete modules, reject them from registering
+local OBSOLETE_ADDONS = { ["CompactRaid_ClickSets"] = 1, ["CompactRaid_PartyTargets"] = 1, ["CompactRaid_RaidDebuff_WotLK"] = 1, ["CompactRaid_RaidDebuff_CTM"] = 1, ["CompactRaid_Direction"] = 1 }
 
 local modules = {}
 local moduleLocales = {}
@@ -401,70 +399,47 @@ end)
 -- For modules' "Restore Defaults" features, new feature added in 0.2 beta
 ------------------------------------------------------------
 
-local RESTORE_DEFAULTS_UNIQUE = "CompactRaidModuleRestoreDefaults"
-
-StaticPopupDialogs[RESTORE_DEFAULTS_UNIQUE] = {
-	button1 = OKAY,
-	button2 = CANCEL,
-	timeout = 0,
-	exclusive = 1,
-	whileDead = 1,
-	hideOnEscape = 1,
-	OnAccept = function(self, module)
-		if InCombatLockdown() and module:HasFlag("secure") then
-			module:Print(L["cannot cange these settings while in combat"], 1, 0, 0)
-			return
-		end
-
-		if module ~= addon:GetCoreModule() then
-			if module:HasFlag("account") then
-				CopyDefaultDB(module, "account", module.db)
-			end
-
-			local talentKey, talentdb
-			if module:HasFlag("talent") and module.talentdb then
-				talentKey = module:IsDualTalentsSynced(module)
-				if not talentKey then
-					talentKey = "talent"..(GetActiveSpecGroup() or 1)
-				end
-				talentdb = module.talentdb
-				CopyDefaultDB(module, "talent", talentdb)
-			end
-
-			CopyDefaultDB(module, "char", module.chardb)
-			if talentKey then
-				module.chardb[talentKey] = talentdb
-			end
-		end
-
-		if type(module.OnRestoreDefaults) == "function" then
-			module:OnRestoreDefaults()
-		end
-
-		module:Print(L["defaults restored"])
-		addon:BroadcastEvent("OnModuleRestoreDefaults", module)
-	end,
-}
-
-function addon:RestoreModuleDefaults(module)
-	if type(module) ~= "table" then
+local function OnConfirmRestore(module)
+	if InCombatLockdown() and module:HasFlag("secure") then
+		module:Print(L["cannot cange these settings while in combat"], 1, 0, 0)
 		return
 	end
 
-	StaticPopupDialogs[RESTORE_DEFAULTS_UNIQUE].text = format(L["restore defaults text"], module.title or module.name or UNKNOWN)
-	local dialog = StaticPopup_Show(RESTORE_DEFAULTS_UNIQUE)
-	if dialog then
-		dialog.data = module
-		return dialog
+	if module ~= addon:GetCoreModule() then
+		if module:HasFlag("account") then
+			CopyDefaultDB(module, "account", module.db)
+		end
+
+		local talentKey, talentdb
+		if module:HasFlag("talent") and module.talentdb then
+			talentKey = module:IsDualTalentsSynced(module)
+			if not talentKey then
+				talentKey = "talent"..(GetActiveSpecGroup() or 1)
+			end
+			talentdb = module.talentdb
+			CopyDefaultDB(module, "talent", talentdb)
+		end
+
+		CopyDefaultDB(module, "char", module.chardb)
+		if talentKey then
+			module.chardb[talentKey] = talentdb
+		end
+	end
+
+	if type(module.OnRestoreDefaults) == "function" then
+		module:OnRestoreDefaults()
+	end
+
+	module:Print(L["defaults restored"])
+	addon:BroadcastEvent("OnModuleRestoreDefaults", module)
+end
+
+function addon:RestoreModuleDefaults(module)
+	if type(module) == "table" then
+		local text = format(L["restore defaults text"], module.title or module.name or UNKNOWN)
+		LibMsgBox:Confirm(text, "MB_OKCANCEL", OnConfirmRestore, module)
 	end
 end
-
-local function OnModulePageShowHide()
-	StaticPopup_Hide(RESTORE_DEFAULTS_UNIQUE)
-end
-
-addon:RegisterEventCallback("OnModulePageShow", OnModulePageShowHide)
-addon:RegisterEventCallback("OnModulePageHide", OnModulePageShowHide)
 
 ------------------------------------------------------------
 -- Obsoleted functions, only present in order not to generate lua errors

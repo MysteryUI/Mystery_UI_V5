@@ -105,7 +105,7 @@ end)
 
 function addon:CreateGroupParent(name, templates)
 	local parent = CreateFrame("Frame", name, frame, templates or "SecureFrameTemplate")
-	parent:SetSize(16, 16)
+	parent:SetSize(64, 36)
 	parent:SetPoint("TOPLEFT")
 	return parent
 end
@@ -154,7 +154,6 @@ container:SetScript("OnUpdate", function(self, elapsed)
 	else
 		cols, rows = 1, 1
 	end
-
 
 	if cols < 1 then
 		cols = 1
