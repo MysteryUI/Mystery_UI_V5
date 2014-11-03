@@ -19,13 +19,15 @@ L.BankTitle = "%s的銀行"
 
 --tooltips
 L.Inventory = '背包'
-L.Bank = '銀行'
 L.Total = '總'
 L.ClickToPurchase = '<點選>購買'
 L.Bags = '容器'
 L.BagToggle = '<左鍵點選>顯示或隱藏容器'
 L.InventoryToggle = '<右鍵點選>打開或關閉背包視窗'
 L.BankToggle = '<右鍵點選>打開或關閉銀行視窗'
+L.SortItems = '<左鍵點選> 整理背包'
+L.DepositReagents = '<右鍵點選> 將材料存入銀行'
+L.PurchaseBag = '點擊購買銀行欄'
 
 L.Normal = '一般'
 L.Equipment = '裝備'

@@ -242,7 +242,7 @@ addon:RegisterOptionCallback("raidFilter", function(value)
 	local groupBy, groupingOrder, sortMethod
 	if value == "CLASS" then
 		groupBy = "CLASS"
-		groupingOrder = "PALADIN,DRUID,WARRIOR,WARLOCK,DEATHKNIGHT,MAGE,ROGUE,PRIEST,HUNTER,SHAMAN,MONK"
+		groupingOrder = "WARRIOR,DEATHKNIGHT,PALADIN,MONK,PRIEST,SHAMAN,DRUID,ROGUE,MAGE,WARLOCK,HUNTER"
 
 	elseif value == "ROLE" then
 		groupBy = "ROLE"

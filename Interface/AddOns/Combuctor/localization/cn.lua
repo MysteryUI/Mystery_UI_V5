@@ -8,22 +8,24 @@ if not L then return end
 L.Updated = '更新至v%s'
 
 --binding actions
-L.ToggleInventory = "打开/关闭存货清单"
+L.ToggleInventory = "打开/关闭背包"
 L.ToggleBank = "打开/关闭银行"
 
 --frame titles
-L.InventoryTitle = "%s的存货清单"
+L.InventoryTitle = "%s的背包"
 L.BankTitle = "%s的银行"
 
 --tooltips
 L.Inventory = '存货清单'
-L.Bank = '银行'
 L.Total = '总计'
 L.ClickToPurchase = '<点击>购买'
 L.Bags = '背包'
 L.BagToggle = '<左键点击>打开/关闭背包列表'
 L.InventoryToggle = '<右键点击>打开/关闭存货清单'
 L.BankToggle = '<右键点击>打开/关闭银行（为历史记录，不一定符合银行现况）'
+L.SortItems = '<左键点击> 整理背包'
+L.DepositReagents = '<右键点击> 将材料存入材料银行'
+L.PurchaseBag = '点击购买银行栏'
 
 --itemcount tooltips
 L.TipCount1 = '装备中: %d'
@@ -38,6 +40,10 @@ L.Panel = '面板'
 L.OptionsSubtitle = '胖次们可是危险的敌人哦！让它们听话地排排坐吧。'
 L.LeftFilters = '将物品分类栏显示在窗体左侧'
 L.ActPanel = '作为标准面板运作'
+L.HighlightNewItems = '高亮显示新物品'  
+L.HighlightUnusableItems = '高连显示不可用的'
+L.HighlightSetItems = '高亮显示成套物品'
+L.HighlightQuestItems = '高亮显示任务物品'
 L.TipCounts = '在道具的信息提示悬浮窗中启用道具计数器'
 
 -- options tooltips

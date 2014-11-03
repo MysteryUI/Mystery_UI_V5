@@ -168,7 +168,7 @@ local function UpdateAuras(self, name, icon, count, duration, expires, dispelTyp
 end
 
 local function UnitFrame_UpdateBuffs(self)
-	if addon.db.hidebuffs then
+	if not addon.db.showBuffs then
 		return
 	end
 
@@ -183,7 +183,7 @@ local function UnitFrame_UpdateBuffs(self)
 end
 
 local function UnitFrame_UpdateDebuffs(self)
-	if addon.db.hidedebuffs then
+	if not addon.db.showDebuffs then
 		return
 	end
 
@@ -247,7 +247,7 @@ end
 --]]
 
 local function UnitFrame_UpdateDispels(self)
-	if addon.db.hidedispels then
+	if not addon.db.showDispels then
 		return
 	end
 
@@ -269,9 +269,14 @@ local function UnitFrame_UpdateDispels(self)
 end
 
 local function UnitFrame_UpdateAuras(self)
+	local unit = self.displayedUnit
+	if not unit then return end
+
 	UnitFrame_UpdateBuffs(self)
 	UnitFrame_UpdateDebuffs(self)
 	UnitFrame_UpdateDispels(self)
+
+	BroadcastUnitNotify(self, "OnAurasChange", unit, self.unit, self.inVehicle, self.unitClass)
 end
 
 local function UnitFrame_UpdateRole(self)
@@ -279,7 +284,7 @@ local function UnitFrame_UpdateRole(self)
 	if not unit then return end
 	local icon = self.roleIcon
 	local status
-	if not addon.db.hideRoleIcon then
+	if addon.db.showRoleIcon then
 		if self.inVehicle then
 			icon:SetTexture("Interface\\Vehicles\\UI-Vehicles-Raid-Icon")
 			icon:SetTexCoord(0, 1, 0, 1)
@@ -579,7 +584,7 @@ local function UnitFrame_UpdateRaidIcon(self)
 	local icon = self.raidIcon
 
 	local index
-	if not addon.db.hideRaidIcon then
+	if addon.db.showRaidIcon then
 		index = GetRaidTargetIndex(unit)
 	end
 
@@ -610,7 +615,7 @@ end
 
 local function UnitFrame_UpdatePrivilege(self)
 	local privFrame = self.privFrame
-	if addon.db.hidePrivIcons then
+	if not addon.db.showPrivIcons then
 		privFrame:Hide()
 		return
 	end
@@ -1041,13 +1046,13 @@ local optionTable = {
 		UnitFrame_UpdateFont(frame)
 	end,
 
-	hidebarbkgnd = function(frame, value)
+	showbarbkgnd = function(frame, value)
 		if value then
-			frame.healthBarBackground:Hide()
-			frame.powerBarBackground:Hide()
-		else
 			frame.healthBarBackground:Show()
 			frame.powerBarBackground:Show()
+		else
+			frame.healthBarBackground:Hide()
+			frame.powerBarBackground:Hide()
 		end
 	end,
 
@@ -1093,21 +1098,21 @@ local optionTable = {
 		UnitFrame_UpdatePowerType(frame)
 	end,
 
-	hideBuffs = function(frame, value)
+	showBuffs = function(frame, value)
 		if value then
-			frame.buffParent:Hide()
-		else
 			frame.buffParent:Show()
 			UnitFrame_UpdateBuffs(frame)
+		else
+			frame.buffParent:Hide()
 		end
 	end,
 
-	hideDebuffs = function(frame, value)
+	showDebuffs = function(frame, value)
 		if value then
-			frame.debuffParent:Hide()
-		else
 			frame.debuffParent:Show()
 			UnitFrame_UpdateDebuffs(frame)
+		else
+			frame.debuffParent:Hide()
 		end
 	end,
 
@@ -1115,12 +1120,12 @@ local optionTable = {
 		UnitFrame_UpdateDebuffs(frame)
 	end,
 
-	hideDispels = function(frame, value)
+	showDispels = function(frame, value)
 		if value then
-			frame.dispelParent:Hide()
-		else
 			frame.dispelParent:Show()
 			UnitFrame_UpdateDispels(frame)
+		else
+			frame.dispelParent:Hide()
 		end
 	end,
 
@@ -1133,15 +1138,15 @@ local optionTable = {
 		UnitFrame_UpdateBkgndColor(frame)
 	end,
 
-	hideRoleIcon = function(frame, value)
+	showRoleIcon = function(frame, value)
 		UnitFrame_UpdateRole(frame)
 	end,
 
-	hideRaidIcon = function(frame, value)
+	showRaidIcon = function(frame, value)
 		UnitFrame_UpdateRaidIcon(frame)
 	end,
 
-	hidePrivIcons = function(frame, value)
+	showPrivIcons = function(frame, value)
 		UnitFrame_UpdatePrivilege(frame)
 	end,
 }
@@ -1163,7 +1168,7 @@ do
 end
 
 -- Options applied to dynamic buttons
-local DYNAMIC_OPTIONS = { "powerBarHeight", "nameHeight", "hidebarbkgnd", "nameXOffset", "nameYOffset", "hideBuffs", "hideDebuffs", "hideDispels" }
+local DYNAMIC_OPTIONS = { "powerBarHeight", "nameHeight", "showbarbkgnd", "nameXOffset", "nameYOffset", "showBuffs", "showDebuffs", "showDispels" }
 
 local function CheckAndApplyDynamicOptions(frame)
 	local option

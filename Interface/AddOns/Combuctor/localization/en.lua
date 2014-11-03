@@ -17,13 +17,14 @@ L.BankTitle = "%s's Bank"
 
 --tooltips
 L.Inventory = 'Inventory'
-L.Bank = 'Bank'
 L.Total = 'Total'
-L.ClickToPurchase = '<Click> to purchase'
 L.Bags = 'Bags'
 L.BagToggle = '<Left-Click> to toggle the bag display'
 L.InventoryToggle = '<Right-Click> to toggle your inventory'
 L.BankToggle = '<Right-Click> to toggle your bank'
+L.SortItems = '<Left-Click> to sort items.'
+L.DepositReagents = '<Right-Click> to deposit reagents in reagent bank.'
+L.PurchaseBag = 'Click to purchase this bank slot.'
 
 --itemcount tooltips
 L.TipCount1 = 'Equipped: %d'
@@ -38,7 +39,8 @@ L.Panel = 'Panel'
 L.OptionsSubtitle = 'Pants are a dangerous foe! Keep them organized.'
 L.LeftFilters = 'Display Sets on Left'
 L.ActPanel = 'Act as Standard Panel'
-L.HighlightItemsByQuality = 'Highlight Items by Quality' 
+L.HighlightItemsByQuality = 'Highlight Items by Quality'
+L.HighlightNewItems = 'Highlight New Items'  
 L.HighlightUnusableItems = 'Highlight Unusable Items'
 L.HighlightSetItems = 'Highlight Equipment Set Items'
 L.HighlightQuestItems = 'Highlight Quest Items'
@@ -61,11 +63,10 @@ which of your characters possess it.]]
 --these are automatically localized (aka, don't translate them :)
 do
   L.General = GENERAL
-	L.All = ALL
-	L.Weapon, L.Armor, L.Container, L.Consumable, L.Glyph, L.TradeGood, L.Recipe, L.Gem, L.Misc, L.Quest = GetAuctionItemClasses()
-	L.Trinket = _G['INVTYPE_TRINKET']
-	L.Devices, L.Explosives = select(10, GetAuctionItemSubClasses(6))
-	L.SimpleGem = select(8, GetAuctionItemSubClasses(7))
+  L.Weapon, L.Armor, L.Container, L.Consumable, L.Glyph, L.TradeGood, L.Recipe, L.Gem, L.Misc, L.Quest = GetAuctionItemClasses()
+  L.Trinket = _G['INVTYPE_TRINKET']
+  L.Devices, L.Explosives = select(10, GetAuctionItemSubClasses(6))
+  L.SimpleGem = select(8, GetAuctionItemSubClasses(7))
 end
 
 L.Normal = 'Normal'

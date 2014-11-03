@@ -1,6 +1,6 @@
-## Interface: 50400
+## Interface: 60000
 ## Title: CompactRaid
-## Version: 3.83(v5.42)
+## Version: 4.02
 ## Author: Abin
 ## Notes: |cffbc8f8fMysteryUI|r|cffb70000_CompactRaid。|r
 ## Notes-zhCN: |cffbc8f8fMysteryUI|r|cffb70000团队框架CompactRaid。|r
@@ -10,7 +10,7 @@
 ## OptionalDeps: Clique, TomTom
 ## X-Category: UnitFrame
 ## X-eMail: abinn32@yahoo.com
-## X-Curse-Packaged-Version: 3.83(v5.42)
+## X-Curse-Packaged-Version: v4.02
 ## X-Curse-Project-Name: CompactRaid
 ## X-Curse-Project-ID: compactraid
 ## X-Curse-Repository-ID: wow/compactraid/mainline

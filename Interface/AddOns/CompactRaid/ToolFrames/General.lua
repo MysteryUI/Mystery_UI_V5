@@ -141,7 +141,11 @@ CreateGroupToolButton(READY_CHECK, DoReadyCheck)
 local lockButton = menu:AddClickButton(L["lock position"])
 
 function lockButton:OnClick()
-	local lock = not addon.db.lock and 1 or nil
+	local lock = 1
+	if addon.db.lock then
+		lock = nil
+	end
+
 	addon.db.lock = lock
 	addon:ApplyOption("lock", lock)
 end

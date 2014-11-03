@@ -21,7 +21,7 @@ BINDING_NAME_COMBUCTOR_TOGGLE_BANK = L.ToggleBank
 
 --[[ Startup ]]--
 
-function Addon:OnInitialize()
+function Addon:OnEnable()
 	self.profile = self:InitDB()
 
 	-- version update
@@ -30,10 +30,15 @@ function Addon:OnInitialize()
 		self:UpdateVersion()
 	end
 
-	-- base set, slash commands
-	self('Sets'):Register(L.All, 'Interface/Icons/INV_Misc_EngGizmos_17', function() return true end)
+	-- slash commands
 	self:RegisterChatCommand('combuctor', 'OnSlashCommand')
 	self:RegisterChatCommand('cbt', 'OnSlashCommand')
+
+	-- startup frames
+	self.Frame:New(L.InventoryTitle, {0, 1, 2, 3, 4}, self.profile.inventory, 'inventory')
+	self.Frame:New(L.BankTitle, {BANK_CONTAINER, 5, 6, 7, 8, 9, 10, 11, REAGENTBANK_CONTAINER}, self.profile.bank, 'bank')
+	self:HookBagEvents()
+	self:HookTooltips()
 
 	-- option frame loader
 	local f = CreateFrame('Frame', nil, InterfaceOptionsFrame)
@@ -41,15 +46,6 @@ function Addon:OnInitialize()
 		self:SetScript('OnShow', nil)
 		LoadAddOn('Combuctor_Config')
 	end)
-end
-
-function Addon:OnEnable()
-	local profile = self:GetProfile(UnitName('player'))
-
-	self.Frame:New(L.InventoryTitle, profile.inventory, false, 'inventory')
-	self.Frame:New(L.BankTitle, profile.bank, true, 'bank')
-	self:HookTooltips()
-	self:HookBagEvents()
 end
 
 
@@ -71,25 +67,12 @@ function Addon:UpdateSettings(major, minor, bugfix)
 	local expansion, patch, release = strsplit('.', self.db.version)
 	local version = tonumber(expansion) * 10000 + tonumber(patch or 0) * 100 + tonumber(release or 0)
 
-	-- Remove keyring
-	if version < 40309 then
-		for char, prefs in pairs(CombuctorDB2.profiles) do
-			local bags = prefs.inventory and prefs.inventory.bags
-			
-			if bags then
-				for i, bag in ipairs(bags) do
-					if bag == -2 then
-						tremove(bags, i)
-					end
-				end
-			end
-		end
-	end
+	-- nothing to do, yay!
 end
 
 function Addon:UpdateVersion()
 	self.db.version = CURRENT_VERSION
-	self:Print(format(L.Updated, self.db.version))
+--	self:Print(format(L.Updated, self.db.version))
 end
 
 function Addon:ToggleSetting(set)
@@ -104,10 +87,7 @@ end
 --[[ Profiles ]]--
 
 function Addon:GetProfile(player)
-	if not player then
-		player = UnitName('player')
-	end
-	return self.db.profiles[player .. ' - ' .. GetRealmName()]
+	return self.db.profiles[(player or UnitName('player')) .. ' - ' .. GetRealmName()]
 end
 
 
@@ -130,12 +110,12 @@ local function addSet(sets, exclude, name, ...)
 end
 
 local function getDefaultInventorySets(class)
-	local sets, exclude = addSet(sets, exclude, L.All, L.All)
+	local sets, exclude = addSet(sets, exclude, ALL, ALL)
 	return sets, exclude
 end
 
 local function getDefaultBankSets(class)
-	local sets, exclude = addSet(sets, exclude, L.All, L.All)
+	local sets, exclude = addSet(sets, exclude, ALL, ALL)
 	sets, exclude = addSet(sets, exclude, L.Equipment)
 	sets, exclude = addSet(sets, exclude, L.TradeGood)
 	sets, exclude = addSet(sets, exclude, L.Misc)
@@ -158,7 +138,6 @@ end
 function Addon:GetBaseProfile()
 	return {
 		inventory = {
-			bags = {0, 1, 2, 3, 4},
 			position = {'RIGHT'},
 			showBags = false,
 			leftSideFilter = true,
@@ -167,7 +146,6 @@ function Addon:GetBaseProfile()
 		},
 
 		bank = {
-			bags = {-1, 5, 6, 7, 8, 9, 10, 11},
 			showBags = false,
 			w = 512,
 			h = 512,
@@ -241,7 +219,7 @@ end
 
 function Addon:Show(bag, auto)
 	for _,frame in pairs(self.frames) do
-		for _,bagID in pairs(frame.sets.bags) do
+		for _,bagID in pairs(frame.bags) do
 			if bagID == bag then
 				frame:ShowFrame(auto)
 				return
@@ -252,7 +230,7 @@ end
 
 function Addon:Hide(bag, auto)
 	for _,frame in pairs(self.frames) do
-		for _,bagID in pairs(frame.sets.bags) do
+		for _,bagID in pairs(frame.bags) do
 			if bagID == bag then
 				frame:HideFrame(auto)
 				return
@@ -263,7 +241,7 @@ end
 
 function Addon:Toggle(bag, auto)
 	for _,frame in pairs(self.frames) do
-		for _,bagID in pairs(frame.sets.bags) do
+		for _,bagID in pairs(frame.bags) do
 			if bagID == bag then
 				frame:ToggleFrame(auto)
 				return

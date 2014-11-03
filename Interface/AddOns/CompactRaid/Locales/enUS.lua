@@ -2,7 +2,7 @@
 -- enUS.lua
 --
 -- Abin
--- 2013/12/30
+-- 2010/10/16
 ------------------------------------------------------------
 
 local _, addon = ...
@@ -20,9 +20,9 @@ addon.L = {
 	["show party"] = "Show when in a party",
 	["show party pets"] = "Show party pets (character option)",
 	["show raid pets"] = "Show raid pets (character option)",
-	["hide buffs"] = "Hide all buff icons",
-	["hide debuffs"] = "Hide all debuff icons",
-	["hide dispels"] = "Hide all dispel icons",
+	["show buffs"] = "Show buff auras",
+	["show debuffs"] = "Show debuff auras",
+	["show dispels"] = "Show dispellable icons",
 	["edit prompt"] = "Press Enter to apply typed text, press Esc to discard changes.",
 	["edit prompt multiline"] = "Press Enter to apply typed text, press Esc to discard changes, press Shift+Enter to input a new line.",
 	["mana height"] = "Mana bar height",
@@ -42,7 +42,7 @@ addon.L = {
 	["buff scale"] = "Buff scale",
 	["debuff scale"] = "Debuff scale",
 	["dispel scale"] = "Dispel scale",
---	["version error"] = "[%s] Requires CompactRaid %s, current version is %s.",
+	["version error"] = "[%s] Requires CompactRaid %s, current version is %s.",
 	["world marks"] = "World marks",
 	["unit options"] = "Unit Frame Options",
 	["lock position"] = "Lock position",
@@ -50,7 +50,7 @@ addon.L = {
 	["power bar color"] = "Power Bar Color",
 	["only show dispellable debuffs"] = "Only show dispellable debuffs",
 	["horizontally align raid groups"] = "Horizontally align raid groups",
-	["over ride prompt"] = "Contents on this page are over-ridden by MysteryUI options.",
+	["over ride prompt"] = "Contents on this page are over-ridden by CompactRaid options.",
 	["frame container options"] = "Frame Container Options",
 	["background alpha"] = "Background alpha",
 	["border size"] = "border size",
@@ -58,7 +58,7 @@ addon.L = {
 	["unit spacing"] = "Unit spacing",
 	["horizontal align"] = "Horizontally align groups",
 	["keep raid groups together"] = "Keep raid groups together",
-	["hide bar background"] = "Hide bar background",
+	["show bar background"] = "Show bar background",
 	["debug mode"] = "Debug mode",
 	["health text"] = "Health text: ",
 	["outrange alpha"] = "Outrange alpha",
@@ -91,11 +91,11 @@ addon.L = {
 	["memory monitor tooltip text option 2"] = "Changing this option will create |cffff0000%d|r extra buttons and consume appr. |cffff0000%d KB|r memory until re-login.",
 	["enable module"] = "Enable module",
 	["unit background color"] = "Unit background color",
-	["hide role icon"] = "Hide role icon",
-	["hide raid target icon"] = "Hide raid target icon",
+	["show role icon"] = "Show role icon",
+	["show raid target icon"] = "Show raid target icon",
 	["tooltip position"] = "Tooltip Position",
 	["tooltip position unit frame"] = "Unit frame",
-	["hide tool buttons"] = "Hide tool buttons",
+	["show tool buttons"] = "Show tool buttons",
 	["refresh frames"] = "Refresh frames",
 	["tooltip text general"] = "General options for unit frames.",
 	["tooltip text raid targets"] = "Assign/remove raid target icons to current target unit.",
@@ -105,7 +105,7 @@ addon.L = {
 	["group swap notify"] = "New feature: |cff00ff00Group Changing|r\nClick the \"Raid\"tool button below, choose \"Enable group changing\" (requires leader or assist privilege).",
 	["group swap prompt"] = "Drag an unit frame onto another unit frame or another group to change its group. Press ESC to quit group changing.",
 	["cannot change groups in combat"] = "Cannot change groups in combat",
-	["hide privilege icons"] = "Hide privilege icons",
+	["show privilege icons"] = "Show privilege icons",
 	["show friendly npc"] = "Show friendly NPC (character option)",
-	["hide direction arrow"] = "Hide direction arrow (Requires TomTom)",
+	["show direction arrow"] = "Show direction arrow",
 }

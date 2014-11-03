@@ -20,11 +20,11 @@ addon.toolboxParent = toolboxParent
 toolboxParent:SetSize(16, 16)
 toolboxParent:SetPoint("BOTTOMLEFT", addon:GetMainFrame(), "TOPLEFT", -12, 11)
 
-addon:RegisterOptionCallback("hideToolboxes", function(value)
+addon:RegisterOptionCallback("showToolboxes", function(value)
 	if value then
-		toolboxParent:Hide()
-	else
 		toolboxParent:Show()
+	else
+		toolboxParent:Hide()
 	end
 end)
 

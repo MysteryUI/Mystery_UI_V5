@@ -87,7 +87,7 @@ addon:RegisterOptionCallback("grouphoriz", function()
 	addon:DisableGroupSwap()
 end)
 
-addon:RegisterOptionCallback("OnEnterCombat", function()
+addon:RegisterEventCallback("OnEnterCombat", function()
 	addon:DisableGroupSwap()
 end)
 

@@ -177,10 +177,10 @@ bg:SetTexture(cfg.tex)
 bg:SetVertexColor(0.5, 0.5, 0.5, 0.5)
 
 local numberize = function(val)
-    if (val >= 1e6) then
-        return ("%.1fm"):format(val / 1e6)
-    elseif (val >= 1e3) then
-        return ("%.1fk"):format(val / 1e3)
+    if (val >= 1e8) then
+        return ("%.1f亿"):format(val / 1e8)
+    elseif (val >= 1e4) then
+        return ("%.1f万"):format(val / 1e4)
     else
         return ("%d"):format(val)
     end

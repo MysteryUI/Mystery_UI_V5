@@ -116,7 +116,7 @@ local anchor
 
 local group = templates:CreateOptionMultiSelectionGroup(page, L["general options"])
 page:AnchorToTopLeft(group, 0, -6)
-group:AddButton(L["lock position"], "lock",1)
+group:AddButton(L["lock position"], "lock",0)
 group:AddButton(L["show solo"], "showSolo", 0)
 group:AddButton(L["show party"], "showParty", 0)
 group:AddButton(L["show party pets"], "showPartyPets", 0, "charOption", 0)
@@ -197,12 +197,12 @@ group:AddButton(L["tooltip position unit frame"], 1)
 anchor = group[1]
 group = templates:CreateOptionMultiSelectionGroup(page, L["unit options"])
 group:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -16)
-group:AddButton(L["hide privilege icons"], "hidePrivIcons")
-group:AddButton(L["hide role icon"], "hideRoleIcon")
-group:AddButton(L["hide raid target icon"], "hideRaidIcon")
-group:AddButton(L["hide direction arrow"], "hideDirectionArrow")
+group:AddButton(L["show privilege icons"], "showPrivIcons")
+group:AddButton(L["show role icon"], "showRoleIcon")
+group:AddButton(L["show raid target icon"], "showRaidIcon")
+group:AddButton(L["show direction arrow"], "showDirectionArrow")
 group:AddButton(L["invert bar color"], "invertColor")
-group:AddButton(L["hide bar background"], "hidebarbkgnd")
+group:AddButton(L["show bar background"], "showbarbkgnd")
 
 local bkColor = templates:CreateLabeledColorSwatch(nil, page, L["unit background color"], "unitBkColor")
 bkColor:SetPoint("TOP", group[-1], "BOTTOM", 0, -4)
@@ -273,7 +273,7 @@ nameYOffSlider:SetPoint("LEFT", nameXOffSlider, "RIGHT", 20, 0)
 
 group = templates:CreateOptionMultiSelectionGroup(page, L["frame container options"])
 group:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -176)
-group:AddButton(L["hide tool buttons"], "hideToolboxes", 1)
+group:AddButton(L["show tool buttons"], "hideToolboxes", 1)
 
 anchor = group
 
@@ -288,10 +288,10 @@ borderSizeSlider:SetPoint("LEFT", containerAlphaSlider, "RIGHT", 20, 0)
 ------------------------------------------------------------
 group = templates:CreateOptionMultiSelectionGroup(page, L["aura options"])
 group:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -100)
-group:AddButton(L["hide buffs"], "hideBuffs")
-group:AddButton(L["hide debuffs"], "hideDebuffs")
+group:AddButton(L["show buffs"], "showBuffs")
+group:AddButton(L["show debuffs"], "showDebuffs")
 group:AddButton(L["only show dispellable debuffs"], "onlyDispellable")
-group:AddButton(L["hide dispels"], "hideDispels")
+group:AddButton(L["show dispels"], "showDispels")
 
 ------------------------------------------------------------
 -- Loads addon option data
@@ -323,10 +323,22 @@ local function LoadOptionColor(option, defaultR, defaultG, defaultB)
 	addon:ApplyOption(option, r, g, b)
 end
 
+local function ReverseShowHide(db, name)
+	if db["hide"..name] then
+		db["hide"..name] = nil
+	else
+		db["show"..name] = 1
+	end
+end
+
 local function InitOptionData(db, chardb)
 	-- Some option features are changed in recent update
-	if not db.v30 then
-		db.v30 = 1
+
+	local version = addon:GetOriginalVersion()
+	local charVersion = addon:GetOriginalVersion(1)
+
+	-- New features added in 3.0
+	if version < 3.0 then
 		db.showSolo = 0
 		db.showParty = 0
 		db.keepgroupstogether = 1
@@ -334,9 +346,22 @@ local function InitOptionData(db, chardb)
 		chardb.showPartyPets = 0
 	end
 
-	if not chardb.v381 then
-		chardb.v381 = 1
+	-- New features added in 3.81
+	if charVersion < 3.81 then
 		chardb.showFriendlyNpc = 1
+	end
+
+	-- New features added in 3.90
+	if version < 3.90 then
+		ReverseShowHide(db, "PrivIcons")
+		ReverseShowHide(db, "RoleIcon")
+		ReverseShowHide(db, "RaidIcon")
+		ReverseShowHide(db, "DirectionArrow")
+		ReverseShowHide(db, "Toolboxes")
+		ReverseShowHide(db, "barbkgnd")
+		ReverseShowHide(db, "Buffs")
+		ReverseShowHide(db, "Debuffs")
+		ReverseShowHide(db, "Dispels")
 	end
 
 	-- Initialize addon data
@@ -346,16 +371,17 @@ local function InitOptionData(db, chardb)
 	LoadOption("spacing", 1, 0, 10)
 	LoadOption("outrangeAlpha", 40, 0, 100)
 	LoadOptionColor("unitBkColor", 0, 0, 0)
+
 	LoadOption("hidePrivIcons")
 	LoadOption("hideRoleIcon")
 	LoadOption("hideRaidIcon")
 	LoadOption("hideDirectionArrow")
 	LoadOption("tooltipPosition", 1, 0, 1)
-	LoadOption("hideToolboxes",1)
+	LoadOption("hideToolboxes", 1)
 
-	LoadOption("hidebarbkgnd",1)
-	LoadOption("showSolo",0)
-	LoadOption("showParty",0)
+	LoadOption("hidebarbkgnd", 1)
+	LoadOption("showSolo", 1)
+	LoadOption("showParty", 1)
 	LoadOption("showPartyPets", nil, nil, nil, 1)
 	LoadOption("showRaidPets", nil, nil, nil, 1)
 	LoadOption("showFriendlyNpc", nil, nil, nil, 1)
@@ -386,10 +412,10 @@ local function InitOptionData(db, chardb)
 	LoadOption("containerAlpha", 75, 0, 100)
 	LoadOption("containerBorderSize", 0, 0, 24)
 
-	LoadOption("hideBuffs")
-	LoadOption("hideDebuffs")
+	LoadOption("showBuffs")
+	LoadOption("showDebuffs")
 	LoadOption("onlyDispellable")
-	LoadOption("hideDispels")
+	LoadOption("showDispels")
 end
 
 addon:RegisterEventCallback("OnInitialize", InitOptionData)
@@ -403,7 +429,7 @@ function module:OnRestoreDefaults()
 	wipe(addon.chardb)
 	addon.chardb.modules = modules
 
-	InitOptionData(addon.db, addon.chardb)
+	addon:InitializeUserData(addon.db, addon.chardb)
 end
 
 ------------------------------------------------------------

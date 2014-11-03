@@ -236,6 +236,7 @@ local function OnUpdateNotifyEnumProc(frame, module)
 	addon:CallModuleFunc(module, "OnRangeChange", frame, frame:IsInRange())
 	addon:CallModuleFunc(module, "OnRoleIconChange", frame, frame:GetRoleIconStatus())
 	addon:CallModuleFunc(module, "OnRaidIconChange", frame, frame:GetRaidIconStatus())
+	addon:CallModuleFunc(module, "OnAurasChange", frame, frame:GetUnitInfo())
 end
 
 local function OnEnableModule(module)

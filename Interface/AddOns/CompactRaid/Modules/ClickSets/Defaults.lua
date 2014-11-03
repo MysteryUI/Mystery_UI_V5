@@ -232,7 +232,8 @@ function module:GetEmergentMacro()
 	end
 end
 
-defaultdb = {}
+local defaultdb = {}
+
 local temp = CLASS_DEFAULTS[CLASS]
 local key, value
 for key, value in pairs(temp) do

@@ -171,7 +171,7 @@ container:SetScript("OnUpdate", function(self, elapsed)
 	local height = rows * (unitHeight + spacing) - spacing
 
 	self:SetSize(width, height)
-	frame:SetClampRectInsets(0, width - 16, 0, 16 - height) -- Is this function protected? Currently not, but it should be...
+	frame:SetClampRectInsets(0, width - 48, 0, 16 - height) -- Is this function protected? Currently not, but it should be...
 end)
 
 --------------------------------------------------------------

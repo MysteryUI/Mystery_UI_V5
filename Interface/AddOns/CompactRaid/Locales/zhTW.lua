@@ -2,8 +2,8 @@
 -- zhTW.lua
 -- 繁體中文
 
--- Abin Mystery
--- 2013/12/30
+-- Abin
+-- 2010/10/16
 ------------------------------------------------------------
 
 if GetLocale() ~= "zhTW" then return end
@@ -11,7 +11,7 @@ if GetLocale() ~= "zhTW" then return end
 local _, addon = ...
 
 addon.L = {
-	["load prompt"] = "MysteryUI團隊框架已載入，版本 %s by Abin，輸入 /craid 進行設置。",
+	["load prompt"] = "版本 %s by Abin 已載入，輸入 /craid 進行設置。",
 	["desc"] = "設置CompactRaid框架外觀和屬性，大部份設置作用於全帳號。",
 	["general options"] = "一般選項",
 	["scale"] = "縮放",
@@ -23,9 +23,9 @@ addon.L = {
 	["show party"] = "在小隊時顯示框架",
 	["show party pets"] = "顯示小隊寵物（角色設置）",
 	["show raid pets"] = "顯示團隊寵物（角色設置）",
-	["hide buffs"] = "隱藏所有增益圖標",
-	["hide debuffs"] = "隱藏所有減益圖標",
-	["hide dispels"] = "隱藏所有驅散圖標",
+	["show buffs"] = "顯示增益光環",
+	["show debuffs"] = "顯示減益光環",
+	["show dispels"] = "顯示可驅散標誌",
 	["edit prompt"] = "按Enter使輸入的內容立即生效，按Esc取消變更。",
 	["edit prompt multiline"] = "按Enter使輸入的內容立即生效，按Esc取消變更，按Shift+Enter換行輸入。",
 	["mana height"] = "法力條高度",
@@ -45,7 +45,7 @@ addon.L = {
 	["buff scale"] = "增益縮放",
 	["debuff scale"] = "減益縮放",
 	["dispel scale"] = "驅散縮放",
---	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
+	["version error"] = "[%s] 需要CompactRaid %s，目前版本是%s。",
 	["world marks"] = "世界標記",
 	["unit options"] = "單位框架設置",
 	["lock position"] = "鎖定位置",
@@ -53,7 +53,7 @@ addon.L = {
 	["power bar color"] = "法力條顏色",
 	["only show dispellable debuffs"] = "只顯示可驅散的減益",
 	["horizontally align raid groups"] = "團隊中橫向排列小隊",
-	["over ride prompt"] = "此頁面的設置內容已由MysteryUI所接管。",
+	["over ride prompt"] = "此頁面的設置內容已由CompactRaid所接管。",
 	["frame container options"] = "框架容器選項",
 	["background alpha"] = "背景透明度",
 	["border size"] = "邊框寬度",
@@ -61,7 +61,7 @@ addon.L = {
 	["unit spacing"] = "單位間距",
 	["horizontal align"] = "橫向排列隊伍",
 	["keep raid groups together"] = "團隊中保持小隊相連",
-	["hide bar background"] = "隱藏狀態條背景",
+	["show bar background"] = "顯示狀態條背景",
 	["debug mode"] = "調試模式",
 	["health text"] = "生命值: ",
 	["outrange alpha"] = "超距離透明度",
@@ -94,11 +94,11 @@ addon.L = {
 	["memory monitor tooltip text option 2"] = "更改這一選項將創建|cffff0000%d個|r額外的按鈕并佔用大約|cffff0000%d KB|r記憶體。這些記憶體將在小退遊戲後被釋放。",
 	["enable module"] = "啟用模塊",
 	["unit background color"] = "單位背景顏色",
-	["hide role icon"] = "隱藏職責圖標",
-	["hide raid target icon"] = "隱藏隊伍標記圖標",
+	["show role icon"] = "顯示職責圖標",
+	["show raid target icon"] = "顯示隊伍標記圖標",
 	["tooltip position"] = "遊標提示位置",
 	["tooltip position unit frame"] = "單位框架",
-	["hide tool buttons"] = "隱藏工具按鈕",
+	["show tool buttons"] = "顯示工具按鈕",
 	["refresh frames"] = "刷新框架",
 	["tooltip text general"] = "設置單位框架的一般選項。",
 	["tooltip text raid targets"] = "設定/移除當前目標的標記圖標。",
@@ -108,7 +108,7 @@ addon.L = {
 	["group swap notify"] = "新功能：|cff00ff00換隊模式|r\n點擊下方的\"團隊\"工具按鈕，選擇\"開啟換隊模式\"（需要團長或助理權限）。",
 	["group swap prompt"] = "拖動隊員框體到另一個隊員框體上或另一小隊上以更改他的隊伍。按ESC退出換隊模式。",
 	["cannot change groups in combat"] = "無法在戰鬥中開啟換隊模式。",
-	["hide privilege icons"] = "隱藏權限圖標",
+	["show privilege icons"] = "顯示權限圖標",
 	["show friendly npc"] = "顯示友善NPC（角色設置）",
-	["hide direction arrow"] = "隱藏方向箭頭（需要TomTom）",
+	["show direction arrow"] = "顯示方向箭頭",
 }

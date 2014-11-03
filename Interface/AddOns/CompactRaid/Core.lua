@@ -138,6 +138,17 @@ end
 -- Internal event process
 ------------------------------------------------------------
 
+local dbOldVer = 0
+local chardbOldVer = 0
+
+function addon:GetOriginalVersion(char)
+	if char then
+		return dbOldVer
+	else
+		return chardbOldVer
+	end
+end
+
 EmbedEventObject(addon)
 addon:RegisterEvent("ADDON_LOADED")
 
@@ -155,6 +166,11 @@ function addon:ADDON_LOADED(arg1)
 		CompactRaidCharDB = {}
 	end
 	self.chardb = CompactRaidCharDB
+
+	dbOldVer = tonumber(self.db.version or 0) or 0
+	chardbOldVer = tonumber(self.chardb.version or 0) or 0
+	self.db.version = addon.numericVersion
+	self.chardb.version = addon.numericVersion
 
 	if type(self.db.modules) ~= "table" then
 		self.db.modules = {}

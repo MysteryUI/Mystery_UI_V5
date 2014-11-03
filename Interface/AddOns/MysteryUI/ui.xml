@@ -3,8 +3,6 @@
 	<Include file ="Function\Function.xml"/>
 	<Include file='rBuffFrameStyler\elements.xml' />
 	<Include file='rActionButtonStyler\elements.xml' />
-	<Include file='JPack\JPack.xml' />
-	<Include file ="oGlow\load.xml"/>
 	<Include file ="ChatEmote\ChatEmote.xml"/>
 	<!-- <Include file ="System\System.xml"/> -->
 </Ui>
